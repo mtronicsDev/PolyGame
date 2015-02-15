@@ -11,13 +11,13 @@ public class Entity extends BareEntity {
 
     private static final BareEntity root;
 
-    private BareEntity parent;
-    private Set<Module> modules;
-    private int id = UUID.randomUUID().hashCode();
-
     static {
         root = new BareEntity();
     }
+
+    private BareEntity parent;
+    private Set<Module> modules;
+    private int id = UUID.randomUUID().hashCode();
 
     public Entity(Module... modules) {
         super();
@@ -32,7 +32,7 @@ public class Entity extends BareEntity {
 
     public final  <M extends Module> List<M> getModules(Class<M> type) {
         //noinspection unchecked
-        return (List<M>) modules.stream().filter(type::isInstance);
+        return Arrays.asList((M[]) modules.stream().filter(type::isInstance).toArray(Module[]::new));
     }
 
     public final <M extends Module> M getModule(Class<M> type) {
@@ -53,7 +53,7 @@ public class Entity extends BareEntity {
 
     @Override
     public final void removeChild(Entity child) {
-        child.setParent(root);
+        child.parent = root;
         children.remove(child);
     }
 

@@ -14,7 +14,7 @@ public abstract class Module {
     }
 
     final void setParent(Entity parent) {
-        parent.removeModule(this);
+        if (parent != null) parent.removeModule(this);
         this.parent = parent;
     }
 }
