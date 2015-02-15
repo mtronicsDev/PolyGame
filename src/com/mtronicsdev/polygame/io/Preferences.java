@@ -15,25 +15,6 @@ import java.util.Properties;
 public final class Preferences {
 
     /**
-     * A functional interface which receives a {@link String} and returns an instance of {@link P}.
-     *
-     * <p>This instance is somehow (depends on implementation of
-     * {@link com.mtronicsdev.polygame.io.Preferences.PreferenceHandler#fromValue(String)})
-     * derived from the given {@link String}.</p>
-     *
-     * @param <P> The class of the objects that are returned by {@code fromValue(String preference)}
-     */
-    public interface PreferenceHandler<P> {
-        /**
-         * This method has to derive an instance of {@link P} from the given {@link String}.
-         *
-         * @param value The {@link String} that is used to derive an instance of {@link P}
-         * @return An instance of {@link P} that should be derived from {@code value}
-         */
-        P fromValue(String value);
-    }
-
-    /**
      * The {@link Properties properties} that store the preferences for this class.
      */
     private static Properties properties;
@@ -42,10 +23,6 @@ public final class Preferences {
      * {@link Preferences#registerPreferenceHandler(PreferenceHandler, Class)}.
      */
     private static Map<String, PreferenceHandler> preferenceHandlers;
-
-    private Preferences() {
-
-    }
 
     static {
         preferenceHandlers = new HashMap<>();
@@ -62,14 +39,24 @@ public final class Preferences {
         }, Properties.class);
 
         properties = Resources.getResource("data/polygame.properties", Properties.class);
+
+        registerPreferenceHandler(v -> v, String.class);
+        registerPreferenceHandler(Integer::parseInt, int.class);
+        registerPreferenceHandler(Long::parseLong, long.class);
+        registerPreferenceHandler(Double::parseDouble, double.class);
+        registerPreferenceHandler(Float::parseFloat, float.class);
+    }
+
+    private Preferences() {
+
     }
 
     /**
      * Retrieves an instance of {@link P} from the value mapped to {@code preference}.
      *
      * @param preference The preference mapped to the value that the instance of {@link P} gets retrieved from
-     * @param type The type of the {@link Object} that should be retrieved
-     * @param <P> The Class of the {@link Object} that should be retrieved
+     * @param type       The type of the {@link Object} that should be retrieved
+     * @param <P>        The Class of the {@link Object} that should be retrieved
      * @return An instance of {@link P} or, if no instance could be retrieved, {@code null}
      */
     public static <P> P getPreference(String preference, Class<P> type) {
@@ -89,5 +76,24 @@ public final class Preferences {
      */
     public static <P> void registerPreferenceHandler(PreferenceHandler<P> handler, Class<P> propertyType) {
         preferenceHandlers.put(propertyType.getTypeName(), handler);
+    }
+
+    /**
+     * A functional interface which receives a {@link String} and returns an instance of {@link P}.
+     *
+     * <p>This instance is somehow (depends on implementation of
+     * {@link com.mtronicsdev.polygame.io.Preferences.PreferenceHandler#fromValue(String)})
+     * derived from the given {@link String}.</p>
+     *
+     * @param <P> The class of the objects that are returned by {@code fromValue(String preference)}
+     */
+    public interface PreferenceHandler<P> {
+        /**
+         * This method has to derive an instance of {@link P} from the given {@link String}.
+         *
+         * @param value The {@link String} that is used to derive an instance of {@link P}
+         * @return An instance of {@link P} that should be derived from {@code value}
+         */
+        P fromValue(String value);
     }
 }
