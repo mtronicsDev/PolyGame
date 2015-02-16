@@ -62,7 +62,9 @@ public final class Preferences {
     public static <P> P getPreference(String preference, Class<P> type) {
         String value = properties.getProperty(preference);
         //noinspection unchecked
-        return value == null ? null : (P) preferenceHandlers.get(type.getTypeName()).fromValue(value);
+        return value == null ? null :
+                preferenceHandlers.get(type.getTypeName()) == null ? null :
+                        (P) preferenceHandlers.get(type.getTypeName()).fromValue(value);
     }
 
     /**
