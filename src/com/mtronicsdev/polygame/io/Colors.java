@@ -56,7 +56,7 @@ public final class Colors {
     public static Color getColor(String anyFormat) {
         if (anyFormat.startsWith("#")) return getHexColor(anyFormat); //RGB (HEX)
         else if (anyFormat.matches("[0-9]{1,3}[ ]*,[ ]*[0-9]{1,3}[ ]*,[ ]*[0-9]{1,3}")) { //RGB
-            String[] values = anyFormat.split("[ ]*,[ ]*]");
+            String[] values = anyFormat.split("[ ]*,[ ]*");
             return new Color(Integer.parseInt(values[0]),
                     Integer.parseInt(values[1]),
                     Integer.parseInt(values[2]));

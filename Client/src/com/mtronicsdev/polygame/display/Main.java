@@ -2,6 +2,7 @@ package com.mtronicsdev.polygame.display;
 
 import com.mtronicsdev.polygame.io.Colors;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 
@@ -18,10 +19,20 @@ public class Main {
         if (glfwInit() != GL_TRUE)
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        Window window = new Window("Polygame", Monitor.getPrimary());
+        Input.registerKeyHandler(GLFW_KEY_W);
+
+        Window window = new Window("Polygame", 100, 100);
 
         while (!window.shouldClose()) {
             window.refresh();
+            System.out.println(Input.keyDown(GLFW_KEY_W) + "|"
+                    + Input.keyPressed(GLFW_KEY_W) + "|"
+                    + Input.keyUp(GLFW_KEY_W));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         window.close();
