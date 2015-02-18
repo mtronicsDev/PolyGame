@@ -49,6 +49,9 @@ public final class Window {
         glfwSwapInterval(1);
         GLContext.createFromCurrent();
 
+        glfwSetInputMode(id, GLFW_STICKY_KEYS, 1);
+        glfwSetInputMode(id, GLFW_STICKY_MOUSE_BUTTONS, 1);
+
         setBackgroundColor(Preferences.getPreference("skyColor", Color.class));
 
         glfwShowWindow(id);

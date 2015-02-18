@@ -1,10 +1,10 @@
 package com.mtronicsdev.polygame.display;
 
-import org.lwjgl.glfw.GLFWCursorPosCallback;
-import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import com.mtronicsdev.polygame.math.Vector2f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
+import java.nio.DoubleBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,16 +17,29 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 public final class Input {
 
-    private static GLFWKeyCallback keyCallback;
-    private static GLFWMouseButtonCallback buttonCallback;
-    private static GLFWCursorPosCallback cursorPosCallback;
     private static GLFWScrollCallback scrollCallback;
     private static Map<Integer, InputHandler> keyHandlers;
     private static Map<Integer, InputHandler> buttonHandlers;
 
+    private static double mouseXPrevious, mouseYPrevious;
+    private static DoubleBuffer mouseX, mouseY;
+
     static {
         keyHandlers = new HashMap<>();
         buttonHandlers = new HashMap<>(2);
+
+        mouseXPrevious = 0;
+        mouseYPrevious = 0;
+
+        mouseX = BufferUtils.createDoubleBuffer(1);
+        mouseY = BufferUtils.createDoubleBuffer(1);
+
+        scrollCallback = new GLFWScrollCallback() {
+            @Override
+            public void invoke(long l, double v, double v1) {
+
+            }
+        };
     }
 
     private Input() {
@@ -34,6 +47,11 @@ public final class Input {
     }
 
     static void update(Window window) {
+        mouseXPrevious = mouseX.get(0);
+        mouseYPrevious = mouseY.get(0);
+
+        glfwGetCursorPos(window.getId(), mouseX, mouseY);
+
         for (int key : keyHandlers.keySet()) {
             switch (glfwGetKey(window.getId(), key)) {
                 case GLFW_PRESS:
@@ -63,6 +81,14 @@ public final class Input {
 
     public static void registerMouseButtonHandler(int button) {
         buttonHandlers.put(button, new InputHandler());
+    }
+
+    public static Vector2f getCursorPosition() {
+        return new Vector2f((float) mouseX.get(0), (float) mouseY.get(0));
+    }
+
+    public static Vector2f getMouseDelta() {
+        return new Vector2f((float) (mouseX.get(0) - mouseXPrevious), (float) (mouseY.get(0) - mouseYPrevious));
     }
 
     public static boolean keyDown(int keycode) {
