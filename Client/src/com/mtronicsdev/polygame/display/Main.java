@@ -1,8 +1,12 @@
 package com.mtronicsdev.polygame.display;
 
 import com.mtronicsdev.polygame.io.Colors;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWWindowCloseCallback;
+import org.lwjgl.glfw.GLFWWindowPosCallback;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 
-import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * Class description.
@@ -17,14 +21,21 @@ public class Main {
         if (glfwInit() != 1)
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        Window window = new Window("Polygame", 400, 300);
+        new Window("Polygame", 400, 300);
+        new Window("Polygame 2", Monitor.getMonitors().get(2));
+        Monitors monitors = new Monitors();
 
-        while (!window.shouldClose()) {
-            window.refresh();
-            System.out.println(Input.getMouseDelta());
-        }
+        GLFWWindowPosCallback callback = GLFW.GLFWWindowPosCallback((l, i, i1) -> monitors.contentPane.repaint());
+        GLFWWindowSizeCallback callback2 = GLFW.GLFWWindowSizeCallback((l, i, i1) -> monitors.contentPane.repaint());
+        GLFWWindowCloseCallback callback3 = GLFW.GLFWWindowCloseCallback((l) -> monitors.contentPane.repaint());
 
-        window.close();
+        Display.getWindows().forEach(w -> {
+            glfwSetWindowPosCallback(w.getId(), callback);
+            glfwSetWindowSizeCallback(w.getId(), callback2);
+            glfwSetWindowCloseCallback(w.getId(), callback3);
+        });
+
+        while (true) Display.refresh();
     }
 
 }

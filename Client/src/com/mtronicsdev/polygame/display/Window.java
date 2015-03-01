@@ -54,6 +54,8 @@ public final class Window {
 
         setBackgroundColor(Preferences.getPreference("skyColor", Color.class));
 
+        Display.addWindow(this);
+
         glfwShowWindow(id);
     }
 
@@ -64,6 +66,10 @@ public final class Window {
         glfwSwapBuffers(id);
         glfwPollEvents();
         Input.update(this);
+    }
+
+    public Color getBackgroundColor() {
+        return new Color(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
     }
 
     public void setBackgroundColor(Color color) {

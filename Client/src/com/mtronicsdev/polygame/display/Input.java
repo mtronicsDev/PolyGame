@@ -2,7 +2,6 @@ package com.mtronicsdev.polygame.display;
 
 import com.mtronicsdev.polygame.math.Vector2f;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFWScrollCallback;
 
 import java.nio.DoubleBuffer;
 import java.util.HashMap;
@@ -17,7 +16,6 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 public final class Input {
 
-    private static GLFWScrollCallback scrollCallback;
     private static Map<Integer, InputHandler> keyHandlers;
     private static Map<Integer, InputHandler> buttonHandlers;
 
@@ -28,18 +26,10 @@ public final class Input {
         keyHandlers = new HashMap<>();
         buttonHandlers = new HashMap<>(2);
 
-        mouseXPrevious = 0;
-        mouseYPrevious = 0;
+        mouseXPrevious = mouseYPrevious = 0;
 
         mouseX = BufferUtils.createDoubleBuffer(1);
         mouseY = BufferUtils.createDoubleBuffer(1);
-
-        scrollCallback = new GLFWScrollCallback() {
-            @Override
-            public void invoke(long l, double v, double v1) {
-
-            }
-        };
     }
 
     private Input() {
