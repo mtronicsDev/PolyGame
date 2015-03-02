@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="157.0" y="0.0">com.mtronicsdev.polygame.graphics.Shader</node>
+    <node x="306.0" y="212.0">com.mtronicsdev.polygame.graphics.ShaderProgram</node>
+    <node x="0.0" y="169.0">com.mtronicsdev.polygame.graphics.Shader.ShaderType</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.mtronicsdev.polygame.graphics.ShaderProgram" target="com.mtronicsdev.polygame.graphics.Shader">
+      <point x="0.0" y="-71.0" />
+      <point x="429.0" y="144.0" />
+      <point x="350.5" y="144.0" />
+      <point x="64.5" y="59.5" />
+    </edge>
+    <edge source="com.mtronicsdev.polygame.graphics.Shader.ShaderType" target="com.mtronicsdev.polygame.graphics.Shader">
+      <point x="0.0" y="-114.0" />
+      <point x="143.0" y="144.0" />
+      <point x="221.5" y="144.0" />
+      <point x="-64.5" y="59.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="276.5" y="298.5" />
+  <SelectedNodes>
+    <node>com.mtronicsdev.polygame.graphics.Shader</node>
+    <node>com.mtronicsdev.polygame.graphics.ShaderProgram</node>
+    <node>com.mtronicsdev.polygame.graphics.Shader.ShaderType</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
