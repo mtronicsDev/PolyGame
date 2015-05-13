@@ -49,7 +49,7 @@ public class Shader implements GLObject {
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(f));
 
-                reader.lines().forEachOrdered(line -> shaderSourceCode[0] += line);
+                reader.lines().forEachOrdered(line -> shaderSourceCode[0] += line + "\n");
                 reader.close();
             } catch (FileNotFoundException e) {
                 System.err.println("The file " + f.getPath() + " was not found or is a directory.");
@@ -79,9 +79,6 @@ public class Shader implements GLObject {
         if (compileStatus.get() == GL11.GL_FALSE)
             throw new RuntimeException("The " + type.name + " \"" + String.valueOf(id) + "\" could not be compiled.");
     }
-
-    public static void init() {
-    } //Used to trigger static initializer
 
     public int getId() {
         return id;

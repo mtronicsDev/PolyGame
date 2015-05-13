@@ -39,7 +39,7 @@ public class Main {
             glfwSetWindowCloseCallback(w.getId(), callback3);
         });
 
-        while (true) {
+        while (Display.getWindows().size() > 0) {
             Display.refresh();
         }
     }
