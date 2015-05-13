@@ -5,13 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 
 /**
- * Class description.
+ * Represents a shader program and manages it.
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
-public class ShaderProgram {
+public class ShaderProgram implements GLObject {
 
     private int id;
     private List<Shader> shaders;
@@ -22,6 +23,7 @@ public class ShaderProgram {
         id = glCreateProgram();
         this.shaders.forEach(s -> glAttachShader(id, s.getId()));
 
+        glBindFragDataLocation(id, 0, "fragColor");
         glLinkProgram(id);
         glValidateProgram(id);
     }
@@ -37,7 +39,11 @@ public class ShaderProgram {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
+        unbind();
+    }
 
+    @Override
+    public void unbind() {
         shaders.forEach(shader -> glDetachShader(id, shader.getId()));
         glDeleteProgram(id);
     }

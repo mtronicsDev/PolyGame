@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Class description.
+ * Manages {@link Window windows}.
  *
  * @author Maxi Schmeller (mtronics_dev)
  */

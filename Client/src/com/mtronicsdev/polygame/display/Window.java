@@ -1,5 +1,6 @@
 package com.mtronicsdev.polygame.display;
 
+import com.mtronicsdev.polygame.graphics.RenderEngine;
 import com.mtronicsdev.polygame.io.Preferences;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GLContext;
@@ -12,7 +13,7 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
- * Class description.
+ * Creates a window with an OpenGL context.
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
@@ -39,6 +40,10 @@ public final class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
         id = glfwCreateWindow(width, height, title, monitor, 0);
 
@@ -53,6 +58,7 @@ public final class Window {
         glfwSetInputMode(id, GLFW_STICKY_MOUSE_BUTTONS, 1);
 
         setBackgroundColor(Preferences.getPreference("skyColor", Color.class));
+        glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
 
         Display.addWindow(this);
 
@@ -61,8 +67,11 @@ public final class Window {
 
     public void refresh() {
         glfwMakeContextCurrent(id);
+        GLContext.createFromCurrent();
         glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        RenderEngine.render();
+
         glfwSwapBuffers(id);
         glfwPollEvents();
         Input.update(this);

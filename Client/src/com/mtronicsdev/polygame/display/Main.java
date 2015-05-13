@@ -17,12 +17,16 @@ public class Main {
 
     public static void main(String... args) {
         Colors.getColor("#1659de");
+        try {
+            Class.forName("com.mtronicsdev.polygame.graphics.Shader");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         if (glfwInit() != 1)
             throw new IllegalStateException("Unable to initialize GLFW");
 
         new Window("Polygame", 400, 300);
-        new Window("Polygame 2", Monitor.getMonitors().get(2));
         Monitors monitors = new Monitors();
 
         GLFWWindowPosCallback callback = GLFW.GLFWWindowPosCallback((l, i, i1) -> monitors.contentPane.repaint());
@@ -35,7 +39,9 @@ public class Main {
             glfwSetWindowCloseCallback(w.getId(), callback3);
         });
 
-        while (true) Display.refresh();
+        while (true) {
+            Display.refresh();
+        }
     }
 
 }

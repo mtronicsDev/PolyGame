@@ -10,7 +10,7 @@ import java.util.List;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
- * Class description.
+ * Represents a physical monitor and provides information about it.
  *
  * @author Maxi Schmeller (mtronics_dev)
  */

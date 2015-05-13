@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
- * Class description.
+ * Handles keyboard, mouse and controller input.
  *
  * @author Maxi Schmeller (mtronics_dev)
  */

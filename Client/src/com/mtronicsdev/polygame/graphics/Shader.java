@@ -17,11 +17,11 @@ import static org.lwjgl.opengl.GL40.GL_TESS_EVALUATION_SHADER;
 import static org.lwjgl.opengl.GL43.GL_COMPUTE_SHADER;
 
 /**
- * Class description.
+ * Represents a GLSL shader and manages it.
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
-public class Shader {
+public class Shader implements GLObject {
 
     static {
         Resources.registerResourceHandler(f -> {
@@ -44,12 +44,12 @@ public class Shader {
                     "* eval - Tessellation Evaluation Shader\n" +
                     "* comp - Compute Shader\n");
 
-            String shaderSourceCode = "";
+            final String[] shaderSourceCode = {""};
 
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(f));
 
-                reader.lines().forEachOrdered(shaderSourceCode::concat);
+                reader.lines().forEachOrdered(line -> shaderSourceCode[0] += line);
                 reader.close();
             } catch (FileNotFoundException e) {
                 System.err.println("The file " + f.getPath() + " was not found or is a directory.");
@@ -61,7 +61,7 @@ public class Shader {
                 return null;
             }
 
-            return new Shader(type, shaderSourceCode);
+            return new Shader(type, shaderSourceCode[0]);
         }, Shader.class);
     }
 
@@ -79,6 +79,9 @@ public class Shader {
         if (compileStatus.get() == GL11.GL_FALSE)
             throw new RuntimeException("The " + type.name + " \"" + String.valueOf(id) + "\" could not be compiled.");
     }
+
+    public static void init() {
+    } //Used to trigger static initializer
 
     public int getId() {
         return id;
@@ -99,6 +102,11 @@ public class Shader {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
+        unbind();
+    }
+
+    @Override
+    public void unbind() {
         glDeleteShader(id);
     }
 
