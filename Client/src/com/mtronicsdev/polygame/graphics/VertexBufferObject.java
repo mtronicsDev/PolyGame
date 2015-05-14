@@ -3,25 +3,23 @@ package com.mtronicsdev.polygame.graphics;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
-import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
 
 /**
  * @author mtronics_dev
  * @version 1.0
  */
-public class VertexBufferObject {
+public abstract class VertexBufferObject {
 
-    private int id;
+    protected int id;
 
-    public VertexBufferObject(float... data) {
+    protected VertexBufferObject() {
         id = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, id);
-        glBufferData(GL_ARRAY_BUFFER, storeArrayInBuffer(data), GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    private FloatBuffer storeArrayInBuffer(float[] data) {
+    protected FloatBuffer storeArrayInFloatBuffer(float[] data) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 
         buffer.put(data);
@@ -29,6 +27,17 @@ public class VertexBufferObject {
 
         return buffer;
     }
+
+    protected IntBuffer storeArrayInIntBuffer(int[] data) {
+        IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+
+        buffer.put(data);
+        buffer.flip();
+
+        return buffer;
+    }
+
+    public abstract int getType();
 
     public int getId() {
         return id;

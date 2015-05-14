@@ -1,16 +1,16 @@
 package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.io.Resources;
+import org.lwjgl.opengl.GL11;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 /**
  * Renders and communicates with the graphics card.
@@ -43,22 +43,15 @@ public class RenderEngine {
         defaultProgram = new ShaderProgram(vertex, fragment);
         defaultProgram.use();
 
-        VertexBufferObject vbo = new VertexBufferObject(
-                -.5f, .5f, 0,
-                -.5f, -.5f, 0,
-                .5f, -.5f, 0,
-
-                .5f, -.5f, 0,
-                .5f, .5f, 0,
-                -.5f, .5f, 0);
-        vao = new VertexArrayObject(vbo);
+        vao = new VertexArrayObject(new int[]{0, 1, 3, 3, 1, 2},
+                new float[]{-.5f, .5f, 0, -.5f, -.5f, 0, .5f, -.5f, 0, .5f, .5f, 0});
     }
 
     public static void render() {
-        glBindVertexArray(vao.getId());
+        vao.bind();
         glEnableVertexAttribArray(0);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawElements(GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
-        glBindVertexArray(0);
+        vao.unbind();
     }
 }

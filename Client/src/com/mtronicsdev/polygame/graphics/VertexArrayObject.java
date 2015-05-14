@@ -15,16 +15,24 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 public class VertexArrayObject implements GLObject {
 
     private int id;
+    private IndexBufferObject indices;
+    private VertexBufferObject vertices;
 
-    public VertexArrayObject(VertexBufferObject... vbos) {
+    public VertexArrayObject(int[] indices, float[] vertices) {
         id = glGenVertexArrays();
-        glBindVertexArray(id);
+        bind();
 
-        for (int i = 0; i < vbos.length; i++) {
-            glBindBuffer(GL_ARRAY_BUFFER, id);
-            glVertexAttribPointer(i, 3, GL11.GL_FLOAT, false, 0, 0);
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-        }
+        this.indices = new IndexBufferObject(indices);
+        this.vertices = new DefaultVertexBufferObject(vertices);
+
+        glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        unbind();
+    }
+
+    public void bind() {
+        glBindVertexArray(id);
     }
 
     public int getId() {
