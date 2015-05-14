@@ -19,13 +19,11 @@ public final class Entity2D extends Entity {
     }
 
     public Entity2D(Vector2f position, Module... modules) {
-        super(modules);
-        this.position = position;
+        this(position, 0, modules);
     }
 
     public Entity2D(Module... modules) {
-        super(modules);
-        position = new Vector2f();
+        this(new Vector2f(), modules);
     }
 
     public Vector2f getPosition() {

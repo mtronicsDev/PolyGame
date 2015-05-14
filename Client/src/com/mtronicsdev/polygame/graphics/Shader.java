@@ -99,11 +99,11 @@ public class Shader implements GLObject {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        unbind();
+        cleanUp();
     }
 
     @Override
-    public void unbind() {
+    public void cleanUp() {
         glDeleteShader(id);
     }
 

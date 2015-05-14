@@ -11,23 +11,26 @@ public final class Entity3D extends Entity {
 
     private Vector3f position;
     private Vector3f rotation;
+    private Vector3f scale;
 
-    public Entity3D(Vector3f position, Vector3f rotation, Module... modules) {
+    public Entity3D(Vector3f position, Vector3f rotation, Vector3f scale, Module... modules) {
         super(modules);
+
         this.position = position;
         this.rotation = rotation;
+        this.scale = scale;
+    }
+
+    public Entity3D(Vector3f position, Vector3f rotation, Module... modules) {
+        this(position, rotation, new Vector3f(1, 1, 1), modules);
     }
 
     public Entity3D(Vector3f position, Module... modules) {
-        super(modules);
-        this.position = position;
-        rotation = new Vector3f();
+        this(position, new Vector3f(), modules);
     }
 
     public Entity3D(Module... modules) {
-        super(modules);
-        position = new Vector3f();
-        rotation = new Vector3f();
+        this(new Vector3f(), modules);
     }
 
     public Vector3f getPosition() {

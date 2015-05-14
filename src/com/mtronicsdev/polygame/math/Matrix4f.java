@@ -1,5 +1,7 @@
 package com.mtronicsdev.polygame.math;
 
+import java.nio.FloatBuffer;
+
 public class Matrix4f {
 
     public float m00, m01, m02, m03,
@@ -86,6 +88,27 @@ public class Matrix4f {
         m23 *= scalar.z;
 
         return this;
+    }
+
+    public FloatBuffer store(FloatBuffer buffer) {
+        buffer.put(m00);
+        buffer.put(m01);
+        buffer.put(m02);
+        buffer.put(m03);
+        buffer.put(m10);
+        buffer.put(m11);
+        buffer.put(m12);
+        buffer.put(m13);
+        buffer.put(m20);
+        buffer.put(m21);
+        buffer.put(m22);
+        buffer.put(m23);
+        buffer.put(m30);
+        buffer.put(m31);
+        buffer.put(m32);
+        buffer.put(m33);
+
+        return buffer;
     }
 
     /**

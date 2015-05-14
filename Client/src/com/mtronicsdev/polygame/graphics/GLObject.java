@@ -5,7 +5,5 @@ package com.mtronicsdev.polygame.graphics;
  * @version 1.0
  */
 public interface GLObject {
-
-    void unbind();
-
+    void cleanUp();
 }

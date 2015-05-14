@@ -1,10 +1,10 @@
 package com.mtronicsdev.polygame.graphics;
 
-import com.mtronicsdev.polygame.io.Resources;
+import com.mtronicsdev.polygame.math.Matrix4f;
+import com.mtronicsdev.polygame.math.Vector3f;
+import com.mtronicsdev.polygame.util.VectorMath;
 import org.lwjgl.opengl.GL11;
 
-import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -19,37 +19,31 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
  */
 public class RenderEngine {
 
-    private static final ShaderProgram defaultProgram;
-
-    private static VertexArrayObject vao;
+    private static RawModel vao;
+    private static DefaultShaderProgram shaderProgram;
 
     static {
-        Shader vertex, fragment;
-
-        //Shader.init();
-
         try {
-            URI uri = RenderEngine.class.getResource("/com/mtronicsdev/polygame/res/default_vert.glsl").toURI();
-            vertex = Resources.getResource(new File(uri), Shader.class);
-
-            uri = RenderEngine.class.getResource("/com/mtronicsdev/polygame/res/default_frag.glsl").toURI();
-            fragment = Resources.getResource(new File(uri), Shader.class);
+            shaderProgram = new DefaultShaderProgram();
+            shaderProgram.use();
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            vertex = fragment = null;
         }
 
-        System.out.println(vertex + " " + fragment);
-        defaultProgram = new ShaderProgram(vertex, fragment);
-        defaultProgram.use();
-
-        vao = new VertexArrayObject(new int[]{0, 1, 3, 3, 1, 2},
+        vao = new RawModel(new int[]{0, 1, 3, 3, 1, 2},
                 new float[]{-.5f, .5f, 0, -.5f, -.5f, 0, .5f, -.5f, 0, .5f, .5f, 0});
     }
 
     public static void render() {
         vao.bind();
         glEnableVertexAttribArray(0);
+
+        Matrix4f transform = VectorMath.createTransformationMatrix(new Vector3f(0, 0, 0),
+                new Vector3f(0, 0, 45),
+                new Vector3f(1, 1, 1));
+
+        shaderProgram.loadTransformationMatrix(transform);
+
         glDrawElements(GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
         glDisableVertexAttribArray(0);
         vao.unbind();
