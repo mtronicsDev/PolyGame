@@ -76,4 +76,8 @@ public class Vector3f {
     public String toString() {
         return "Vector3f[" + x + ", " + y + ", " + z +"]";
     }
+
+    public void invert() {
+        multiply(-1);
+    }
 }
