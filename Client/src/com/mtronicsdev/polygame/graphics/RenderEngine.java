@@ -3,6 +3,7 @@ package com.mtronicsdev.polygame.graphics;
 import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.Camera;
 import com.mtronicsdev.polygame.entities.modules.Model;
+import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.io.Textures;
 import com.mtronicsdev.polygame.math.Matrix4f;
 import com.mtronicsdev.polygame.math.Vector3f;
@@ -23,7 +24,7 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
-public class RenderEngine {
+public final class RenderEngine {
 
     private static DefaultShaderProgram shaderProgram;
 
@@ -43,18 +44,19 @@ public class RenderEngine {
             e.printStackTrace();
         }
 
-        RawModel vao = new RawModel(new int[]{0, 1, 3, 3, 1, 2},
-                new float[]{-.5f, .5f, 0, -.5f, -.5f, 0, .5f, -.5f, 0, .5f, .5f, 0},
-                new float[]{0, 0, 0, 1, 1, 1, 1, 0});
+        RawModel vao = Resources.getResource("first.obj", RawModel.class);
 
         projectionMatrix = VectorMath.createProjectionMatrix(fov, zNear, zFar, 400, 300);
         shaderProgram.loadProjectionMatrix(projectionMatrix);
 
-        Texture texture = Textures.loadTexture("rgba.png");
+        Texture texture = Textures.loadTexture("layout.png");
 
         m = new Entity3D(new Vector3f(0, 0, -5), new Model(texture, vao));
         c = new Entity3D(new Camera());
 
+    }
+
+    private RenderEngine() {
     }
 
     public static void render() {

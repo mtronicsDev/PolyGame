@@ -11,7 +11,7 @@ import java.io.IOException;
  * @author mtronics_dev
  * @version 1.0
  */
-public class Textures {
+public final class Textures {
 
     static {
         Resources.registerResourceHandler(file -> {
@@ -22,6 +22,9 @@ public class Textures {
                 return null;
             }
         }, org.newdawn.slick.opengl.Texture.class);
+    }
+
+    private Textures() {
     }
 
     public static Texture loadTexture(String filename) {
