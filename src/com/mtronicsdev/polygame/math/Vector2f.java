@@ -55,8 +55,7 @@ public class Vector2f {
         else if (object instanceof Vector2f) {
             Vector2f vector = (Vector2f) object;
             return x == vector.x && y == vector.y;
-        }
-        else return false;
+        } else return false;
     }
 
     public String toString() {

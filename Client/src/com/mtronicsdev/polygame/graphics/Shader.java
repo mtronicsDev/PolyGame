@@ -21,7 +21,7 @@ import static org.lwjgl.opengl.GL43.GL_COMPUTE_SHADER;
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
-public class Shader implements GLObject {
+public class Shader extends GLObject {
 
     static {
         Resources.registerResourceHandler(f -> {
@@ -94,12 +94,6 @@ public class Shader implements GLObject {
         if (type == ShaderType.TESSELLATION_EVALUATION_SHADER.type) return ShaderType.TESSELLATION_EVALUATION_SHADER;
         if (type == ShaderType.COMPUTE_SHADER.type) return ShaderType.COMPUTE_SHADER;
         else return null;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        cleanUp();
     }
 
     @Override

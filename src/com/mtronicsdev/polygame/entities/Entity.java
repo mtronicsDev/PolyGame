@@ -30,7 +30,7 @@ public class Entity extends BareEntity {
         modules.add(module);
     }
 
-    public final  <M extends Module> List<M> getModules(Class<M> type) {
+    public final <M extends Module> List<M> getModules(Class<M> type) {
         //noinspection unchecked
         return Arrays.asList((M[]) modules.stream().filter(type::isInstance).toArray(Module[]::new));
     }
@@ -47,7 +47,7 @@ public class Entity extends BareEntity {
 
     @Override
     public final void addChild(Entity child) {
-        if(child.parent.equals(this)) children.add(child);
+        if (child.parent.equals(this)) children.add(child);
         else throw new IllegalArgumentException();
     }
 
@@ -62,15 +62,14 @@ public class Entity extends BareEntity {
     }
 
     public final void setParent(BareEntity parent) {
-        if(this.parent.equals(parent)) return; //No need to change anything
+        if (this.parent.equals(parent)) return; //No need to change anything
 
         this.parent.removeChild(this); //Remove this child from the old parent's children
 
         if (parent == null) {
             this.parent = root;
             root.addChild(this);
-        }
-        else {
+        } else {
             this.parent = parent;
             parent.addChild(this);
         }

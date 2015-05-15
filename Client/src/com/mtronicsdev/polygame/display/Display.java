@@ -29,7 +29,7 @@ public final class Display {
         return windows;
     }
 
-    static void refresh() {
+    public static void refresh() {
         for (Iterator<Window> iterator = windows.iterator(); iterator.hasNext(); ) {
             Window window = iterator.next();
             if (window.shouldClose()) {

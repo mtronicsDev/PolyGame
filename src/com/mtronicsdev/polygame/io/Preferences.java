@@ -71,10 +71,10 @@ public final class Preferences {
      * Registers a new {@link com.mtronicsdev.polygame.io.Preferences.PreferenceHandler preference handler} for the type
      * {@link P}.
      *
-     * @param handler The handler that gets called when
-     * {@link Preferences#getPreference(String, Class)} getPreference(property, P.class)} is invoked
+     * @param handler      The handler that gets called when
+     *                     {@link Preferences#getPreference(String, Class)} getPreference(property, P.class)} is invoked
      * @param propertyType The type of the {@link Object} that should be handled by the handler
-     * @param <P> The class of the {@link Object} that should be handled by the handler
+     * @param <P>          The class of the {@link Object} that should be handled by the handler
      */
     public static <P> void registerPreferenceHandler(PreferenceHandler<P> handler, Class<P> propertyType) {
         preferenceHandlers.put(propertyType.getTypeName(), handler);
@@ -82,7 +82,7 @@ public final class Preferences {
 
     /**
      * A functional interface which receives a {@link String} and returns an instance of {@link P}.
-     *
+     * <p>
      * <p>This instance is somehow (depends on implementation of
      * {@link com.mtronicsdev.polygame.io.Preferences.PreferenceHandler#fromValue(String)})
      * derived from the given {@link String}.</p>

@@ -37,7 +37,7 @@ public final class Entity3D extends Entity {
         return position;
     }
 
-    public  void setPosition(Vector3f position) {
+    public void setPosition(Vector3f position) {
         this.position = position;
     }
 

@@ -50,7 +50,7 @@ public class Vector3f {
     }
 
     public float dot(Vector3f dot) {
-        return x*dot.x + y*dot.y + z*dot.z;
+        return x * dot.x + y * dot.y + z * dot.z;
     }
 
     public float length() {
@@ -68,13 +68,12 @@ public class Vector3f {
         else if (obj instanceof Vector3f) {
             Vector3f vec = (Vector3f) obj;
             return x == vec.x && y == vec.y && z == vec.z;
-        }
-        else return false;
+        } else return false;
     }
 
     @Override
     public String toString() {
-        return "Vector3f[" + x + ", " + y + ", " + z +"]";
+        return "Vector3f[" + x + ", " + y + ", " + z + "]";
     }
 
     public void invert() {

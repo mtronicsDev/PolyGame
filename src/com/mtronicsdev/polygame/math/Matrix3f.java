@@ -3,11 +3,11 @@ package com.mtronicsdev.polygame.math;
 public class Matrix3f {
 
     public float m00, m01, m02,
-                 m10, m11, m12,
-                 m20, m21, m22;
+            m10, m11, m12,
+            m20, m21, m22;
 
     public Matrix3f() {
-        
+
     }
 
     public Matrix3f(float... matrix) {
@@ -37,14 +37,14 @@ public class Matrix3f {
 
     public Vector3f multiply(Vector3f vector) {
         return new Vector3f(vector.x * m00 + vector.y * m01 + vector.z * m02,
-                            vector.x * m10 + vector.y * m11 + vector.z * m12,
-                            vector.x * m20 + vector.y * m21 + vector.z * m22);
+                vector.x * m10 + vector.y * m11 + vector.z * m12,
+                vector.x * m20 + vector.y * m21 + vector.z * m22);
     }
 
     @Override
     public String toString() {
         return "Matrix3f[" + m00 + ", " + m01 + ", " + m02 + ", "
-                           + m10 + ", " + m11 + ", " + m12 + ", "
-                           + m20 + ", " + m21 + ", " + m22 + "]";
+                + m10 + ", " + m11 + ", " + m12 + ", "
+                + m20 + ", " + m21 + ", " + m22 + "]";
     }
 }

@@ -4,6 +4,13 @@ package com.mtronicsdev.polygame.graphics;
  * @author mtronics_dev
  * @version 1.0
  */
-public interface GLObject {
-    void cleanUp();
+public abstract class GLObject {
+
+    abstract void cleanUp();
+
+    @Override
+    protected final void finalize() throws Throwable {
+        super.finalize();
+        cleanUp();
+    }
 }

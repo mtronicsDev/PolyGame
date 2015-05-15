@@ -17,16 +17,28 @@ public class DefaultShaderProgram extends ShaderProgram {
     private int locationOfViewMatrix;
 
     public DefaultShaderProgram() throws URISyntaxException {
-        super(Resources.getResource(new File(
-                                RenderEngine.class.getResource("/com/mtronicsdev/polygame/res/default_vert.glsl").toURI()),
+        super(Resources.getResource(
+                        new File(
+                                RenderEngine.class
+                                        .getResource("/com/mtronicsdev/polygame/res/default_vert.glsl").toURI()),
                         Shader.class),
                 Resources.getResource(
-                        new File(RenderEngine.class.getResource("/com/mtronicsdev/polygame/res/default_frag.glsl").toURI()),
+                        new File(RenderEngine.class
+                                .getResource("/com/mtronicsdev/polygame/res/default_frag.glsl").toURI()),
                         Shader.class));
 
         locationOfTransformationMatrix = getUniformLocation("transformationMatrix");
         locationOfProjectionMatrix = getUniformLocation("projectionMatrix");
         locationOfViewMatrix = getUniformLocation("viewMatrix");
+
+    }
+
+    @Override
+    protected void bindAttributes() {
+        super.bindAttributes();
+
+        bindAttribute(0, "position");
+        bindAttribute(1, "textureCoordinates");
     }
 
     public void loadTransformationMatrix(Matrix4f matrix4f) {

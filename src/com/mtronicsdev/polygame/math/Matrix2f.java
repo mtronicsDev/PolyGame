@@ -8,7 +8,7 @@ package com.mtronicsdev.polygame.math;
 public class Matrix2f {
 
     public float m00, m01,
-                 m10, m11;
+            m10, m11;
 
     public Matrix2f() {
     }
@@ -30,12 +30,12 @@ public class Matrix2f {
 
     public Vector2f multiply(Vector2f vector) {
         return new Vector2f(vector.x * m00 + vector.y * m01,
-                            vector.x * m10 + vector.y * m11);
+                vector.x * m10 + vector.y * m11);
     }
 
     @Override
     public String toString() {
         return "Matrix2f[" + m00 + ", " + m01 + ", "
-                           + m10 + ", " + m11 + "]";
+                + m10 + ", " + m11 + "]";
     }
 }

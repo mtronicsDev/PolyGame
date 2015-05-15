@@ -23,5 +23,6 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="PolyGame" />
+    <orderEntry type="library" name="Slick2D" level="project" />
   </component>
 </module>
