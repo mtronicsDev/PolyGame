@@ -1,6 +1,8 @@
 package com.mtronicsdev.polygame.entities;
 
+import com.mtronicsdev.polygame.math.Matrix4f;
 import com.mtronicsdev.polygame.math.Vector3f;
+import com.mtronicsdev.polygame.util.VectorMath;
 
 /**
  * Class description.
@@ -47,5 +49,17 @@ public final class Entity3D extends Entity {
 
     public void setRotation(Vector3f rotation) {
         this.rotation = rotation;
+    }
+
+    public Vector3f getScale() {
+        return scale;
+    }
+
+    public void setScale(Vector3f scale) {
+        this.scale = scale;
+    }
+
+    public Matrix4f getTransformationMatrix() {
+        return VectorMath.createTransformationMatrix(position, rotation, scale);
     }
 }
