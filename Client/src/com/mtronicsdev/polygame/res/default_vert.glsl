@@ -6,14 +6,14 @@ in vec3 normal;
 
 out vec2 pass_textureCoordinates;
 out vec3 absoluteNormal;
-out vec3 vectorToLightSource;
+out vec3[4] vectorToLightSource;
 out vec3 vectorToCamera;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 
-uniform vec3 lightPosition;
+uniform vec3[4] lightPosition;
 
 void main(void) {
 
@@ -23,6 +23,8 @@ void main(void) {
     pass_textureCoordinates = textureCoordinates;
 
     absoluteNormal = (transformationMatrix * vec4(normal, 0)).xyz;
-    vectorToLightSource = lightPosition - absolutePosition.xyz;
+    for (int i = 0; i < 4; i++) {
+        vectorToLightSource[i] = lightPosition[i] - absolutePosition.xyz;
+    }
     vectorToCamera = (inverse(viewMatrix) * vec4(0, 0, 0, 1)).xyz - absolutePosition.xyz;
 }

@@ -1,11 +1,13 @@
 package com.mtronicsdev.polygame.graphics;
 
+import com.mtronicsdev.polygame.entities.Entity3D;
+import com.mtronicsdev.polygame.entities.modules.LightSource;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector3f;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * @author mtronics_dev
@@ -17,8 +19,8 @@ public class DefaultShaderProgram extends ShaderProgram {
     private int locationOfProjectionMatrix;
     private int locationOfViewMatrix;
 
-    private int locationOfLightPosition;
-    private int locationOfLightColor;
+    private int[] locationOfLightPosition;
+    private int[] locationOfLightColor;
     private int locationOfAmbientLightStrength;
 
     private int locationOfAmbientReflectivity;
@@ -42,8 +44,14 @@ public class DefaultShaderProgram extends ShaderProgram {
         locationOfProjectionMatrix = getUniformLocation("projectionMatrix");
         locationOfViewMatrix = getUniformLocation("viewMatrix");
 
-        locationOfLightPosition = getUniformLocation("lightPosition");
-        locationOfLightColor = getUniformLocation("lightColor");
+        locationOfLightPosition = new int[4];
+        locationOfLightColor = new int[4];
+
+        for (int i = 0; i < 4; i++) {
+            locationOfLightPosition[i] = getUniformLocation("lightPosition[" + i + "]");
+            locationOfLightColor[i] = getUniformLocation("lightColor[" + i + "]");
+        }
+
         locationOfAmbientLightStrength = getUniformLocation("ambientLightStrength");
 
         locationOfAmbientReflectivity = getUniformLocation("ambientReflectivity");
@@ -79,9 +87,11 @@ public class DefaultShaderProgram extends ShaderProgram {
         loadFloat(locationOfAmbientLightStrength, strength);
     }
 
-    public void loadLight(Vector3f position, Vector3f color) {
-        loadVector3f(locationOfLightPosition, position);
-        loadVector3f(locationOfLightColor, color);
+    public void loadLights(List<LightSource> lightSources) {
+        for (int i = 0; i < Math.min(4, lightSources.size()); i++) {
+            loadVector3f(locationOfLightPosition[i], ((Entity3D) lightSources.get(i).getParent()).getPosition());
+            loadVector3f(locationOfLightColor[i], lightSources.get(i).getColor());
+        }
     }
 
     public void loadMaterial(Material material) {

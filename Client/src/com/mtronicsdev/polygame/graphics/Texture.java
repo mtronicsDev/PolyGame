@@ -1,6 +1,7 @@
 package com.mtronicsdev.polygame.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 /**
  * @author mtronics_dev
@@ -12,6 +13,9 @@ public class Texture extends GLObject {
 
     public Texture(org.newdawn.slick.opengl.Texture ref) {
         id = ref.getTextureID();
+
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     }
 
     public void bind() {

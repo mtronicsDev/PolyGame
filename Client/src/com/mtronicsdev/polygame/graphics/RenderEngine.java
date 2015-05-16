@@ -38,7 +38,7 @@ public final class RenderEngine {
     private static float zNear = .1f;
     private static float zFar = 1000;
 
-    private static Entity3D m, c;
+    private static Entity3D c;
 
     static {
         modelPool = new HashMap<>();
@@ -63,12 +63,14 @@ public final class RenderEngine {
         Random random = new Random();
 
         for (int i = 0; i < 200; i++) {
-            new Entity3D(new Vector3f(random.nextInt(20) - 10, random.nextInt(10) - 5, random.nextInt(50) - 50),
+            Entity3D e = new Entity3D(new Vector3f(random.nextInt(20) - 10, random.nextInt(10) - 5, random.nextInt(50) - 50),
+                    new Vector3f(random.nextInt(360), random.nextInt(360), random.nextInt(360)),
                     new Model(sharedModel));
-        }
 
-        m = new Entity3D(new Vector3f(0, -1, -10), new Model(sharedModel));
-        c = new Entity3D(new Camera(), new LightSource(new Vector3f(1, 1, 1)));
+            if (i % 50 == 0) e.addModule(new LightSource(new Vector3f(Math.abs(random.nextFloat()),
+                    Math.abs(random.nextFloat()), Math.abs(random.nextFloat()))));
+        }
+        c = new Entity3D(new Camera());
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
@@ -86,9 +88,6 @@ public final class RenderEngine {
     }
 
     public static void render() {
-        Vector3f cR = m.getRotation();
-        cR.y += .5f;
-        m.setRotation(cR);
 
         if (Input.keyPressed(GLFW.GLFW_KEY_W)) {
             Vector3f pos = c.getPosition();
@@ -157,9 +156,7 @@ public final class RenderEngine {
 
         shaderProgram.loadViewMatrix(cameras.get(0).getViewMatrix());
 
-        lightSources.forEach(l ->
-                shaderProgram.loadLight(((Entity3D) l.getParent()).getPosition(), l.getColor()));
-
+        shaderProgram.loadLights(lightSources);
 
         modelPool.keySet().forEach(sharedModel -> {
             sharedModel.getRawModel().bind();
