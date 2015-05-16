@@ -12,8 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.net.URISyntaxException;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -51,8 +50,10 @@ public final class RenderEngine {
 
         Texture texture = Textures.loadTexture("layout.png");
 
-        m = new Entity3D(new Vector3f(0, 0, -5), new Model(texture, vao));
+        m = new Entity3D(new Vector3f(0, 0, -10), new Model(texture, vao));
         c = new Entity3D(new Camera());
+
+        glEnable(GL_DEPTH_TEST);
 
     }
 
@@ -60,6 +61,10 @@ public final class RenderEngine {
     }
 
     public static void render() {
+        Vector3f cR = m.getRotation();
+        cR.y += .5f;
+        m.setRotation(cR);
+
         m.getModule(Model.class).getRawModel().bind();
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
@@ -70,7 +75,7 @@ public final class RenderEngine {
         glActiveTexture(GL_TEXTURE0);
         m.getModule(Model.class).getTexture().bind();
 
-        glDrawElements(GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, m.getModule(Model.class).getRawModel().getSize(), GL11.GL_UNSIGNED_INT, 0);
 
         m.getModule(Model.class).getTexture().unbind();
 

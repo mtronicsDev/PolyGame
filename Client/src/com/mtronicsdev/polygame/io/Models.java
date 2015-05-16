@@ -32,14 +32,12 @@ public final class Models {
             List<Vector3f> vertices = new LinkedList<>();
             List<Vector2f> uvs = new LinkedList<>();
             List<Vector3f> normals = new LinkedList<>();
-
-            float[] vertexArray;
-            float[] normalArray;
-            float[] uvArray = new float[0];
-
             List<Integer> indices = new LinkedList<>();
 
-            int[] indexArray;
+            float[] vertexArray = null;
+            float[] normalArray = null;
+            float[] uvArray = null;
+            int[] indexArray = null;
 
             Material material;
 
@@ -54,14 +52,14 @@ public final class Models {
                             Float.parseFloat(line.split(" ")[1]),
                             Float.parseFloat(line.split(" ")[2]),
                             Float.parseFloat(line.split(" ")[3])));
-                    else if (line.startsWith("vn")) normals.add(new Vector3f(
+                    else if (line.startsWith("vn ")) normals.add(new Vector3f(
                             Float.parseFloat(line.split(" ")[1]),
                             Float.parseFloat(line.split(" ")[2]),
                             Float.parseFloat(line.split(" ")[3])));
-                    else if (line.startsWith("vt")) uvs.add(new Vector2f(
+                    else if (line.startsWith("vt ")) uvs.add(new Vector2f(
                             Float.parseFloat(line.split(" ")[1]),
                             Float.parseFloat(line.split(" ")[2])));
-                    else if (line.startsWith("f")) break;
+                    else if (line.startsWith("f ")) break;
                 }
 
                 int size = vertices.size();
@@ -92,22 +90,21 @@ public final class Models {
             }
 
             vertexArray = new float[vertices.size() * 3];
-
-            int vertexPointer = 0;
-
-            for (Vector3f vertex : vertices) {
-                vertexArray[vertexPointer++] = vertex.x;
-                vertexArray[vertexPointer++] = vertex.y;
-                vertexArray[vertexPointer++] = vertex.z;
-            }
-
             indexArray = new int[indices.size()];
+
+            int pointer = 0;
+            for (Vector3f vertex : vertices) {
+                vertexArray[pointer++] = vertex.x;
+                vertexArray[pointer++] = vertex.y;
+                vertexArray[pointer++] = vertex.z;
+            }
 
             for (int i = 0; i < indices.size(); i++) {
                 indexArray[i] = indices.get(i);
             }
 
             return new RawModel(indexArray, vertexArray, uvArray);
+
         }, RawModel.class);
     }
 
@@ -122,7 +119,7 @@ public final class Models {
 
         Vector2f uv = uvs.get(Integer.parseInt(vertexData[1]) - 1);
         uvArray[vertexPointer * 2] = uv.x;
-        uvArray[vertexPointer * 2 + 1] = uv.y;
+        uvArray[vertexPointer * 2 + 1] = 1 - uv.y; //Blender texture weirdness
 
         Vector3f normal = normals.get(Integer.parseInt(vertexData[2]) - 1);
         normalArray[vertexPointer * 3] = normal.x;

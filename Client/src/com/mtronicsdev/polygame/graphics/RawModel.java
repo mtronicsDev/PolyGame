@@ -18,6 +18,7 @@ public class RawModel extends GLObject {
 
     private int id;
     private int indexBufferId, vertexBufferId, uvBufferId;
+    private int size;
 
     public RawModel(int[] indices, float[] vertices, float[] uvs) {
         id = glGenVertexArrays();
@@ -33,6 +34,8 @@ public class RawModel extends GLObject {
         uvBufferId = createAttributeList(1, 2, uvs);
 
         unbind();
+
+        size = indices.length;
     }
 
     public void bind() {
@@ -85,5 +88,9 @@ public class RawModel extends GLObject {
         glDeleteBuffers(uvBufferId);
 
         glDeleteVertexArrays(id);
+    }
+
+    public int getSize() {
+        return size;
     }
 }
