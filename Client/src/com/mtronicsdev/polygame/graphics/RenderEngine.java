@@ -2,6 +2,7 @@ package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.Camera;
+import com.mtronicsdev.polygame.entities.modules.LightSource;
 import com.mtronicsdev.polygame.entities.modules.Model;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.io.Textures;
@@ -10,6 +11,7 @@ import com.mtronicsdev.polygame.math.Vector3f;
 import com.mtronicsdev.polygame.util.VectorMath;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.net.URISyntaxException;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -50,8 +52,8 @@ public final class RenderEngine {
 
         Texture texture = Textures.loadTexture("layout.png");
 
-        m = new Entity3D(new Vector3f(0, 0, -10), new Model(texture, vao));
-        c = new Entity3D(new Camera());
+        m = new Entity3D(new Vector3f(0, -1, -10), new Model(texture, vao));
+        c = new Entity3D(new Camera(), new LightSource(Color.WHITE));
 
         glEnable(GL_DEPTH_TEST);
 
@@ -68,9 +70,12 @@ public final class RenderEngine {
         m.getModule(Model.class).getRawModel().bind();
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
 
         shaderProgram.loadTransformationMatrix(m.getTransformationMatrix());
         shaderProgram.loadViewMatrix(c.getModule(Camera.class).getViewMatrix());
+
+        shaderProgram.loadLight(c.getPosition(), c.getModule(LightSource.class).getColor());
 
         glActiveTexture(GL_TEXTURE0);
         m.getModule(Model.class).getTexture().bind();
@@ -81,6 +86,8 @@ public final class RenderEngine {
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
+
         m.getModule(Model.class).getRawModel().unbind();
     }
 }

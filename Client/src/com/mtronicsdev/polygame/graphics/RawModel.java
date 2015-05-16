@@ -20,7 +20,7 @@ public class RawModel extends GLObject {
     private int indexBufferId, vertexBufferId, uvBufferId;
     private int size;
 
-    public RawModel(int[] indices, float[] vertices, float[] uvs) {
+    public RawModel(int[] indices, float[] vertices, float[] uvs, float[] normals) {
         id = glGenVertexArrays();
 
         bind();
@@ -32,6 +32,7 @@ public class RawModel extends GLObject {
 
         vertexBufferId = createAttributeList(0, 3, vertices);
         uvBufferId = createAttributeList(1, 2, uvs);
+        uvBufferId = createAttributeList(2, 3, normals);
 
         unbind();
 

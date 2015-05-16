@@ -103,7 +103,7 @@ public final class Models {
                 indexArray[i] = indices.get(i);
             }
 
-            return new RawModel(indexArray, vertexArray, uvArray);
+            return new RawModel(indexArray, vertexArray, uvArray, normalArray);
 
         }, RawModel.class);
     }
