@@ -4,14 +4,16 @@ package com.mtronicsdev.polygame.graphics;
  * @author mtronics_dev
  * @version 1.0
  */
-public class Model {
+public class SharedModel {
 
     private RawModel rawModel;
     private Material material;
 
-    public Model(RawModel rawModel, Material material) {
+    public SharedModel(RawModel rawModel, Material material) {
         this.rawModel = rawModel;
         this.material = material;
+
+        RenderEngine.registerSharedModel(this);
     }
 
     public RawModel getRawModel() {
@@ -20,5 +22,11 @@ public class Model {
 
     public Material getMaterial() {
         return material;
+    }
+
+    @Override
+    protected final void finalize() throws Throwable {
+        super.finalize();
+        RenderEngine.unRegisterSharedModel(this);
     }
 }

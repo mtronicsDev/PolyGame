@@ -1,8 +1,8 @@
 package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.entities.Module;
-
-import java.awt.*;
+import com.mtronicsdev.polygame.graphics.RenderEngine;
+import com.mtronicsdev.polygame.math.Vector3f;
 
 /**
  * @author mtronics_dev
@@ -10,17 +10,25 @@ import java.awt.*;
  */
 public class LightSource extends Module {
 
-    private Color color;
+    private Vector3f color;
 
-    public LightSource(Color color) {
+    public LightSource(Vector3f color) {
         this.color = color;
+
+        RenderEngine.registerLightSource(this);
     }
 
-    public Color getColor() {
+    public Vector3f getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(Vector3f color) {
         this.color = color;
+    }
+
+    @Override
+    protected final void finalize() throws Throwable {
+        super.finalize();
+        RenderEngine.unRegisterLightSource(this);
     }
 }

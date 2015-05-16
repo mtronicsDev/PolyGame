@@ -1,8 +1,8 @@
 package com.mtronicsdev.polygame.io;
 
 import com.mtronicsdev.polygame.graphics.Material;
-import com.mtronicsdev.polygame.graphics.Model;
 import com.mtronicsdev.polygame.graphics.RawModel;
+import com.mtronicsdev.polygame.graphics.SharedModel;
 import com.mtronicsdev.polygame.graphics.Texture;
 import com.mtronicsdev.polygame.math.Vector2f;
 import com.mtronicsdev.polygame.math.Vector3f;
@@ -104,9 +104,9 @@ public final class Models {
             }
 
             RawModel rawModel = new RawModel(indexArray, vertexArray, uvArray, normalArray);
-            return new Model(rawModel, material);
+            return new SharedModel(rawModel, material);
 
-        }, Model.class);
+        }, SharedModel.class);
     }
 
     private Models() {

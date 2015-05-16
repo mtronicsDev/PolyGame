@@ -1,8 +1,8 @@
 package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.entities.Module;
-import com.mtronicsdev.polygame.graphics.Material;
-import com.mtronicsdev.polygame.graphics.RawModel;
+import com.mtronicsdev.polygame.graphics.RenderEngine;
+import com.mtronicsdev.polygame.graphics.SharedModel;
 
 /**
  * @author mtronics_dev
@@ -10,18 +10,21 @@ import com.mtronicsdev.polygame.graphics.RawModel;
  */
 public class Model extends Module {
 
-    private com.mtronicsdev.polygame.graphics.Model model;
+    private SharedModel sharedModel;
 
-    public Model(com.mtronicsdev.polygame.graphics.Model model) {
-        this.model = model;
+    public Model(SharedModel sharedModel) {
+        this.sharedModel = sharedModel;
+
+        RenderEngine.registerModel(this);
     }
 
-    public Material getMaterial() {
-        return model.getMaterial();
+    public SharedModel getSharedModel() {
+        return sharedModel;
     }
 
-    public RawModel getRawModel() {
-        return model.getRawModel();
+    @Override
+    protected final void finalize() throws Throwable {
+        super.finalize();
+        RenderEngine.unRegisterModel(this);
     }
-
 }

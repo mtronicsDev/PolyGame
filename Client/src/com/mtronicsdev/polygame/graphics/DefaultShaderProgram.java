@@ -4,7 +4,6 @@ import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.math.Matrix4f;
 import com.mtronicsdev.polygame.math.Vector3f;
 
-import java.awt.*;
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -80,11 +79,9 @@ public class DefaultShaderProgram extends ShaderProgram {
         loadFloat(locationOfAmbientLightStrength, strength);
     }
 
-    public void loadLight(Vector3f position, Color color) {
+    public void loadLight(Vector3f position, Vector3f color) {
         loadVector3f(locationOfLightPosition, position);
-        loadVector3f(locationOfLightColor, new Vector3f((float) color.getRed() / 255,
-                (float) color.getGreen() / 255,
-                (float) color.getBlue() / 255));
+        loadVector3f(locationOfLightColor, color);
     }
 
     public void loadMaterial(Material material) {

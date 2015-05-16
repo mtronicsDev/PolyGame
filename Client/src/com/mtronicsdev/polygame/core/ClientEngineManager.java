@@ -23,7 +23,7 @@ public class ClientEngineManager {
         if (glfwInit() != 1)
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        new Window("Polygame", 1080, 720);
+        new Window("Polygame", 1280, 720);
         //Monitors monitors = new Monitors();
 
         //GLFWWindowPosCallback callback = GLFW.GLFWWindowPosCallback((l, i, i1) -> monitors.contentPane.repaint());

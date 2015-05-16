@@ -22,6 +22,9 @@ public class Entity extends BareEntity {
     public Entity(Module... modules) {
         super();
         this.modules = new HashSet<>(Arrays.asList(modules));
+
+        for (Module module : modules) module.setParent(this);
+
         parent = root;
     }
 
