@@ -20,6 +20,13 @@ public class DefaultShaderProgram extends ShaderProgram {
 
     private int locationOfLightPosition;
     private int locationOfLightColor;
+    private int locationOfAmbientLightStrength;
+
+    private int locationOfAmbientReflectivity;
+    private int locationOfDiffuseReflectivity;
+    private int locationOfSpecularReflectivity;
+
+    private int locationOfSpecularExponent;
 
     public DefaultShaderProgram() throws URISyntaxException {
         super(Resources.getResource(
@@ -38,6 +45,13 @@ public class DefaultShaderProgram extends ShaderProgram {
 
         locationOfLightPosition = getUniformLocation("lightPosition");
         locationOfLightColor = getUniformLocation("lightColor");
+        locationOfAmbientLightStrength = getUniformLocation("ambientLightStrength");
+
+        locationOfAmbientReflectivity = getUniformLocation("ambientReflectivity");
+        locationOfDiffuseReflectivity = getUniformLocation("diffuseReflectivity");
+        locationOfSpecularReflectivity = getUniformLocation("specularReflectivity");
+
+        locationOfSpecularExponent = getUniformLocation("specularExponent");
 
     }
 
@@ -62,11 +76,23 @@ public class DefaultShaderProgram extends ShaderProgram {
         loadMatrix4f(locationOfViewMatrix, matrix4f);
     }
 
+    public void loadAmbientLight(float strength) {
+        loadFloat(locationOfAmbientLightStrength, strength);
+    }
+
     public void loadLight(Vector3f position, Color color) {
         loadVector3f(locationOfLightPosition, position);
         loadVector3f(locationOfLightColor, new Vector3f((float) color.getRed() / 255,
                 (float) color.getGreen() / 255,
                 (float) color.getBlue() / 255));
+    }
+
+    public void loadMaterial(Material material) {
+        loadVector3f(locationOfAmbientReflectivity, material.getAmbientReflectivity());
+        loadVector3f(locationOfDiffuseReflectivity, material.getDiffuseReflectivity());
+        loadVector3f(locationOfSpecularReflectivity, material.getSpecularReflectivity());
+
+        loadFloat(locationOfSpecularExponent, material.getSpecularExponent());
     }
 
 }

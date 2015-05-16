@@ -1,6 +1,6 @@
 package com.mtronicsdev.polygame.graphics;
 
-import java.awt.*;
+import com.mtronicsdev.polygame.math.Vector3f;
 
 /**
  * @author mtronics_dev
@@ -9,17 +9,17 @@ import java.awt.*;
 public class Material {
 
     private Texture texture;
-    private Color color;
+    private Vector3f color;
 
     private float specularExponent;
 
-    private Color ambientReflectivity;
-    private Color diffuseReflectivity;
-    private Color specularReflectivity;
-    private Color emit;
+    private Vector3f ambientReflectivity;
+    private Vector3f diffuseReflectivity;
+    private Vector3f specularReflectivity;
+    private Vector3f emit;
 
-    public Material(Texture texture, Color color, Color ambientReflectivity,
-                    Color diffuseReflectivity, Color specularReflectivity, Color emit, float specularExponent) {
+    public Material(Texture texture, Vector3f color, Vector3f ambientReflectivity,
+                    Vector3f diffuseReflectivity, Vector3f specularReflectivity, Vector3f emit, float specularExponent) {
         this.texture = texture;
         this.color = color;
         this.ambientReflectivity = ambientReflectivity;
@@ -29,35 +29,35 @@ public class Material {
         this.specularExponent = specularExponent;
     }
 
-    public Material(Texture texture, Color color) {
-        this(texture, color, Color.WHITE, Color.WHITE, Color.WHITE, Color.BLACK, 1);
+    public Material(Texture texture, Vector3f color) {
+        this(texture, color, new Vector3f(1, 1, 1), new Vector3f(1, 1, 1), new Vector3f(1, 1, 1), new Vector3f(), 1);
     }
 
     public Material(Texture texture) {
-        this(texture, Color.WHITE);
+        this(texture, new Vector3f(1, 1, 1));
     }
 
     public Texture getTexture() {
         return texture;
     }
 
-    public Color getColor() {
+    public Vector3f getColor() {
         return color;
     }
 
-    public Color getAmbientReflectivity() {
+    public Vector3f getAmbientReflectivity() {
         return ambientReflectivity;
     }
 
-    public Color getDiffuseReflectivity() {
+    public Vector3f getDiffuseReflectivity() {
         return diffuseReflectivity;
     }
 
-    public Color getSpecularReflectivity() {
+    public Vector3f getSpecularReflectivity() {
         return specularReflectivity;
     }
 
-    public Color getEmit() {
+    public Vector3f getEmit() {
         return emit;
     }
 

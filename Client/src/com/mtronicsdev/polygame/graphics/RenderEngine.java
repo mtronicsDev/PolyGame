@@ -5,7 +5,6 @@ import com.mtronicsdev.polygame.entities.modules.Camera;
 import com.mtronicsdev.polygame.entities.modules.LightSource;
 import com.mtronicsdev.polygame.entities.modules.Model;
 import com.mtronicsdev.polygame.io.Resources;
-import com.mtronicsdev.polygame.io.Textures;
 import com.mtronicsdev.polygame.math.Matrix4f;
 import com.mtronicsdev.polygame.math.Vector3f;
 import com.mtronicsdev.polygame.util.VectorMath;
@@ -45,17 +44,19 @@ public final class RenderEngine {
             e.printStackTrace();
         }
 
-        RawModel vao = Resources.getResource("first.obj", RawModel.class);
+        com.mtronicsdev.polygame.graphics.Model model =
+                Resources.getResource("first.obj", com.mtronicsdev.polygame.graphics.Model.class);
 
         projectionMatrix = VectorMath.createProjectionMatrix(fov, zNear, zFar, 400, 300);
         shaderProgram.loadProjectionMatrix(projectionMatrix);
+        shaderProgram.loadAmbientLight(.2f);
 
-        Texture texture = Textures.loadTexture("layout.png");
-
-        m = new Entity3D(new Vector3f(0, -1, -10), new Model(texture, vao));
+        m = new Entity3D(new Vector3f(0, -1, -10), new Model(model));
         c = new Entity3D(new Camera(), new LightSource(Color.WHITE));
 
         glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
 
     }
 
@@ -67,7 +68,9 @@ public final class RenderEngine {
         cR.y += .5f;
         m.setRotation(cR);
 
-        m.getModule(Model.class).getRawModel().bind();
+        Model model = m.getModule(Model.class);
+
+        model.getRawModel().bind();
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
         glEnableVertexAttribArray(2);
@@ -77,17 +80,19 @@ public final class RenderEngine {
 
         shaderProgram.loadLight(c.getPosition(), c.getModule(LightSource.class).getColor());
 
+        shaderProgram.loadMaterial(model.getMaterial());
+
         glActiveTexture(GL_TEXTURE0);
-        m.getModule(Model.class).getTexture().bind();
+        model.getMaterial().getTexture().bind();
 
         glDrawElements(GL_TRIANGLES, m.getModule(Model.class).getRawModel().getSize(), GL11.GL_UNSIGNED_INT, 0);
 
-        m.getModule(Model.class).getTexture().unbind();
+        model.getMaterial().getTexture().unbind();
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(2);
 
-        m.getModule(Model.class).getRawModel().unbind();
+        model.getRawModel().unbind();
     }
 }

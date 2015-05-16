@@ -1,8 +1,8 @@
 package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.entities.Module;
+import com.mtronicsdev.polygame.graphics.Material;
 import com.mtronicsdev.polygame.graphics.RawModel;
-import com.mtronicsdev.polygame.graphics.Texture;
 
 /**
  * @author mtronics_dev
@@ -10,20 +10,18 @@ import com.mtronicsdev.polygame.graphics.Texture;
  */
 public class Model extends Module {
 
-    private Texture texture;
-    private RawModel rawModel;
+    private com.mtronicsdev.polygame.graphics.Model model;
 
-    public Model(Texture texture, RawModel rawModel) {
-        this.texture = texture;
-        this.rawModel = rawModel;
+    public Model(com.mtronicsdev.polygame.graphics.Model model) {
+        this.model = model;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Material getMaterial() {
+        return model.getMaterial();
     }
 
     public RawModel getRawModel() {
-        return rawModel;
+        return model.getRawModel();
     }
 
 }

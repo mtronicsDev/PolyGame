@@ -1,12 +1,12 @@
 package com.mtronicsdev.polygame.io;
 
 import com.mtronicsdev.polygame.graphics.Material;
+import com.mtronicsdev.polygame.graphics.Model;
 import com.mtronicsdev.polygame.graphics.RawModel;
 import com.mtronicsdev.polygame.graphics.Texture;
 import com.mtronicsdev.polygame.math.Vector2f;
 import com.mtronicsdev.polygame.math.Vector3f;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public final class Models {
             float[] uvArray = null;
             int[] indexArray = null;
 
-            Material material;
+            Material material = null;
 
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -103,9 +103,10 @@ public final class Models {
                 indexArray[i] = indices.get(i);
             }
 
-            return new RawModel(indexArray, vertexArray, uvArray, normalArray);
+            RawModel rawModel = new RawModel(indexArray, vertexArray, uvArray, normalArray);
+            return new Model(rawModel, material);
 
-        }, RawModel.class);
+        }, Model.class);
     }
 
     private Models() {
@@ -131,14 +132,14 @@ public final class Models {
         String currentMaterialName = null;
 
         Texture currentTexture = null;
-        Color currentColor = Color.WHITE;
+        Vector3f currentColor = new Vector3f(1, 1, 1);
 
         float currentSpecularExponent = 1;
 
-        Color currentAmbientReflectivity = Color.WHITE;
-        Color currentDiffuseReflectivity = Color.WHITE;
-        Color currentSpecularReflectivity = Color.WHITE;
-        Color currentEmit = Color.BLACK;
+        Vector3f currentAmbientReflectivity = new Vector3f(1, 1, 1);
+        Vector3f currentDiffuseReflectivity = new Vector3f(1, 1, 1);
+        Vector3f currentSpecularReflectivity = new Vector3f(1, 1, 1);
+        Vector3f currentEmit = new Vector3f();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -158,32 +159,29 @@ public final class Models {
                     currentMaterialName = line.split(" ")[1];
 
                     currentTexture = null;
-                    currentColor = Color.WHITE;
+                    currentColor = new Vector3f(1, 1, 1);
 
                     currentSpecularExponent = 1;
 
-                    currentAmbientReflectivity = Color.WHITE;
-                    currentDiffuseReflectivity = Color.WHITE;
-                    currentSpecularReflectivity = Color.WHITE;
-                    currentEmit = Color.BLACK;
+                    currentAmbientReflectivity = new Vector3f(1, 1, 1);
+                    currentDiffuseReflectivity = new Vector3f(1, 1, 1);
+                    currentSpecularReflectivity = new Vector3f(1, 1, 1);
+                    currentEmit = new Vector3f();
                 } else if (currentMaterialName != null) {
                     if (line.startsWith("Ns")) currentSpecularExponent = Float.parseFloat(line.split(" ")[1]);
-                    else if (line.startsWith("Ka")) currentAmbientReflectivity = new Color(
+                    else if (line.startsWith("Ka")) currentAmbientReflectivity = new Vector3f(
                             Float.parseFloat(line.split(" ")[1]),
                             Float.parseFloat(line.split(" ")[2]),
                             Float.parseFloat(line.split(" ")[3]));
-                    else if (line.startsWith("Kd")) currentDiffuseReflectivity = new Color(
+                    else if (line.startsWith("Kd")) currentDiffuseReflectivity = new Vector3f(
                             Float.parseFloat(line.split(" ")[1]),
                             Float.parseFloat(line.split(" ")[2]),
                             Float.parseFloat(line.split(" ")[3]));
-                    else if (line.startsWith("Ks")) currentSpecularReflectivity = new Color(
+                    else if (line.startsWith("Ks")) currentSpecularReflectivity = new Vector3f(
                             Float.parseFloat(line.split(" ")[1]),
                             Float.parseFloat(line.split(" ")[2]),
                             Float.parseFloat(line.split(" ")[3]));
-                    else if (line.startsWith("d")) currentColor = new Color((float) currentColor.getRed() / 255,
-                            (float) currentColor.getGreen() / 255,
-                            (float) currentColor.getBlue() / 255,
-                            Float.parseFloat(line.split(" ")[1]));
+                        //else if (line.startsWith("d")); //Transparency [0.0; 1.0]
                     else if (line.startsWith("map_Kd")) currentTexture = Textures.loadTexture(line.split(" ")[1]);
                 }
             }
