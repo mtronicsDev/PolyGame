@@ -29,6 +29,9 @@ public final class Models {
         loadedMaterials = new HashMap<>();
 
         Resources.registerResourceHandler(file -> {
+            String filePath = file.getPath();
+            filePath = filePath.substring(0, filePath.length() - file.getName().length());
+
             List<Vector3f> vertices = new LinkedList<>();
             List<Vector2f> uvs = new LinkedList<>();
             List<Vector3f> normals = new LinkedList<>();
@@ -46,7 +49,7 @@ public final class Models {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    if (line.startsWith("mtllib")) loadMaterialLibrary(line.split(" ")[1]);
+                    if (line.startsWith("mtllib")) loadMaterialLibrary(filePath, line.split(" ")[1]);
                     else if (line.startsWith("usemtl")) material = loadedMaterials.get(line.split(" ")[1]);
                     else if (line.startsWith("v ")) vertices.add(new Vector3f(
                             Float.parseFloat(line.split(" ")[1]),
@@ -128,7 +131,8 @@ public final class Models {
         normalArray[vertexPointer * 3 + 2] = normal.z;
     }
 
-    private static void loadMaterialLibrary(String filename) {
+    private static void loadMaterialLibrary(String filePath, String filename) {
+
         String currentMaterialName = null;
 
         Texture currentTexture = null;
@@ -142,7 +146,7 @@ public final class Models {
         Vector3f currentEmit = new Vector3f();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            BufferedReader reader = new BufferedReader(new FileReader(filePath + filename));
             String line;
 
             while ((line = reader.readLine()) != null) {
@@ -182,7 +186,8 @@ public final class Models {
                             Float.parseFloat(line.split(" ")[2]),
                             Float.parseFloat(line.split(" ")[3]));
                         //else if (line.startsWith("d")); //Transparency [0.0; 1.0]
-                    else if (line.startsWith("map_Kd")) currentTexture = Textures.loadTexture(line.split(" ")[1]);
+                    else if (line.startsWith("map_Kd"))
+                        currentTexture = Textures.loadTexture(filePath + line.split(" ")[1]);
                 }
             }
 

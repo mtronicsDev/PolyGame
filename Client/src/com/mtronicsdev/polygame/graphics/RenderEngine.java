@@ -64,7 +64,7 @@ public final class RenderEngine {
         terrains = new ArrayList<>();
 
         SharedModel sharedModel =
-                Resources.getResource("first.obj", SharedModel.class);
+                Resources.getResource("res/first.obj", SharedModel.class);
 
         Random random = new Random();
 
@@ -77,7 +77,7 @@ public final class RenderEngine {
                     Math.abs(random.nextFloat()), Math.abs(random.nextFloat()))));
         }
 
-        Entity3D t = new Entity3D(new Terrain(Textures.loadTexture("rgba.png")));
+        Entity3D t = new Entity3D(new Terrain(Textures.loadTexture("res/rgba.png")));
 
         c = new Entity3D(new Camera());
 
