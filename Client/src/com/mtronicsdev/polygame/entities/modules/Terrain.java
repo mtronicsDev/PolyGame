@@ -11,11 +11,16 @@ public class Terrain extends Module {
 
     private static final int WIDTH = 128, HEIGHT = 128;
     private static final float RESOLUTION = 1;
-
+    protected Texture texture0, texture1, texture2, texture3;
     private SharedModel sharedModel;
 
-    public Terrain(Texture texture) {
-        sharedModel = new SharedModel(generateMesh(), new Material(texture));
+    public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
+        sharedModel = new SharedModel(generateMesh(), new Material(blendMap));
+
+        this.texture0 = texture0;
+        this.texture1 = texture1;
+        this.texture2 = texture2;
+        this.texture3 = texture3;
 
         RenderEngine.registerTerrain(this);
     }
@@ -78,6 +83,22 @@ public class Terrain extends Module {
 
     public SharedModel getSharedModel() {
         return sharedModel;
+    }
+
+    public Texture getTexture0() {
+        return texture0;
+    }
+
+    public Texture getTexture1() {
+        return texture1;
+    }
+
+    public Texture getTexture2() {
+        return texture2;
+    }
+
+    public Texture getTexture3() {
+        return texture3;
     }
 
     @Override

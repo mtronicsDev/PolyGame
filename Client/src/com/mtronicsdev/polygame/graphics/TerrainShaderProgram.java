@@ -29,6 +29,12 @@ public class TerrainShaderProgram extends ShaderProgram {
 
     private int locationOfSpecularExponent;
 
+    private int locationOfBlendMap;
+    private int locationOfTexture0;
+    private int locationOfTexture1;
+    private int locationOfTexture2;
+    private int locationOfTexture3;
+
     public TerrainShaderProgram() throws URISyntaxException {
         super(Resources.getResource(
                         new File(
@@ -59,6 +65,12 @@ public class TerrainShaderProgram extends ShaderProgram {
         locationOfSpecularReflectivity = getUniformLocation("specularReflectivity");
 
         locationOfSpecularExponent = getUniformLocation("specularExponent");
+
+        locationOfBlendMap = getUniformLocation("blendMap");
+        locationOfTexture0 = getUniformLocation("texture0");
+        locationOfTexture1 = getUniformLocation("texture1");
+        locationOfTexture2 = getUniformLocation("texture2");
+        locationOfTexture3 = getUniformLocation("texture3");
 
     }
 
@@ -100,6 +112,14 @@ public class TerrainShaderProgram extends ShaderProgram {
         loadVector3f(locationOfSpecularReflectivity, material.getSpecularReflectivity());
 
         loadFloat(locationOfSpecularExponent, material.getSpecularExponent());
+    }
+
+    public void loadTextureUnits() {
+        loadInteger(locationOfBlendMap, 0);
+        loadInteger(locationOfTexture0, 1);
+        loadInteger(locationOfTexture1, 2);
+        loadInteger(locationOfTexture2, 3);
+        loadInteger(locationOfTexture3, 4);
     }
 
 }

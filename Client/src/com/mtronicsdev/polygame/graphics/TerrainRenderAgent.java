@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 
@@ -25,6 +26,7 @@ public class TerrainRenderAgent extends RenderAgent<TerrainShaderProgram> {
         bindShaderProgram();
         shaderProgram.loadProjectionMatrix(projectionMatrix);
         shaderProgram.loadAmbientLight(ambientLightStrength);
+        shaderProgram.loadTextureUnits();
         unbindShaderProgram();
     }
 
@@ -40,7 +42,18 @@ public class TerrainRenderAgent extends RenderAgent<TerrainShaderProgram> {
 
             sharedModel.getRawModel().bind();
             shaderProgram.loadMaterial(sharedModel.getMaterial());
+
+            glActiveTexture(GL_TEXTURE0);
             sharedModel.getMaterial().getTexture().bind();
+
+            glActiveTexture(GL_TEXTURE1);
+            terrain.getTexture0().bind();
+            glActiveTexture(GL_TEXTURE2);
+            terrain.getTexture1().bind();
+            glActiveTexture(GL_TEXTURE3);
+            terrain.getTexture2().bind();
+            glActiveTexture(GL_TEXTURE4);
+            terrain.getTexture3().bind();
 
             glEnableVertexAttribArray(0);
             glEnableVertexAttribArray(1);
@@ -55,6 +68,11 @@ public class TerrainRenderAgent extends RenderAgent<TerrainShaderProgram> {
 
             sharedModel.getRawModel().unbind();
             sharedModel.getMaterial().getTexture().unbind();
+
+            terrain.getTexture0().unbind();
+            terrain.getTexture1().unbind();
+            terrain.getTexture2().unbind();
+            terrain.getTexture3().unbind();
         }
 
         unbindShaderProgram();

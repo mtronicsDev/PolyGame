@@ -77,7 +77,11 @@ public final class RenderEngine {
                     Math.abs(random.nextFloat()), Math.abs(random.nextFloat()))));
         }
 
-        Entity3D t = new Entity3D(new Terrain(Textures.loadTexture("res/rgba.png")));
+        Entity3D t = new Entity3D(new Terrain(Textures.loadTexture("res/blendMap.png"),
+                Textures.loadTexture("res/Grass 00 seamless.png"),
+                Textures.loadTexture("res/Dirt 00 seamless.png"),
+                Textures.loadTexture("res/Dirt cracked 00 seamless.png"),
+                Textures.loadTexture("res/Seamless cobblestones at sunset texture.png")));
 
         c = new Entity3D(new Camera());
 

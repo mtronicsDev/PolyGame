@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 
@@ -31,6 +33,7 @@ public class DefaultRenderAgent extends RenderAgent<DefaultShaderProgram> {
 
     void render(Map<SharedModel, List<Model>> modelPool, List<Camera> cameras, List<LightSource> lightSources) {
         bindShaderProgram();
+        glActiveTexture(GL_TEXTURE0);
 
         shaderProgram.loadViewMatrix(cameras.get(0).getViewMatrix());
 
