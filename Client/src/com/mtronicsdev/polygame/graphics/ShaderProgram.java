@@ -44,8 +44,12 @@ public class ShaderProgram extends GLObject {
         glBindAttribLocation(id, attribute, name);
     }
 
-    final void use() {
+    final void bind() {
         glUseProgram(id);
+    }
+
+    final void unbind() {
+        glUseProgram(0);
     }
 
     protected final void loadBoolean(int location, boolean value) {
