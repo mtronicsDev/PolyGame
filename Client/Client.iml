@@ -7,22 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="LWJGL 3">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/lib/lwjgl/jar" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="file://$MODULE_DIR$/lib/lwjgl/doc/javadoc" />
-        </JAVADOC>
-        <NATIVE>
-          <root url="file://$MODULE_DIR$/lib/lwjgl/native/windows/x64" />
-        </NATIVE>
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/lib/lwjgl/jar" recursive="false" />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="LWJGL 3" level="project" />
     <orderEntry type="module" module-name="PolyGame" />
-    <orderEntry type="library" name="Slick2D" level="project" />
+    <orderEntry type="module" module-name="Slick2D" />
   </component>
 </module>

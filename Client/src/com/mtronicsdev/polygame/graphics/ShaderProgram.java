@@ -72,7 +72,7 @@ public class ShaderProgram extends GLObject {
         reusableMatrixCache = value.store(reusableMatrixCache);
         reusableMatrixCache.flip();
 
-        glUniformMatrix4(location, false, reusableMatrixCache);
+        glUniformMatrix4fv(location, false, reusableMatrixCache);
     }
 
     protected final int getUniformLocation(String name) {

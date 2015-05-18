@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Client/Client.iml" filepath="$PROJECT_DIR$/Client/Client.iml" />
       <module fileurl="file://$PROJECT_DIR$/PolyGame.iml" filepath="$PROJECT_DIR$/PolyGame.iml" />
       <module fileurl="file://$PROJECT_DIR$/Server/Server.iml" filepath="$PROJECT_DIR$/Server/Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Client/lib/Slick2D/Slick2D.iml" filepath="$PROJECT_DIR$/Client/lib/Slick2D/Slick2D.iml" />
     </modules>
   </component>
 </project>
