@@ -64,26 +64,18 @@ public final class RenderEngine {
         terrains = new ArrayList<>();
 
         SharedModel sharedModel =
-                Resources.getResource("res/first.obj", SharedModel.class);
+                Resources.getResource("res/stall.obj", SharedModel.class);
 
-        Random random = new Random();
+        new Entity3D(new Vector3f(20, 0, -20), new Vector3f(0, 180, 0), new Model(sharedModel));
+        new Entity3D(new Vector3f(64, 100, 64), new LightSource(new Vector3f(1, 1, 1)));
 
-        for (int i = 0; i < 51; i++) {
-            Entity3D e = new Entity3D(new Vector3f(random.nextInt(20) - 10, random.nextInt(10) + 50, random.nextInt(50) - 50),
-                    new Vector3f(random.nextInt(360), random.nextInt(360), random.nextInt(360)),
-                    new Model(sharedModel));
+        Entity3D t = new Entity3D(new Terrain(Resources.getResource("res/blendMap.png", Texture.class),
+                Resources.getResource("res/Grass 00 seamless.png", Texture.class),
+                Resources.getResource("res/Dirt 00 seamless.png", Texture.class),
+                Resources.getResource("res/Dirt cracked 00 seamless.png", Texture.class),
+                Resources.getResource("res/Seamless cobblestones at sunset texture.png", Texture.class)));
 
-            if (i % 50 == 0) e.addModule(new LightSource(new Vector3f(Math.abs(random.nextFloat()),
-                    Math.abs(random.nextFloat()), Math.abs(random.nextFloat()))));
-        }
-
-        Entity3D t = new Entity3D(new Terrain(Textures.loadTexture("res/blendMap.png"),
-                Textures.loadTexture("res/Grass 00 seamless.png"),
-                Textures.loadTexture("res/Dirt 00 seamless.png"),
-                Textures.loadTexture("res/Dirt cracked 00 seamless.png"),
-                Textures.loadTexture("res/Seamless cobblestones at sunset texture.png")));
-
-        c = new Entity3D(new Camera());
+        c = new Entity3D(new Camera(), new LightSource(new Vector3f(1, 1, 1)));
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);

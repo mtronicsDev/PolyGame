@@ -16,6 +16,7 @@ public class ClientEngineManager {
             Class.forName("com.mtronicsdev.polygame.graphics.Shader");
             Class.forName("com.mtronicsdev.polygame.io.Colors");
             Class.forName("com.mtronicsdev.polygame.io.Models");
+            Class.forName("com.mtronicsdev.polygame.io.Textures");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }

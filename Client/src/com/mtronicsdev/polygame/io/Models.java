@@ -123,7 +123,7 @@ public final class Models {
 
         Vector2f uv = uvs.get(Integer.parseInt(vertexData[1]) - 1);
         uvArray[vertexPointer * 2] = uv.x;
-        uvArray[vertexPointer * 2 + 1] = 1 - uv.y; //Blender texture weirdness
+        uvArray[vertexPointer * 2 + 1] = uv.y;
 
         Vector3f normal = normals.get(Integer.parseInt(vertexData[2]) - 1);
         normalArray[vertexPointer * 3] = normal.x;
@@ -187,7 +187,7 @@ public final class Models {
                             Float.parseFloat(line.split(" ")[3]));
                         //else if (line.startsWith("d")); //Transparency [0.0; 1.0]
                     else if (line.startsWith("map_Kd"))
-                        currentTexture = Textures.loadTexture(filePath + line.split(" ")[1]);
+                        currentTexture = Resources.getResource(filePath + line.split(" ")[1], Texture.class);
                 }
             }
 

@@ -1,11 +1,13 @@
 package com.mtronicsdev.polygame.io;
 
 import com.mtronicsdev.polygame.graphics.Texture;
+import org.lwjgl.BufferUtils;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.ByteBuffer;
 
 /**
  * @author mtronics_dev
@@ -16,22 +18,34 @@ public final class Textures {
     static {
         Resources.registerResourceHandler(file -> {
             try {
-                return TextureLoader.getTexture("PNG", new BufferedInputStream(new FileInputStream(file)));
+                BufferedImage image = ImageIO.read(file);
+
+                int[] pixels = new int[image.getWidth() * image.getHeight()];
+                image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
+
+                ByteBuffer textureData = BufferUtils.createByteBuffer(pixels.length * 4); //RGBA
+
+                for (int y = 0; y < image.getHeight(); y++) {
+                    for (int x = 0; x < image.getWidth(); x++) {
+                        int pixel = pixels[(image.getHeight() - y - 1) * image.getWidth() + x];
+
+                        textureData.put((byte) ((pixel >> 16) & 0xFF));    // R
+                        textureData.put((byte) ((pixel >>  8) & 0xFF));    // G
+                        textureData.put((byte) (pixel & 0xFF));            // B
+                        textureData.put((byte) ((pixel >> 24) & 0xFF));    // A
+                    }
+                }
+
+                textureData.flip();
+
+                return new Texture(image.getWidth(), image.getHeight(), textureData);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
-        }, org.newdawn.slick.opengl.Texture.class);
+        }, Texture.class);
     }
 
     private Textures() {
     }
-
-    public static Texture loadTexture(String filename) {
-        org.newdawn.slick.opengl.Texture texture =
-                Resources.getResource(filename, org.newdawn.slick.opengl.Texture.class);
-
-        return new Texture(texture);
-    }
-
 }
