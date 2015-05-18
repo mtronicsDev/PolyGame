@@ -73,10 +73,7 @@ public class Shader extends GLObject {
         glShaderSource(id, source);
         glCompileShader(id);
 
-        IntBuffer compileStatus = BufferUtils.createIntBuffer(1);
-        glGetShader(id, GL_COMPILE_STATUS, compileStatus);
-
-        if (compileStatus.get() == GL11.GL_FALSE)
+        if (glGetShaderi(id, GL_COMPILE_STATUS) == GL11.GL_FALSE)
             throw new RuntimeException("The " + type.name + " \"" + String.valueOf(id) + "\" could not be compiled.");
     }
 
