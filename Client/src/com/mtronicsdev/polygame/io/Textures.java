@@ -2,7 +2,6 @@ package com.mtronicsdev.polygame.io;
 
 import com.mtronicsdev.polygame.graphics.Texture;
 import org.lwjgl.BufferUtils;
-import org.newdawn.slick.opengl.TextureLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

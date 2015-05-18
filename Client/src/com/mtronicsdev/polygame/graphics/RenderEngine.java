@@ -9,6 +9,7 @@ import com.mtronicsdev.polygame.entities.modules.Terrain;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.io.Textures;
 import com.mtronicsdev.polygame.math.Matrix4f;
+import com.mtronicsdev.polygame.math.Vector2f;
 import com.mtronicsdev.polygame.math.Vector3f;
 import com.mtronicsdev.polygame.util.VectorMath;
 import org.lwjgl.glfw.GLFW;
