@@ -2,6 +2,7 @@
   <dictionary name="Maxi">
     <words>
       <w>glfw</w>
+      <w>heightmap</w>
       <w>polygame</w>
       <w>shaders</w>
     </words>

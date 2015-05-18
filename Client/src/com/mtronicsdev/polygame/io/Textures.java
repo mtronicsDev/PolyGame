@@ -5,7 +5,7 @@ import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -29,7 +29,7 @@ public final class Textures {
                         int pixel = pixels[(image.getHeight() - y - 1) * image.getWidth() + x];
 
                         textureData.put((byte) ((pixel >> 16) & 0xFF));    // R
-                        textureData.put((byte) ((pixel >>  8) & 0xFF));    // G
+                        textureData.put((byte) ((pixel >> 8) & 0xFF));     // G
                         textureData.put((byte) (pixel & 0xFF));            // B
                         textureData.put((byte) ((pixel >> 24) & 0xFF));    // A
                     }

@@ -15,7 +15,7 @@ public class Terrain extends Module {
     private SharedModel sharedModel;
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
-        sharedModel = new SharedModel(generateMesh(), new Material(blendMap));
+        sharedModel = new SharedModel(generateMesh(null), new Material(blendMap));
 
         this.texture0 = texture0;
         this.texture1 = texture1;
@@ -25,11 +25,28 @@ public class Terrain extends Module {
         RenderEngine.registerTerrain(this);
     }
 
-    private RawModel generateMesh() {
+    public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
+                   float[] heightmap) {
+        sharedModel = new SharedModel(generateMesh(heightmap), new Material(blendMap));
+
+        this.texture0 = texture0;
+        this.texture1 = texture1;
+        this.texture2 = texture2;
+        this.texture3 = texture3;
+
+        RenderEngine.registerTerrain(this);
+    }
+
+    private RawModel generateMesh(float[] heightmap) {
         int xVertexCount = (int) (WIDTH * RESOLUTION);
         int yVertexCount = (int) (HEIGHT * RESOLUTION);
 
         int vertexCount = xVertexCount * yVertexCount;
+
+        if (heightmap != null)
+            if (heightmap.length != vertexCount)
+                throw new IllegalArgumentException("The heightmap does not have the right number of values " +
+                        "(Is: " + heightmap.length + "; Should: " + vertexCount + ").");
 
         float[] vertices = new float[vertexCount * 3];
         float[] uvs = new float[vertexCount * 2];
@@ -44,10 +61,9 @@ public class Terrain extends Module {
         for (int x = 0; x < xVertexCount; x++) {
             for (int y = 0; y < yVertexCount; y++) {
                 vertices[vertexPointer * 3] = (float) x / ((float) xVertexCount - 1) * WIDTH;
-                vertices[vertexPointer * 3 + 1] = 0;
+                vertices[vertexPointer * 3 + 1] = heightmap == null ? 0 : heightmap[y * xVertexCount + x];
                 vertices[vertexPointer * 3 + 2] = -(float) y / ((float) yVertexCount - 1) * HEIGHT;
 
-                //TODO: Generate normals based on height
                 normals[vertexPointer * 3] = 0;
                 normals[vertexPointer * 3 + 1] = 1;
                 normals[vertexPointer * 3 + 2] = 0;
