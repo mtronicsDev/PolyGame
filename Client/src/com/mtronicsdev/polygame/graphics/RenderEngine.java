@@ -13,6 +13,7 @@ import com.mtronicsdev.polygame.math.Vector3f;
 import com.mtronicsdev.polygame.util.VectorMath;
 import org.lwjgl.glfw.GLFW;
 
+import java.awt.image.BufferedImage;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,19 +74,12 @@ public final class RenderEngine {
         new Entity3D(new Vector3f(20, 0, -20), new Vector3f(0, 180, 0), new Model(sharedModel));
         new Entity3D(new Vector3f(64, 100, 64), new LightSource(new Vector3f(1, 1, 1)));
 
-        float[] heightmap = new float[128 * 128];
-
-        for (int x = 0; x < 128; x++) {
-            for (int y = 0; y < 128; y++) {
-                heightmap[y * 128 + x] = (float) (sin(x) * sin(x) + cos(y) * cos(y)) * .5f;
-            }
-        }
-
         Entity3D t = new Entity3D(new Terrain(Resources.getResource("res/blendMap.png", Texture.class),
                 Resources.getResource("res/Grass 00 seamless.png", Texture.class),
                 Resources.getResource("res/Dirt 00 seamless.png", Texture.class),
                 Resources.getResource("res/Dirt cracked 00 seamless.png", Texture.class),
-                Resources.getResource("res/Seamless cobblestones at sunset texture.png", Texture.class), heightmap));
+                Resources.getResource("res/Seamless cobblestones at sunset texture.png", Texture.class),
+                Resources.getResource("res/heightmap.png", BufferedImage.class)));
 
         c = new Entity3D(new Camera(), new LightSource(new Vector3f(1, 1, 1)));
 

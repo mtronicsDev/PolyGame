@@ -2,6 +2,10 @@ package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.graphics.*;
+import com.mtronicsdev.polygame.io.Resources;
+import com.mtronicsdev.polygame.math.Vector3f;
+
+import java.awt.image.BufferedImage;
 
 /**
  * @author mtronics_dev
@@ -11,11 +15,25 @@ public class Terrain extends Module {
 
     private static final int WIDTH = 128, HEIGHT = 128;
     private static final float RESOLUTION = 1;
+    private static final int MAX_HEIGHT = 40;
+    private static final int MAX_COLOR_VALUE = 256 * 256 * 256;
+
     protected Texture texture0, texture1, texture2, texture3;
     private SharedModel sharedModel;
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
-        sharedModel = new SharedModel(generateMesh(null), new Material(blendMap));
+        this(blendMap, texture0, texture1, texture2, texture3, (float[]) null);
+    }
+
+    public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
+                   float[] heightmap) {
+        sharedModel = new SharedModel(generateMesh(heightmap),
+                new Material(blendMap,
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(.05f, .05f, .05f),
+                        new Vector3f(), 97));
 
         this.texture0 = texture0;
         this.texture1 = texture1;
@@ -26,15 +44,8 @@ public class Terrain extends Module {
     }
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
-                   float[] heightmap) {
-        sharedModel = new SharedModel(generateMesh(heightmap), new Material(blendMap));
-
-        this.texture0 = texture0;
-        this.texture1 = texture1;
-        this.texture2 = texture2;
-        this.texture3 = texture3;
-
-        RenderEngine.registerTerrain(this);
+                   BufferedImage heightmap) {
+        this(blendMap, texture0, texture1, texture2, texture3, readHeightmap(heightmap));
     }
 
     private RawModel generateMesh(float[] heightmap) {
@@ -64,9 +75,18 @@ public class Terrain extends Module {
                 vertices[vertexPointer * 3 + 1] = heightmap == null ? 0 : heightmap[y * xVertexCount + x];
                 vertices[vertexPointer * 3 + 2] = -(float) y / ((float) yVertexCount - 1) * HEIGHT;
 
-                normals[vertexPointer * 3] = 0;
-                normals[vertexPointer * 3 + 1] = 1;
-                normals[vertexPointer * 3 + 2] = 0;
+                //Calculate normal
+                float heightLeft = getHeight(x - 1, y, heightmap, xVertexCount, yVertexCount);
+                float heightRight = getHeight(x + 1, y, heightmap, xVertexCount, yVertexCount);
+                float heightTop = getHeight(x, y - 1, heightmap, xVertexCount, yVertexCount);
+                float heightBottom = getHeight(x, y + 1, heightmap, xVertexCount, yVertexCount);
+
+                Vector3f normal = new Vector3f(heightLeft - heightRight, 2, heightTop - heightBottom);
+                normal.normalize();
+
+                normals[vertexPointer * 3] = normal.x;
+                normals[vertexPointer * 3 + 1] = normal.y;
+                normals[vertexPointer * 3 + 2] = normal.z;
 
                 uvs[vertexPointer * 2] = (float) x / ((float) xVertexCount - 1);
                 uvs[vertexPointer * 2 + 1] = (float) y / ((float) yVertexCount - 1);
@@ -115,6 +135,31 @@ public class Terrain extends Module {
 
     public Texture getTexture3() {
         return texture3;
+    }
+
+    private float getHeight(int x, int y, float[] heightmap, int xVertexCount, int yVertexCount) {
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x >= xVertexCount) x = xVertexCount - 1;
+        if (y >= yVertexCount) y = yVertexCount - 1;
+
+        return heightmap[y * xVertexCount + x];
+    }
+
+    private static float[] readHeightmap(BufferedImage heightmap) {
+        float[] heights = new float[heightmap.getWidth() * heightmap.getHeight()];
+
+        for (int x = 0; x < heightmap.getWidth(); x++) {
+            for (int y = 0; y < heightmap.getHeight(); y++) {
+                float value = heightmap.getRGB(x, heightmap.getHeight() - y - 1);
+                value += MAX_COLOR_VALUE / 2;
+                value /= MAX_COLOR_VALUE / 2;
+                value *= MAX_HEIGHT;
+                heights[y * heightmap.getWidth() + x] = value;
+            }
+        }
+
+        return heights;
     }
 
     @Override
