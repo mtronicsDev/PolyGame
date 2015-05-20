@@ -13,8 +13,12 @@ public final class Display {
 
     private static final List<Window> windows;
 
+    private static long lastFrameTime;
+    private static float delta;
+
     static {
         windows = new ArrayList<>(1);
+        lastFrameTime = getCurrentTime();
     }
 
     private Display() {
@@ -37,6 +41,18 @@ public final class Display {
                 window.close();
             } else window.refresh();
         }
+
+        long currentFrameTime = getCurrentTime();
+        delta = (float) (currentFrameTime - lastFrameTime) / 1000;
+        lastFrameTime = currentFrameTime;
+    }
+
+    private static long getCurrentTime() {
+        return System.currentTimeMillis();
+    }
+
+    public static float deltaTime() {
+        return delta;
     }
 
 }

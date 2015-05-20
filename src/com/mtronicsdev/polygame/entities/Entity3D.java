@@ -43,12 +43,32 @@ public final class Entity3D extends Entity {
         this.position = position;
     }
 
+    public void addPosition(Vector3f delta) {
+        position.add(delta);
+    }
+
+    public void addPosition(float dX, float dY, float dZ) {
+        position.x += dX;
+        position.y += dY;
+        position.z += dZ;
+    }
+
     public Vector3f getRotation() {
         return rotation;
     }
 
     public void setRotation(Vector3f rotation) {
         this.rotation = rotation;
+    }
+
+    public void addRotation(Vector3f delta) {
+        rotation.add(delta);
+    }
+
+    public void addRotation(float dX, float dY, float dZ) {
+        rotation.x += dX;
+        rotation.y += dY;
+        rotation.z += dZ;
     }
 
     public Vector3f getScale() {

@@ -1,17 +1,12 @@
 package com.mtronicsdev.polygame.graphics;
 
-import com.mtronicsdev.polygame.display.Input;
 import com.mtronicsdev.polygame.entities.Entity3D;
-import com.mtronicsdev.polygame.entities.modules.Camera;
-import com.mtronicsdev.polygame.entities.modules.LightSource;
-import com.mtronicsdev.polygame.entities.modules.Model;
-import com.mtronicsdev.polygame.entities.modules.Terrain;
+import com.mtronicsdev.polygame.entities.modules.*;
+import com.mtronicsdev.polygame.io.Preferences;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector2f;
 import com.mtronicsdev.polygame.math.Vector3f;
 import com.mtronicsdev.polygame.util.VectorMath;
-import org.lwjgl.glfw.GLFW;
 
 import java.awt.image.BufferedImage;
 import java.net.URISyntaxException;
@@ -20,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Math.*;
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -32,6 +26,7 @@ public final class RenderEngine {
 
     private static DefaultRenderAgent defaultRenderAgent;
     private static TerrainRenderAgent terrainRenderAgent;
+    private static SkyboxRenderAgent skyboxRenderAgent;
 
     private static Map<SharedModel, List<Model>> modelPool;
 
@@ -41,23 +36,25 @@ public final class RenderEngine {
 
     private static Matrix4f projectionMatrix;
 
-    private static float fov = 70;
+    private static float fov;
     private static float zNear = .1f;
-    private static float zFar = 1000;
+    private static float zFar;
+
+    private static float ambientLightStrength;
 
     private static Entity3D c;
 
     static {
+        fov = Preferences.getPreference("renderEngine.fieldOfView", float.class);
+        zFar = Preferences.getPreference("renderEngine.viewDistance", float.class);
+        ambientLightStrength = Preferences.getPreference("renderEngine.ambientLightStrength", float.class);
+
         projectionMatrix = VectorMath.createProjectionMatrix(fov, zNear, zFar, 1280, 720);
 
         try {
-            defaultRenderAgent = new DefaultRenderAgent(projectionMatrix, .2f);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            terrainRenderAgent = new TerrainRenderAgent(projectionMatrix, .2f);
+            defaultRenderAgent = new DefaultRenderAgent(projectionMatrix, ambientLightStrength);
+            terrainRenderAgent = new TerrainRenderAgent(projectionMatrix, ambientLightStrength);
+            skyboxRenderAgent = new SkyboxRenderAgent(projectionMatrix);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -81,90 +78,26 @@ public final class RenderEngine {
                 Resources.getResource("res/Seamless cobblestones at sunset texture.png", Texture.class),
                 Resources.getResource("res/heightmap.png", BufferedImage.class)));
 
-        c = new Entity3D(new Camera(), new LightSource(new Vector3f(1, 1, 1)));
+        c = new Entity3D(new ThirdPersonController(), new Model(sharedModel),
+                new Sykbox(Resources.getResource("res/lostvalley_front.jpg", BufferedImage.class),
+                        Resources.getResource("res/lostvalley_back.jpg", BufferedImage.class),
+                        Resources.getResource("res/lostvalley_left.jpg", BufferedImage.class),
+                        Resources.getResource("res/lostvalley_right.jpg", BufferedImage.class),
+                        Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
+                        Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
 
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-
-        Input.registerKeyHandler(GLFW.GLFW_KEY_Q);
-        Input.registerKeyHandler(GLFW.GLFW_KEY_W);
-        Input.registerKeyHandler(GLFW.GLFW_KEY_E);
-        Input.registerKeyHandler(GLFW.GLFW_KEY_A);
-        Input.registerKeyHandler(GLFW.GLFW_KEY_S);
-        Input.registerKeyHandler(GLFW.GLFW_KEY_D);
+        if (Preferences.getPreference("renderEngine.depthTesting", boolean.class)) glEnable(GL_DEPTH_TEST);
+        if (Preferences.getPreference("renderEngine.faceCulling", boolean.class)) {
+            glEnable(GL_CULL_FACE);
+            glCullFace(GL_BACK);
+        }
     }
 
     private RenderEngine() {
     }
 
     public static void render() {
-
-        if (Input.keyPressed(GLFW.GLFW_KEY_W)) {
-            Vector3f pos = c.getPosition();
-            pos.z -= .1f;
-            c.setPosition(pos);
-        }
-
-        if (Input.keyPressed(GLFW.GLFW_KEY_S)) {
-            Vector3f pos = c.getPosition();
-            pos.z += .1f;
-            c.setPosition(pos);
-        }
-
-        if (Input.keyPressed(GLFW.GLFW_KEY_Q)) {
-            Vector3f pos = c.getPosition();
-            pos.y -= .1f;
-            c.setPosition(pos);
-        }
-
-        if (Input.keyPressed(GLFW.GLFW_KEY_E)) {
-            Vector3f pos = c.getPosition();
-            pos.y += .1f;
-            c.setPosition(pos);
-        }
-
-        if (Input.keyPressed(GLFW.GLFW_KEY_A)) {
-            Vector3f pos = c.getPosition();
-            pos.x -= .1f;
-            c.setPosition(pos);
-        }
-
-        if (Input.keyPressed(GLFW.GLFW_KEY_D)) {
-            Vector3f pos = c.getPosition();
-            pos.x += .1f;
-            c.setPosition(pos);
-        } //Camera steering
-
-        /*Model model = m.getModule(Model.class);
-
-        model.getRawModel().bind();
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-
-        shaderProgram.loadTransformationMatrix(m.getTransformationMatrix());
-        shaderProgram.loadViewMatrix(c.getModule(Camera.class).getViewMatrix());
-
-        shaderProgram.loadLight(c.getPosition(), c.getModule(LightSource.class).getColor());
-
-        shaderProgram.loadMaterial(model.getMaterial());
-
-        glActiveTexture(GL_TEXTURE0);
-        model.getMaterial().getTexture().bind();
-
-        glDrawElements(GL_TRIANGLES, m.getModule(Model.class).getRawModel().getSize(), GL11.GL_UNSIGNED_INT, 0);
-
-        model.getMaterial().getTexture().unbind();
-
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
-
-        model.getRawModel().unbind();*/
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        skyboxRenderAgent.render(cameras);
         defaultRenderAgent.render(modelPool, cameras, lightSources);
         terrainRenderAgent.render(terrains, cameras, lightSources);
     }
@@ -189,6 +122,10 @@ public final class RenderEngine {
         terrains.add(terrain);
     }
 
+    public static void setSkybox(Sykbox skybox) {
+        skyboxRenderAgent.setSkybox(skybox);
+    }
+
     public static void unRegisterSharedModel(SharedModel sharedModel) {
         modelPool.remove(sharedModel);
     }
@@ -207,5 +144,25 @@ public final class RenderEngine {
 
     public static void unRegisterTerrain(Terrain terrain) {
         terrains.remove(terrain);
+    }
+
+    public static Matrix4f getProjectionMatrix() {
+        return projectionMatrix;
+    }
+
+    public static float getFov() {
+        return fov;
+    }
+
+    public static float getzNear() {
+        return zNear;
+    }
+
+    public static float getzFar() {
+        return zFar;
+    }
+
+    public static float getAmbientLightStrength() {
+        return ambientLightStrength;
     }
 }

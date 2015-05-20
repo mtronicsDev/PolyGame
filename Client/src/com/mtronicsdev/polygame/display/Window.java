@@ -3,6 +3,7 @@ package com.mtronicsdev.polygame.display;
 import com.mtronicsdev.polygame.graphics.RenderEngine;
 import com.mtronicsdev.polygame.io.Preferences;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.opengl.GLContext;
 
 import java.awt.*;
@@ -21,6 +22,7 @@ public final class Window {
 
     private long id;
     private float[] backgroundColor;
+    private GLFWScrollCallback scrollCallback;
 
     public Window(String title, int width, int height) {
         this(title, width, height, 0);
@@ -57,7 +59,14 @@ public final class Window {
         glfwSetInputMode(id, GLFW_STICKY_KEYS, 1);
         glfwSetInputMode(id, GLFW_STICKY_MOUSE_BUTTONS, 1);
 
-        setBackgroundColor(Preferences.getPreference("skyColor", Color.class));
+        glfwSetScrollCallback(id, scrollCallback = new GLFWScrollCallback() {
+            @Override
+            public void invoke(long l, double v, double v1) {
+                Input.registerScrollInput(v1);
+            }
+        });
+
+        setBackgroundColor(Preferences.getPreference("window.backgroundColor", Color.class));
         glClearColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], backgroundColor[3]);
 
         Display.addWindow(this);

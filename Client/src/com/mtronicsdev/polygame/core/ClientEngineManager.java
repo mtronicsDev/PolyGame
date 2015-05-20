@@ -2,6 +2,7 @@ package com.mtronicsdev.polygame.core;
 
 import com.mtronicsdev.polygame.display.Display;
 import com.mtronicsdev.polygame.display.Window;
+import com.mtronicsdev.polygame.entities.Entity;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
 
@@ -25,19 +26,9 @@ public class ClientEngineManager {
             throw new IllegalStateException("Unable to initialize GLFW");
 
         new Window("Polygame", 1280, 720);
-        //Monitors monitors = new Monitors();
-
-        //GLFWWindowPosCallback callback = GLFW.GLFWWindowPosCallback((l, i, i1) -> monitors.contentPane.repaint());
-        //GLFWWindowSizeCallback callback2 = GLFW.GLFWWindowSizeCallback((l, i, i1) -> monitors.contentPane.repaint());
-        //GLFWWindowCloseCallback callback3 = GLFW.GLFWWindowCloseCallback((l) -> monitors.contentPane.repaint());
-
-        /*Display.getWindows().forEach(w -> {
-            glfwSetWindowPosCallback(w.getId(), callback);
-            glfwSetWindowSizeCallback(w.getId(), callback2);
-            glfwSetWindowCloseCallback(w.getId(), callback3);
-        });*/
 
         while (Display.getWindows().size() > 0) {
+            Entity.getRoot().update();
             Display.refresh();
         }
     }

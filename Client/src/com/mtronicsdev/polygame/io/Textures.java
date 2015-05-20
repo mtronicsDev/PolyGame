@@ -26,29 +26,38 @@ public final class Textures {
 
         Resources.registerResourceHandler(file -> {
             BufferedImage image = Resources.getResource(file, BufferedImage.class);
-
-            int[] pixels = new int[image.getWidth() * image.getHeight()];
-            image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
-
-            ByteBuffer textureData = BufferUtils.createByteBuffer(pixels.length * 4); //RGBA
-
-            for (int y = 0; y < image.getHeight(); y++) {
-                for (int x = 0; x < image.getWidth(); x++) {
-                    int pixel = pixels[(image.getHeight() - y - 1) * image.getWidth() + x];
-
-                    textureData.put((byte) ((pixel >> 16) & 0xFF));    // R
-                    textureData.put((byte) ((pixel >> 8) & 0xFF));     // G
-                    textureData.put((byte) (pixel & 0xFF));            // B
-                    textureData.put((byte) ((pixel >> 24) & 0xFF));    // A
-                }
-            }
-
-            textureData.flip();
+            ByteBuffer textureData = readData(image, true);
 
             return new Texture(image.getWidth(), image.getHeight(), textureData);
         }, Texture.class);
     }
 
     private Textures() {
+    }
+
+    public static ByteBuffer readData(BufferedImage image) {
+        return readData(image, false);
+    }
+
+    public static ByteBuffer readData(BufferedImage image, boolean flipY) {
+        int[] pixels = new int[image.getWidth() * image.getHeight()];
+        image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
+
+        ByteBuffer textureData = BufferUtils.createByteBuffer(pixels.length * 4); //RGBA
+
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int pixel = pixels[(flipY ? image.getHeight() - y - 1 : y) * image.getWidth() + x];
+
+                textureData.put((byte) ((pixel >> 16) & 0xFF));    // R
+                textureData.put((byte) ((pixel >> 8) & 0xFF));     // G
+                textureData.put((byte) (pixel & 0xFF));            // B
+                textureData.put((byte) ((pixel >> 24) & 0xFF));    // A
+            }
+        }
+
+        textureData.flip();
+
+        return textureData;
     }
 }

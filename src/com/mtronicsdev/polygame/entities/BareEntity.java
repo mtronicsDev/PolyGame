@@ -8,7 +8,7 @@ import java.util.Set;
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
-class BareEntity {
+public class BareEntity {
 
     protected Set<Entity> children;
 
@@ -16,11 +16,17 @@ class BareEntity {
         children = new HashSet<>();
     }
 
-    void addChild(Entity child) {
+    final void addChild(Entity child) {
+        children.add(child);
         child.setParent(this);
     }
 
-    void removeChild(Entity child) {
+    final void removeChild(Entity child) {
         children.remove(child);
+        child.setParent(null);
+    }
+
+    public void update() {
+        children.forEach(Entity::update);
     }
 }

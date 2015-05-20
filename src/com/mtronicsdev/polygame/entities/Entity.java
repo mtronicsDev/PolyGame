@@ -1,6 +1,9 @@
 package com.mtronicsdev.polygame.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Class description.
@@ -15,17 +18,26 @@ public class Entity extends BareEntity {
         root = new BareEntity();
     }
 
-    private BareEntity parent;
-    private Set<Module> modules;
+    private BareEntity parent = null;
+    private List<Module> modules;
     private int id = UUID.randomUUID().hashCode();
 
     public Entity(Module... modules) {
         super();
-        this.modules = new HashSet<>(Arrays.asList(modules));
 
+        this.modules = new ArrayList<>(Arrays.asList(modules));
         for (Module module : modules) module.setParent(this);
 
-        parent = root;
+        root.addChild(this);
+    }
+
+    public static BareEntity getRoot() {
+        return root;
+    }
+
+    public final void update() {
+        modules.forEach(Module::update);
+        children.forEach(Entity::update);
     }
 
     public final void addModule(Module module) {
@@ -48,34 +60,17 @@ public class Entity extends BareEntity {
         module.setParent(null);
     }
 
-    @Override
-    public final void addChild(Entity child) {
-        if (child.parent.equals(this)) children.add(child);
-        else throw new IllegalArgumentException();
-    }
-
-    @Override
-    public final void removeChild(Entity child) {
-        child.parent = root;
-        children.remove(child);
-    }
-
     public final BareEntity getParent() {
         return parent;
     }
 
     public final void setParent(BareEntity parent) {
-        if (this.parent.equals(parent)) return; //No need to change anything
+        if (parent.equals(this.parent)) return; //No need to change anything
 
-        this.parent.removeChild(this); //Remove this child from the old parent's children
+        if (this.parent != null) this.parent.removeChild(this); //Remove this child from the old parent's children
 
-        if (parent == null) {
-            this.parent = root;
-            root.addChild(this);
-        } else {
-            this.parent = parent;
-            parent.addChild(this);
-        }
+        this.parent = parent;
+        parent.addChild(this);
     }
 
     @Override

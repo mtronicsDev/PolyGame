@@ -21,12 +21,14 @@ public final class Input {
 
     private static double mouseXPrevious, mouseYPrevious;
     private static DoubleBuffer mouseX, mouseY;
+    private static float scrollDelta;
 
     static {
         keyHandlers = new HashMap<>();
         buttonHandlers = new HashMap<>(2);
 
         mouseXPrevious = mouseYPrevious = 0;
+        scrollDelta = 0;
 
         mouseX = BufferUtils.createDoubleBuffer(1);
         mouseY = BufferUtils.createDoubleBuffer(1);
@@ -37,6 +39,7 @@ public final class Input {
     }
 
     static void update(Window window) {
+        scrollDelta = 0;
         mouseXPrevious = mouseX.get(0);
         mouseYPrevious = mouseY.get(0);
 
@@ -79,6 +82,10 @@ public final class Input {
 
     public static Vector2f getMouseDelta() {
         return new Vector2f((float) (mouseX.get(0) - mouseXPrevious), (float) (mouseY.get(0) - mouseYPrevious));
+    }
+
+    public static float getScrollDelta() {
+        return scrollDelta;
     }
 
     public static boolean keyDown(int keycode) {
@@ -139,6 +146,10 @@ public final class Input {
         } catch (NullPointerException e) {
             throw new IllegalStateException("Keys have to be assigned before being queried!");
         }
+    }
+
+    static void registerScrollInput(double delta) {
+        scrollDelta += delta;
     }
 
     private static final class InputHandler {

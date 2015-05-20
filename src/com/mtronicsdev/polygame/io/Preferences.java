@@ -45,6 +45,7 @@ public final class Preferences {
         registerPreferenceHandler(Long::parseLong, long.class);
         registerPreferenceHandler(Double::parseDouble, double.class);
         registerPreferenceHandler(Float::parseFloat, float.class);
+        registerPreferenceHandler(Boolean::parseBoolean, boolean.class);
     }
 
     private Preferences() {

@@ -2,9 +2,13 @@
   <dictionary name="Maxi">
     <words>
       <w>glfw</w>
+      <w>glsl</w>
       <w>heightmap</w>
+      <w>mtronicsdev</w>
       <w>polygame</w>
       <w>shaders</w>
+      <w>skybox</w>
+      <w>vert</w>
     </words>
   </dictionary>
 </component>
