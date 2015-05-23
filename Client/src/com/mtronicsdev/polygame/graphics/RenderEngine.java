@@ -5,6 +5,7 @@ import com.mtronicsdev.polygame.entities.modules.*;
 import com.mtronicsdev.polygame.io.Preferences;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.math.Matrix4f;
+import com.mtronicsdev.polygame.math.Vector2f;
 import com.mtronicsdev.polygame.math.Vector3f;
 import com.mtronicsdev.polygame.util.VectorMath;
 
@@ -27,12 +28,14 @@ public final class RenderEngine {
     private static DefaultRenderAgent defaultRenderAgent;
     private static TerrainRenderAgent terrainRenderAgent;
     private static SkyboxRenderAgent skyboxRenderAgent;
+    private static GuiRenderAgent guiRenderAgent;
 
     private static Map<SharedModel, List<Model>> modelPool;
 
     private static java.util.List<LightSource> lightSources;
     private static java.util.List<Camera> cameras;
     private static List<Terrain> terrains;
+    private static List<GuiObject> guiObjects;
 
     private static Matrix4f projectionMatrix;
 
@@ -55,6 +58,7 @@ public final class RenderEngine {
             defaultRenderAgent = new DefaultRenderAgent(projectionMatrix, ambientLightStrength);
             terrainRenderAgent = new TerrainRenderAgent(projectionMatrix, ambientLightStrength);
             skyboxRenderAgent = new SkyboxRenderAgent(projectionMatrix);
+            guiRenderAgent = new GuiRenderAgent();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -64,6 +68,7 @@ public final class RenderEngine {
         lightSources = new ArrayList<>();
         cameras = new ArrayList<>();
         terrains = new ArrayList<>();
+        guiObjects = new ArrayList<>();
 
         SharedModel sharedModel =
                 Resources.getResource("res/stall.obj", SharedModel.class);
@@ -79,14 +84,16 @@ public final class RenderEngine {
                 Resources.getResource("res/heightmap.png", BufferedImage.class)));
 
         c = new Entity3D(new ThirdPersonController(), new Model(sharedModel),
-                new Sykbox(Resources.getResource("res/lostvalley_front.jpg", BufferedImage.class),
+                new Skybox(Resources.getResource("res/lostvalley_front.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_back.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_left.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_right.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
 
-        if (Preferences.getPreference("renderEngine.depthTesting", boolean.class)) glEnable(GL_DEPTH_TEST);
+        new GuiObject(new Vector2f(0, 0), new Vector2f(1, 1), Resources.getResource("res/blendMap.png", Texture.class));
+
+        glEnable(GL_DEPTH_TEST);
         if (Preferences.getPreference("renderEngine.faceCulling", boolean.class)) {
             glEnable(GL_CULL_FACE);
             glCullFace(GL_BACK);
@@ -100,6 +107,7 @@ public final class RenderEngine {
         skyboxRenderAgent.render(cameras);
         defaultRenderAgent.render(modelPool, cameras, lightSources);
         terrainRenderAgent.render(terrains, cameras, lightSources);
+        guiRenderAgent.render(guiObjects);
     }
 
     public static void registerSharedModel(SharedModel sharedModel) {
@@ -122,7 +130,11 @@ public final class RenderEngine {
         terrains.add(terrain);
     }
 
-    public static void setSkybox(Sykbox skybox) {
+    public static void registerGuiObject(GuiObject guiObject) {
+        guiObjects.add(guiObject);
+    }
+
+    public static void setSkybox(Skybox skybox) {
         skyboxRenderAgent.setSkybox(skybox);
     }
 
@@ -144,6 +156,10 @@ public final class RenderEngine {
 
     public static void unRegisterTerrain(Terrain terrain) {
         terrains.remove(terrain);
+    }
+
+    public static void unRegisterGuiObject(GuiObject guiObject) {
+        guiObjects.remove(guiObject);
     }
 
     public static Matrix4f getProjectionMatrix() {

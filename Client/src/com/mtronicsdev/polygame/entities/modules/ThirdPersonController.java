@@ -16,10 +16,9 @@ import static java.lang.Math.*;
  */
 public class ThirdPersonController extends Camera {
 
-    private float radius = 20;
-    private float pitch = 20;
-    private float yaw = 0;
-    private float rotationAroundPerson = 0;
+    private float radius = 40;
+    private float pitch = 0;
+    private float yaw = 180;
     private Vector3f position = new Vector3f();
 
     public ThirdPersonController() {
@@ -38,68 +37,47 @@ public class ThirdPersonController extends Camera {
         super.update();
 
         Entity3D parent = (Entity3D) getParent();
+        Vector3f direction = new Vector3f();
 
         if (Input.keyPressed(GLFW.GLFW_KEY_W)) {
-            Vector3f pos = parent.getPosition();
-            pos.z -= .1f;
+            direction.z -= 1;
         }
 
         if (Input.keyPressed(GLFW.GLFW_KEY_S)) {
-            Vector3f pos = parent.getPosition();
-            pos.z += .1f;
+            direction.z += 1;
         }
 
         if (Input.keyPressed(GLFW.GLFW_KEY_Q)) {
-            Vector3f pos = parent.getPosition();
-            pos.y -= .1f;
+            direction.y -= 1;
         }
 
         if (Input.keyPressed(GLFW.GLFW_KEY_E)) {
-            Vector3f pos = parent.getPosition();
-            pos.y += .1f;
+            direction.y += 1;
         }
 
         if (Input.keyPressed(GLFW.GLFW_KEY_A)) {
-            Vector3f pos = parent.getPosition();
-            pos.x -= .1f;
+            direction.x -= 1;
         }
 
         if (Input.keyPressed(GLFW.GLFW_KEY_D)) {
-            Vector3f pos = parent.getPosition();
-            pos.x += .1f;
+            direction.x += 1;
         }
-
-        float zoomLevel = Input.getScrollDelta();
-        radius += zoomLevel;
 
         if (Input.buttonPressed(GLFW.GLFW_MOUSE_BUTTON_RIGHT)) {
             Vector2f delta = Input.getMouseDelta();
             pitch += delta.y * .01f;
-            rotationAroundPerson -= delta.x * .01f;
+            yaw += delta.x * .01f;
         }
 
-        float horizontalDistance = (float) (radius * cos(toRadians(pitch)));
-        float verticalDistance = (float) (radius * sin(toRadians(pitch)));
+        float alpha = (float) toRadians(yaw - 90);
+        float offsetXZ = (float) (cos(toRadians(pitch)) * radius);
 
-        position = calculatePosition(horizontalDistance, verticalDistance);
-    }
+        Vector3f camOffset = new Vector3f((float) cos(alpha) * offsetXZ,
+                (float) sqrt(radius * radius - offsetXZ * offsetXZ),
+                (float) sin(alpha) * offsetXZ);
 
-    private Vector3f calculatePosition(float horizontalDistance, float verticalDistance) {
-        Vector3f position = new Vector3f();
-        Entity3D parent = (Entity3D) getParent();
-
-        position.y = parent.getPosition().y + verticalDistance;
-
-        float totalRotationAroundPerson = parent.getRotation().y + rotationAroundPerson;
-        float offsetX = (float) (horizontalDistance * sin(toRadians(totalRotationAroundPerson)));
-        float offsetZ = (float) (horizontalDistance * cos(toRadians(totalRotationAroundPerson)));
-
-        position.x = parent.getPosition().x - offsetX;
-        position.z = parent.getPosition().z - offsetZ;
-
-        yaw = 180 - totalRotationAroundPerson;
-
-        return position;
+        position = new Vector3f(parent.getPosition());
+        position.add(camOffset);
     }
 
     @Override

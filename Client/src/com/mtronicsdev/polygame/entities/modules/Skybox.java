@@ -12,11 +12,11 @@ import static com.mtronicsdev.polygame.io.Textures.readData;
  * @author mtronics_dev
  * @version 1.0
  */
-public class Sykbox extends Module {
+public class Skybox extends Module {
 
     private CubeMapTexture texture;
 
-    public Sykbox(BufferedImage front, BufferedImage back, BufferedImage left, BufferedImage right,
+    public Skybox(BufferedImage front, BufferedImage back, BufferedImage left, BufferedImage right,
                   BufferedImage bottom, BufferedImage top) {
         texture = new CubeMapTexture(front.getWidth(), front.getHeight(), readData(front), readData(back),
                 readData(left), readData(right), readData(bottom), readData(top));

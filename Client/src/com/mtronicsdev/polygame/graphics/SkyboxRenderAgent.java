@@ -1,7 +1,7 @@
 package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.entities.modules.Camera;
-import com.mtronicsdev.polygame.entities.modules.Sykbox;
+import com.mtronicsdev.polygame.entities.modules.Skybox;
 import com.mtronicsdev.polygame.math.Matrix4f;
 
 import java.net.URISyntaxException;
@@ -19,7 +19,7 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
  */
 public class SkyboxRenderAgent extends RenderAgent<SkyboxShaderProgram> {
 
-    private static final SkyboxModel skybox = new SkyboxModel();
+    private static final SkyboxModel SKYBOX_MODEL = new SkyboxModel();
     private CubeMapTexture cubeMap;
 
     protected SkyboxRenderAgent(Matrix4f projectionMatrix) throws URISyntaxException {
@@ -37,24 +37,24 @@ public class SkyboxRenderAgent extends RenderAgent<SkyboxShaderProgram> {
             view.m30 = view.m31 = view.m32 = 0;
 
             shaderProgram.loadViewMatrix(view);
-            skybox.bind();
+            SKYBOX_MODEL.bind();
             glEnableVertexAttribArray(0);
 
             glActiveTexture(GL_TEXTURE0);
             cubeMap.bind();
 
-            glDrawElements(GL_TRIANGLES, skybox.getSize(), GL_UNSIGNED_INT, 0);
+            glDrawElements(GL_TRIANGLES, SKYBOX_MODEL.getSize(), GL_UNSIGNED_INT, 0);
 
             cubeMap.unbind();
             glDisableVertexAttribArray(0);
-            skybox.unbind();
+            SKYBOX_MODEL.unbind();
             shaderProgram.unbind();
 
             glClear(GL_DEPTH_BUFFER_BIT);
         }
     }
 
-    public void setSkybox(Sykbox skybox) {
+    public void setSkybox(Skybox skybox) {
         this.cubeMap = skybox == null ? null : skybox.getTexture();
     }
 }

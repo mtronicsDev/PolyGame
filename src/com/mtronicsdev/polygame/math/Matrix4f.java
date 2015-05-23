@@ -90,6 +90,19 @@ public class Matrix4f {
         return this;
     }
 
+    public Matrix4f scale(Vector2f scalar) {
+        m00 *= scalar.x;
+        m01 *= scalar.x;
+        m02 *= scalar.x;
+        m03 *= scalar.x;
+        m10 *= scalar.y;
+        m11 *= scalar.y;
+        m12 *= scalar.y;
+        m13 *= scalar.y;
+
+        return this;
+    }
+
     public FloatBuffer store(FloatBuffer buffer) {
         buffer.put(m00);
         buffer.put(m01);
@@ -175,6 +188,15 @@ public class Matrix4f {
         m31 += m01 * vector.x + m11 * vector.y + m21 * vector.z;
         m32 += m02 * vector.x + m12 * vector.y + m22 * vector.z;
         m33 += m03 * vector.x + m13 * vector.y + m23 * vector.z;
+
+        return this;
+    }
+
+    public Matrix4f translate(Vector2f vector) {
+        m30 += m00 * vector.x + m10 * vector.y;
+        m31 += m01 * vector.x + m11 * vector.y;
+        m32 += m02 * vector.x + m12 * vector.y;
+        m33 += m03 * vector.x + m13 * vector.y;
 
         return this;
     }
