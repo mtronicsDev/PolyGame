@@ -46,6 +46,7 @@ public final class RenderEngine {
     private static float ambientLightStrength;
 
     private static Entity3D c;
+    private static GuiObject g;
 
     static {
         fov = Preferences.getPreference("renderEngine.fieldOfView", float.class);
@@ -91,7 +92,8 @@ public final class RenderEngine {
                         Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
 
-        new GuiObject(new Vector2f(0, 0), new Vector2f(1, 1), Resources.getResource("res/blendMap.png", Texture.class));
+        g = new GuiObject(new Vector2f(0, 0), new Vector2f(.5f, .5f),
+                Resources.getResource("res/blendMap.png", Texture.class));
 
         glEnable(GL_DEPTH_TEST);
         if (Preferences.getPreference("renderEngine.faceCulling", boolean.class)) {
@@ -104,6 +106,8 @@ public final class RenderEngine {
     }
 
     public static void render() {
+        g.setRotation(g.getRotation() + .1f);
+
         skyboxRenderAgent.render(cameras);
         defaultRenderAgent.render(modelPool, cameras, lightSources);
         terrainRenderAgent.render(terrains, cameras, lightSources);

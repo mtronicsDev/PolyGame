@@ -4,6 +4,8 @@ import com.mtronicsdev.polygame.math.Matrix4f;
 import com.mtronicsdev.polygame.math.Vector2f;
 import com.mtronicsdev.polygame.math.Vector3f;
 
+import static java.lang.Math.toRadians;
+
 /**
  * @author mtronics_dev
  * @version 1.0
@@ -38,7 +40,7 @@ public class GuiObject {
     private void calculateTransformationMatrix() {
         transformationMatrix.setIdentity();
         transformationMatrix.translate(position);
-        transformationMatrix.rotate(rotation, new Vector3f(0, 0, 1));
+        transformationMatrix.rotate((float) toRadians(rotation), new Vector3f(0, 0, -1));
         transformationMatrix.scale(size);
     }
 
