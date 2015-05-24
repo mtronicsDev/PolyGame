@@ -2,6 +2,8 @@ package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.*;
+import com.mtronicsdev.polygame.entities.modules.gui.GuiImage;
+import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
 import com.mtronicsdev.polygame.io.Preferences;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.math.Matrix4f;
@@ -35,7 +37,6 @@ public final class RenderEngine {
     private static java.util.List<LightSource> lightSources;
     private static java.util.List<Camera> cameras;
     private static List<Terrain> terrains;
-    private static List<GuiObject> guiObjects;
 
     private static Matrix4f projectionMatrix;
 
@@ -44,9 +45,6 @@ public final class RenderEngine {
     private static float zFar;
 
     private static float ambientLightStrength;
-
-    private static Entity3D c;
-    private static GuiObject g;
 
     static {
         fov = Preferences.getPreference("renderEngine.fieldOfView", float.class);
@@ -69,7 +67,6 @@ public final class RenderEngine {
         lightSources = new ArrayList<>();
         cameras = new ArrayList<>();
         terrains = new ArrayList<>();
-        guiObjects = new ArrayList<>();
 
         SharedModel sharedModel =
                 Resources.getResource("res/stall.obj", SharedModel.class);
@@ -84,7 +81,7 @@ public final class RenderEngine {
                 Resources.getResource("res/Seamless cobblestones at sunset texture.png", Texture.class),
                 Resources.getResource("res/heightmap.png", BufferedImage.class)));
 
-        c = new Entity3D(new ThirdPersonController(), new Model(sharedModel),
+        new Entity3D(new ThirdPersonController(), new Model(sharedModel),
                 new Skybox(Resources.getResource("res/lostvalley_front.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_back.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_left.jpg", BufferedImage.class),
@@ -92,8 +89,32 @@ public final class RenderEngine {
                         Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
 
-        g = new GuiObject(new Vector2f(0, 0), new Vector2f(.5f, .5f),
-                Resources.getResource("res/blendMap.png", Texture.class));
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.TOP_LEFT));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.TOP));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.TOP_RIGHT));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.LEFT));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.CENTER));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.RIGHT));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM_LEFT));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM));
+
+        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
+                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM_RIGHT));
 
         glEnable(GL_DEPTH_TEST);
         if (Preferences.getPreference("renderEngine.faceCulling", boolean.class)) {
@@ -106,12 +127,10 @@ public final class RenderEngine {
     }
 
     public static void render() {
-        g.setRotation(g.getRotation() + .1f);
-
         skyboxRenderAgent.render(cameras);
         defaultRenderAgent.render(modelPool, cameras, lightSources);
         terrainRenderAgent.render(terrains, cameras, lightSources);
-        guiRenderAgent.render(guiObjects);
+        guiRenderAgent.render();
     }
 
     public static void registerSharedModel(SharedModel sharedModel) {
@@ -132,10 +151,6 @@ public final class RenderEngine {
 
     public static void registerTerrain(Terrain terrain) {
         terrains.add(terrain);
-    }
-
-    public static void registerGuiObject(GuiObject guiObject) {
-        guiObjects.add(guiObject);
     }
 
     public static void setSkybox(Skybox skybox) {
@@ -162,10 +177,6 @@ public final class RenderEngine {
         terrains.remove(terrain);
     }
 
-    public static void unRegisterGuiObject(GuiObject guiObject) {
-        guiObjects.remove(guiObject);
-    }
-
     public static Matrix4f getProjectionMatrix() {
         return projectionMatrix;
     }
@@ -184,5 +195,12 @@ public final class RenderEngine {
 
     public static float getAmbientLightStrength() {
         return ambientLightStrength;
+    }
+
+    public static void updateProjectionMatrix(int width, int height) {
+        projectionMatrix = VectorMath.createProjectionMatrix(fov, zNear, zFar, width, height);
+        defaultRenderAgent.setProjectionMatrix(projectionMatrix);
+        terrainRenderAgent.setProjectionMatrix(projectionMatrix);
+        skyboxRenderAgent.setProjectionMatrix(projectionMatrix);
     }
 }

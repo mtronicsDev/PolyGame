@@ -1,7 +1,8 @@
 package com.mtronicsdev.polygame.graphics;
 
+import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
+
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
@@ -22,14 +23,16 @@ public class GuiRenderAgent extends RenderAgent<GuiShaderProgram> {
 
     }
 
-    void render(List<GuiObject> guiObjects) {
+    void render() {
         shaderProgram.bind();
         QUAD_MODEL.bind();
         glEnableVertexAttribArray(0);
         glActiveTexture(GL_TEXTURE0);
         glDisable(GL_DEPTH_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        for (GuiObject guiObject : guiObjects) {
+        for (GuiObject guiObject : GuiPanel.getRoot().getRenderList()) {
             guiObject.getTexture().bind();
 
             shaderProgram.loadTransformationMatrix(guiObject.getTransformationMatrix());
@@ -38,6 +41,7 @@ public class GuiRenderAgent extends RenderAgent<GuiShaderProgram> {
             guiObject.getTexture().unbind();
         }
 
+        glDisable(GL_BLEND);
         glEnable(GL_DEPTH_TEST);
         glDisableVertexAttribArray(0);
         QUAD_MODEL.unbind();

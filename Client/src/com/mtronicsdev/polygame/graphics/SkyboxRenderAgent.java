@@ -57,4 +57,8 @@ public class SkyboxRenderAgent extends RenderAgent<SkyboxShaderProgram> {
     public void setSkybox(Skybox skybox) {
         this.cubeMap = skybox == null ? null : skybox.getTexture();
     }
+
+    void setProjectionMatrix(Matrix4f projectionMatrix) {
+        shaderProgram.loadProjectionMatrix(projectionMatrix);
+    }
 }

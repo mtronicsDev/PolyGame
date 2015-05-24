@@ -1,9 +1,11 @@
 package com.mtronicsdev.polygame.display;
 
+import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
 import com.mtronicsdev.polygame.graphics.RenderEngine;
 import com.mtronicsdev.polygame.io.Preferences;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWScrollCallback;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GLContext;
 
 import java.awt.*;
@@ -23,6 +25,7 @@ public final class Window {
     private long id;
     private float[] backgroundColor;
     private GLFWScrollCallback scrollCallback;
+    private GLFWWindowSizeCallback windowSizeCallback;
 
     public Window(String title, int width, int height) {
         this(title, width, height, 0);
@@ -63,6 +66,14 @@ public final class Window {
             @Override
             public void invoke(long l, double v, double v1) {
                 Input.registerScrollInput(v1);
+            }
+        });
+
+        glfwSetWindowSizeCallback(id, windowSizeCallback = new GLFWWindowSizeCallback() {
+            @Override
+            public void invoke(long l, int i, int i1) {
+                RenderEngine.updateProjectionMatrix(i, i1);
+                GuiPanel.updateLayout();
             }
         });
 

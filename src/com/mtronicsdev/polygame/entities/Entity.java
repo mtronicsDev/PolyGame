@@ -35,6 +35,7 @@ public class Entity extends BareEntity {
         return root;
     }
 
+    @Override
     public final void update() {
         modules.forEach(Module::update);
         children.forEach(Entity::update);

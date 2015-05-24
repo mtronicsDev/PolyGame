@@ -15,6 +15,7 @@ public final class Display {
 
     private static long lastFrameTime;
     private static float delta;
+    private static Window currentWindow;
 
     static {
         windows = new ArrayList<>(1);
@@ -35,11 +36,11 @@ public final class Display {
 
     public static void refresh() {
         for (Iterator<Window> iterator = windows.iterator(); iterator.hasNext(); ) {
-            Window window = iterator.next();
-            if (window.shouldClose()) {
+            currentWindow = iterator.next();
+            if (currentWindow.shouldClose()) {
                 iterator.remove();
-                window.close();
-            } else window.refresh();
+                currentWindow.close();
+            } else currentWindow.refresh();
         }
 
         long currentFrameTime = getCurrentTime();
@@ -49,6 +50,10 @@ public final class Display {
 
     private static long getCurrentTime() {
         return System.currentTimeMillis();
+    }
+
+    public static Window getCurrentWindow() {
+        return currentWindow;
     }
 
     public static float deltaTime() {

@@ -63,4 +63,8 @@ public class DefaultRenderAgent extends RenderAgent<DefaultShaderProgram> {
 
         unbindShaderProgram();
     }
+
+    void setProjectionMatrix(Matrix4f projectionMatrix) {
+        shaderProgram.loadProjectionMatrix(projectionMatrix);
+    }
 }

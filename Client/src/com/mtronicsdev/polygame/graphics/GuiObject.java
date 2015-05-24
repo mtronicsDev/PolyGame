@@ -26,7 +26,6 @@ public class GuiObject {
         this.texture = texture;
 
         calculateTransformationMatrix();
-        RenderEngine.registerGuiObject(this);
     }
 
     public GuiObject(Vector2f position, Vector2f size, Texture texture) {
@@ -73,11 +72,5 @@ public class GuiObject {
 
     public Texture getTexture() {
         return texture;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        RenderEngine.unRegisterGuiObject(this);
     }
 }

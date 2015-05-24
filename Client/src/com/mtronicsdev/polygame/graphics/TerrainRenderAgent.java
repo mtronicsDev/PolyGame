@@ -77,4 +77,8 @@ public class TerrainRenderAgent extends RenderAgent<TerrainShaderProgram> {
 
         unbindShaderProgram();
     }
+
+    void setProjectionMatrix(Matrix4f projectionMatrix) {
+        shaderProgram.loadProjectionMatrix(projectionMatrix);
+    }
 }
