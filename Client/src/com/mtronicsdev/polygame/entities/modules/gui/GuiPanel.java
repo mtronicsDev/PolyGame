@@ -82,15 +82,15 @@ public class GuiPanel {
     }
 
     public enum Alignment {
-        TOP_LEFT((p, ps, s, m) -> new Vector2f(p.x + s.x / 2 + m, p.y + ps.y - m)),
-        TOP((p, ps, s, m) -> new Vector2f(p.x + ps.x / 2 - s.x / 2, p.y + ps.y - m)),
-        TOP_RIGHT((p, ps, s, m) -> new Vector2f(p.x + ps.x - s.x - m, p.y + ps.y - m)),
-        LEFT((p, ps, s, m) -> new Vector2f(p.x + s.x / 2 + m, p.y + ps.y / 2 - s.y / 2)),
-        CENTER((p, ps, s, m) -> new Vector2f(p.x + ps.x / 2 - s.x / 2, p.y + ps.y / 2 - s.y / 2)),
-        RIGHT((p, ps, s, m) -> new Vector2f(p.x + ps.x - s.x - m, p.y + ps.y / 2 - s.y / 2)),
-        BOTTOM_LEFT((p, ps, s, m) -> new Vector2f(p.x + s.x / 2 + m, p.y + m)),
-        BOTTOM((p, ps, s, m) -> new Vector2f(p.x + ps.x / 2 - s.x / 2, p.y + m)),
-        BOTTOM_RIGHT((p, ps, s, m) -> new Vector2f(p.x + ps.x - s.x - m, p.y + m));
+        TOP_LEFT((p, ps, s, m) -> new Vector2f(p.x + s.x + m, p.y + ps.y - s.y - m)),
+        TOP((p, ps, s, m) -> new Vector2f(p.x + ps.x / 2, p.y + ps.y - s.y - m)),
+        TOP_RIGHT((p, ps, s, m) -> new Vector2f(p.x + ps.x - s.x - m, p.y + ps.y - s.y - m)),
+        LEFT((p, ps, s, m) -> new Vector2f(p.x + s.x + m, p.y + ps.y / 2)),
+        CENTER((p, ps, s, m) -> new Vector2f(p.x + ps.x / 2, p.y + ps.y / 2)),
+        RIGHT((p, ps, s, m) -> new Vector2f(p.x + ps.x - s.x - m, p.y + ps.y / 2)),
+        BOTTOM_LEFT((p, ps, s, m) -> new Vector2f(p.x + s.x + m, p.y + s.y + m)),
+        BOTTOM((p, ps, s, m) -> new Vector2f(p.x + ps.x / 2, p.y + s.y + m)),
+        BOTTOM_RIGHT((p, ps, s, m) -> new Vector2f(p.x + ps.x - s.x - m, p.y + s.y + m));
 
         private final AlignmentHandler handler;
 

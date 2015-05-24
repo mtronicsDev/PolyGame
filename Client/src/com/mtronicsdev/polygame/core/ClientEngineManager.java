@@ -25,7 +25,7 @@ public class ClientEngineManager {
         if (glfwInit() != 1)
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        new Window("Polygame", 1280, 720);
+        new Window("Polygame", 720, 480);
 
         while (Display.getWindows().size() > 0) {
             Entity.getRoot().update();
