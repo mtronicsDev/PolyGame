@@ -21,11 +21,9 @@ import java.util.Map;
  */
 public final class Models {
 
-    private static Map<String, RawModel> loadedModels;
     private static Map<String, Material> loadedMaterials;
 
     static {
-        loadedModels = new HashMap<>();
         loadedMaterials = new HashMap<>();
 
         Resources.registerResourceHandler(file -> {

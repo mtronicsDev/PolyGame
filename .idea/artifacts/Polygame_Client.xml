@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact name="Polygame_Client">
+    <output-path>$PROJECT_DIR$/out/artifacts/Polygame_Client</output-path>
+    <root id="root">
+      <element id="archive" name="polygame_client.jar">
+        <element id="module-output" name="Client" />
+        <element id="module-output" name="PolyGame" />
+      </element>
+      <element id="directory" name="data">
+        <element id="dir-copy" path="$PROJECT_DIR$/data" />
+      </element>
+      <element id="directory" name="native">
+        <element id="dir-copy" path="$PROJECT_DIR$/Client/lib/lwjgl/native" />
+      </element>
+      <element id="library" level="project" name="LWJGL 3" />
+    </root>
+  </artifact>
+</component>
