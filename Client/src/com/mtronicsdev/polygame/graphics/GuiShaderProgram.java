@@ -15,8 +15,8 @@ public class GuiShaderProgram extends ShaderProgram {
     private int locationOfTransformationMatrix;
 
     public GuiShaderProgram() throws URISyntaxException {
-        super(Resources.getResource(new File("/res/shaders/gui_vert.glsl"), Shader.class),
-                Resources.getResource(new File("/res/shaders/gui_frag.glsl"), Shader.class));
+        super(Resources.getResource(new File("res/shaders/gui_vert.glsl"), Shader.class),
+                Resources.getResource(new File("res/shaders/gui_frag.glsl"), Shader.class));
 
         locationOfTransformationMatrix = getUniformLocation("transformationMatrix");
     }

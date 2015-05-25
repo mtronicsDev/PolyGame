@@ -16,8 +16,8 @@ public class SkyboxShaderProgram extends ShaderProgram {
     private int locationOfViewMatrix;
 
     public SkyboxShaderProgram() throws URISyntaxException {
-        super(Resources.getResource(new File("/res/shaders/skybox_vert.glsl"), Shader.class),
-                Resources.getResource(new File("/res/shaders/skybox_frag.glsl"), Shader.class));
+        super(Resources.getResource(new File("res/shaders/skybox_vert.glsl"), Shader.class),
+                Resources.getResource(new File("res/shaders/skybox_frag.glsl"), Shader.class));
 
         locationOfProjectionMatrix = getUniformLocation("projectionMatrix");
         locationOfViewMatrix = getUniformLocation("viewMatrix");

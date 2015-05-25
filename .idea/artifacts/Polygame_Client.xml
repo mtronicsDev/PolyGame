@@ -2,17 +2,32 @@
   <artifact name="Polygame_Client">
     <output-path>$PROJECT_DIR$/out/artifacts/Polygame_Client</output-path>
     <root id="root">
-      <element id="archive" name="polygame_client.jar">
-        <element id="module-output" name="Client" />
-        <element id="module-output" name="PolyGame" />
-      </element>
       <element id="directory" name="data">
         <element id="dir-copy" path="$PROJECT_DIR$/data" />
       </element>
-      <element id="directory" name="native">
-        <element id="dir-copy" path="$PROJECT_DIR$/Client/lib/lwjgl/native" />
+      <element id="directory" name="res">
+        <element id="directory" name="shaders">
+          <element id="dir-copy" path="$PROJECT_DIR$/res/shaders" />
+        </element>
       </element>
-      <element id="library" level="project" name="LWJGL 3" />
+      <element id="directory" name="lib">
+        <element id="directory" name="polygame">
+          <element id="directory" name="jar">
+            <element id="archive" name="polygame_client.jar">
+              <element id="module-output" name="Client" />
+              <element id="module-output" name="PolyGame" />
+            </element>
+          </element>
+        </element>
+        <element id="directory" name="lwjgl">
+          <element id="directory" name="jar">
+            <element id="library" level="project" name="LWJGL 3" />
+          </element>
+          <element id="directory" name="native">
+            <element id="dir-copy" path="$PROJECT_DIR$/Client/lib/lwjgl/native" />
+          </element>
+        </element>
+      </element>
     </root>
   </artifact>
 </component>

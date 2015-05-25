@@ -30,8 +30,8 @@ public class DefaultShaderProgram extends ShaderProgram {
     private int locationOfSpecularExponent;
 
     public DefaultShaderProgram() throws URISyntaxException {
-        super(Resources.getResource(new File("/res/shaders/default_vert.glsl"), Shader.class),
-                Resources.getResource(new File("/res/shaders/default_frag.glsl"), Shader.class));
+        super(Resources.getResource(new File("res/shaders/default_vert.glsl"), Shader.class),
+                Resources.getResource(new File("res/shaders/default_frag.glsl"), Shader.class));
 
         locationOfTransformationMatrix = getUniformLocation("transformationMatrix");
         locationOfProjectionMatrix = getUniformLocation("projectionMatrix");

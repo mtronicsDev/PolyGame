@@ -36,8 +36,8 @@ public class TerrainShaderProgram extends ShaderProgram {
     private int locationOfTexture3;
 
     public TerrainShaderProgram() throws URISyntaxException {
-        super(Resources.getResource(new File("/res/shaders/terrain_vert.glsl"), Shader.class),
-                Resources.getResource(new File("/res/shaders/terrain_frag.glsl"), Shader.class));
+        super(Resources.getResource(new File("res/shaders/terrain_vert.glsl"), Shader.class),
+                Resources.getResource(new File("res/shaders/terrain_frag.glsl"), Shader.class));
 
         locationOfTransformationMatrix = getUniformLocation("transformationMatrix");
         locationOfProjectionMatrix = getUniformLocation("projectionMatrix");
