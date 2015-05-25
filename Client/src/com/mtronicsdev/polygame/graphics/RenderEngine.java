@@ -1,17 +1,10 @@
 package com.mtronicsdev.polygame.graphics;
 
-import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.*;
-import com.mtronicsdev.polygame.entities.modules.gui.GuiImage;
-import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
 import com.mtronicsdev.polygame.io.Preferences;
-import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector2f;
-import com.mtronicsdev.polygame.math.Vector3f;
 import com.mtronicsdev.polygame.util.VectorMath;
 
-import java.awt.image.BufferedImage;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,54 +61,6 @@ public final class RenderEngine {
         cameras = new ArrayList<>();
         terrains = new ArrayList<>();
 
-        SharedModel sharedModel =
-                Resources.getResource("res/stall.obj", SharedModel.class);
-
-        new Entity3D(new Vector3f(20, 0, -20), new Vector3f(0, 180, 0), new Model(sharedModel));
-        new Entity3D(new Vector3f(64, 100, 64), new LightSource(new Vector3f(1, 1, 1)));
-
-        Entity3D t = new Entity3D(new Terrain(Resources.getResource("res/blendMap.png", Texture.class),
-                Resources.getResource("res/Grass 00 seamless.png", Texture.class),
-                Resources.getResource("res/Dirt 00 seamless.png", Texture.class),
-                Resources.getResource("res/Dirt cracked 00 seamless.png", Texture.class),
-                Resources.getResource("res/Seamless cobblestones at sunset texture.png", Texture.class),
-                Resources.getResource("res/heightmap.png", BufferedImage.class)));
-
-        new Entity3D(new ThirdPersonController(), new Model(sharedModel),
-                new Skybox(Resources.getResource("res/lostvalley_front.jpg", BufferedImage.class),
-                        Resources.getResource("res/lostvalley_back.jpg", BufferedImage.class),
-                        Resources.getResource("res/lostvalley_left.jpg", BufferedImage.class),
-                        Resources.getResource("res/lostvalley_right.jpg", BufferedImage.class),
-                        Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
-                        Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.TOP_LEFT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.TOP));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.TOP_RIGHT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.LEFT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.CENTER));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.RIGHT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM_LEFT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(), new Vector2f(.1f, .1f),
-                Resources.getResource("res/blendMap.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM_RIGHT));
-
         glEnable(GL_DEPTH_TEST);
         if (Preferences.getPreference("renderEngine.faceCulling", boolean.class)) {
             glEnable(GL_CULL_FACE);
@@ -127,9 +72,12 @@ public final class RenderEngine {
     }
 
     public static void render() {
-        skyboxRenderAgent.render(cameras);
-        defaultRenderAgent.render(modelPool, cameras, lightSources);
-        terrainRenderAgent.render(terrains, cameras, lightSources);
+        if (!cameras.isEmpty()) {
+            skyboxRenderAgent.render(cameras);
+            defaultRenderAgent.render(modelPool, cameras, lightSources);
+            terrainRenderAgent.render(terrains, cameras, lightSources);
+        }
+
         guiRenderAgent.render();
     }
 

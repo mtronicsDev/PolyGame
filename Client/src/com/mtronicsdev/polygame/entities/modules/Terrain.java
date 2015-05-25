@@ -2,7 +2,6 @@ package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.graphics.*;
-import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.math.Vector3f;
 
 import java.awt.image.BufferedImage;
@@ -46,6 +45,22 @@ public class Terrain extends Module {
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
                    BufferedImage heightmap) {
         this(blendMap, texture0, texture1, texture2, texture3, readHeightmap(heightmap));
+    }
+
+    private static float[] readHeightmap(BufferedImage heightmap) {
+        float[] heights = new float[heightmap.getWidth() * heightmap.getHeight()];
+
+        for (int x = 0; x < heightmap.getWidth(); x++) {
+            for (int y = 0; y < heightmap.getHeight(); y++) {
+                float value = heightmap.getRGB(x, heightmap.getHeight() - y - 1);
+                value += MAX_COLOR_VALUE / 2;
+                value /= MAX_COLOR_VALUE / 2;
+                value *= MAX_HEIGHT;
+                heights[y * heightmap.getWidth() + x] = value;
+            }
+        }
+
+        return heights;
     }
 
     private RawModel generateMesh(float[] heightmap) {
@@ -144,22 +159,6 @@ public class Terrain extends Module {
         if (y >= yVertexCount) y = yVertexCount - 1;
 
         return heightmap[y * xVertexCount + x];
-    }
-
-    private static float[] readHeightmap(BufferedImage heightmap) {
-        float[] heights = new float[heightmap.getWidth() * heightmap.getHeight()];
-
-        for (int x = 0; x < heightmap.getWidth(); x++) {
-            for (int y = 0; y < heightmap.getHeight(); y++) {
-                float value = heightmap.getRGB(x, heightmap.getHeight() - y - 1);
-                value += MAX_COLOR_VALUE / 2;
-                value /= MAX_COLOR_VALUE / 2;
-                value *= MAX_HEIGHT;
-                heights[y * heightmap.getWidth() + x] = value;
-            }
-        }
-
-        return heights;
     }
 
     @Override

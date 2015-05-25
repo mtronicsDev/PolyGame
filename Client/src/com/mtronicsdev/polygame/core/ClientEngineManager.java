@@ -1,7 +1,6 @@
 package com.mtronicsdev.polygame.core;
 
 import com.mtronicsdev.polygame.display.Display;
-import com.mtronicsdev.polygame.display.Window;
 import com.mtronicsdev.polygame.entities.Entity;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
@@ -12,7 +11,7 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
  */
 public class ClientEngineManager {
 
-    public static void run() {
+    public static void init() {
         try {
             Class.forName("com.mtronicsdev.polygame.graphics.Shader");
             Class.forName("com.mtronicsdev.polygame.io.Colors");
@@ -24,9 +23,9 @@ public class ClientEngineManager {
 
         if (glfwInit() != 1)
             throw new IllegalStateException("Unable to initialize GLFW");
+    }
 
-        new Window("Polygame", 720, 480);
-
+    public static void run() {
         while (Display.getWindows().size() > 0) {
             Entity.getRoot().update();
             Display.refresh();

@@ -1,5 +1,7 @@
 package com.mtronicsdev.polygame.display;
 
+import org.lwjgl.glfw.GLFW;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,8 +15,8 @@ public final class Display {
 
     private static final List<Window> windows;
 
-    private static long lastFrameTime;
-    private static float delta;
+    private static double lastFrameTime;
+    private static double delta;
     private static Window currentWindow;
 
     static {
@@ -43,20 +45,20 @@ public final class Display {
             } else currentWindow.refresh();
         }
 
-        long currentFrameTime = getCurrentTime();
-        delta = (float) (currentFrameTime - lastFrameTime) / 1000;
+        double currentFrameTime = getCurrentTime();
+        delta = (float) (currentFrameTime - lastFrameTime);
         lastFrameTime = currentFrameTime;
     }
 
-    private static long getCurrentTime() {
-        return System.currentTimeMillis();
+    private static double getCurrentTime() {
+        return GLFW.glfwGetTime();
     }
 
     public static Window getCurrentWindow() {
         return currentWindow;
     }
 
-    public static float deltaTime() {
+    public static double deltaTime() {
         return delta;
     }
 
