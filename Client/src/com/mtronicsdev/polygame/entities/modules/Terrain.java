@@ -2,6 +2,7 @@ package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.graphics.*;
+import com.mtronicsdev.polygame.io.Preferences;
 import com.mtronicsdev.polygame.math.Vector3f;
 
 import java.awt.image.BufferedImage;
@@ -12,10 +13,11 @@ import java.awt.image.BufferedImage;
  */
 public class Terrain extends Module {
 
-    private static final int WIDTH = 128, HEIGHT = 128;
-    private static final float RESOLUTION = 1;
-    private static final int MAX_HEIGHT = 40;
-    private static final int MAX_COLOR_VALUE = 256 * 256 * 256;
+    private static final int WIDTH = Preferences.getPreference("terrain.width", int.class),
+            HEIGHT = Preferences.getPreference("terrain.height", int.class);
+    private static final float RESOLUTION = Preferences.getPreference("terrain.resolution", float.class);
+    private static final int MAX_HEIGHT = Preferences.getPreference("terrain.maxHeight", int.class);
+    private static final int MAX_VALUE = Preferences.getPreference("terrain.maxValue", Integer.class);
 
     protected Texture texture0, texture1, texture2, texture3;
     private SharedModel sharedModel;
@@ -53,8 +55,8 @@ public class Terrain extends Module {
         for (int x = 0; x < heightmap.getWidth(); x++) {
             for (int y = 0; y < heightmap.getHeight(); y++) {
                 float value = heightmap.getRGB(x, heightmap.getHeight() - y - 1);
-                value += MAX_COLOR_VALUE / 2;
-                value /= MAX_COLOR_VALUE / 2;
+                value += MAX_VALUE / 2;
+                value /= MAX_VALUE / 2;
                 value *= MAX_HEIGHT;
                 heights[y * heightmap.getWidth() + x] = value;
             }
