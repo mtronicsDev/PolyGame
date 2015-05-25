@@ -17,7 +17,7 @@ public class Terrain extends Module {
             HEIGHT = Preferences.getPreference("terrain.height", int.class);
     private static final float RESOLUTION = Preferences.getPreference("terrain.resolution", float.class);
     private static final int MAX_HEIGHT = Preferences.getPreference("terrain.maxHeight", int.class);
-    private static final int MAX_VALUE = Preferences.getPreference("terrain.maxValue", Integer.class);
+    private static final int MAX_VALUE = Preferences.getPreference("terrain.maxValue", int.class);
 
     protected Texture texture0, texture1, texture2, texture3;
     private SharedModel sharedModel;
