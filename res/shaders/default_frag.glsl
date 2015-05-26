@@ -19,6 +19,10 @@ uniform float specularExponent;
 
 void main(void) {
 
+    vec4 textureColor = texture(textureSampler, pass_textureCoordinates);
+
+    if(textureColor.a < .5) discard;
+
     vec3 normalizedNormal = normalize(absoluteNormal);
     vec3 normalizedVectorToCamera = normalize(vectorToCamera);
 
@@ -47,6 +51,6 @@ void main(void) {
         totalSpecularLight += dampenedSpecularFactor * lightColor[i];
     }
 
-    out_Color = vec4(totalDiffuseLight * diffuseReflectivity, 1) * texture(textureSampler, pass_textureCoordinates)
+    out_Color = vec4(totalDiffuseLight * diffuseReflectivity, 1) * textureColor
         + vec4(totalSpecularLight * specularReflectivity, 1);
 }
