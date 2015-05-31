@@ -1,8 +1,8 @@
 package com.mtronicsdev.polygame.graphics;
 
-import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector2f;
-import com.mtronicsdev.polygame.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 import static java.lang.Math.toRadians;
 
@@ -30,6 +30,10 @@ public class GuiObject {
 
     public GuiObject(Vector2f position, Vector2f size, Texture texture) {
         this(position, size, 0, texture);
+    }
+
+    public GuiObject(Vector2f size, Texture texture) {
+        this(new Vector2f(), size, texture);
     }
 
     public Matrix4f getTransformationMatrix() {

@@ -1,8 +1,8 @@
 package com.mtronicsdev.polygame.entities;
 
-import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector3f;
-import com.mtronicsdev.polygame.util.VectorMath;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.VectorMath;
 
 /**
  * Class description.

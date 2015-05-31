@@ -2,10 +2,10 @@ package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.display.Input;
 import com.mtronicsdev.polygame.entities.Entity3D;
-import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector2f;
-import com.mtronicsdev.polygame.math.Vector3f;
-import com.mtronicsdev.polygame.util.VectorMath;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.VectorMath;
 import org.lwjgl.glfw.GLFW;
 
 import static java.lang.Math.*;
@@ -16,7 +16,7 @@ import static java.lang.Math.*;
  */
 public class ThirdPersonController extends Camera {
 
-    private float radius = 40;
+    private float radius = 0;
     private float pitch = 0;
     private float yaw = 180;
     private Vector3f position = new Vector3f();

@@ -1,7 +1,7 @@
 package com.mtronicsdev.polygame.entities.modules.gui;
 
 import com.mtronicsdev.polygame.graphics.GuiObject;
-import com.mtronicsdev.polygame.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector2f;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.mtronicsdev.polygame.math;
+package com.mtronicsdev.polygame.util.math;
 
 public class Matrix3f {
 

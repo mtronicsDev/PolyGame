@@ -1,6 +1,6 @@
 package com.mtronicsdev.polygame.entities;
 
-import com.mtronicsdev.polygame.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector2f;
 
 /**
  * Class description.

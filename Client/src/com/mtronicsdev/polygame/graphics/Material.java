@@ -1,6 +1,6 @@
 package com.mtronicsdev.polygame.graphics;
 
-import com.mtronicsdev.polygame.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 /**
  * @author mtronics_dev

@@ -1,4 +1,6 @@
-package com.mtronicsdev.polygame.math;
+package com.mtronicsdev.polygame.util.math;
+
+import static java.lang.Math.sqrt;
 
 /**
  * Class description.
@@ -54,7 +56,7 @@ public class Vector3f {
     }
 
     public float length() {
-        return (float) Math.sqrt(dot(this));
+        return (float) sqrt(dot(this));
     }
 
     public void normalize() {

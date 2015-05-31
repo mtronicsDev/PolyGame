@@ -3,7 +3,7 @@ package com.mtronicsdev.polygame.graphics;
 import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.LightSource;
 import com.mtronicsdev.polygame.io.Resources;
-import com.mtronicsdev.polygame.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
 
 import java.io.File;
 import java.net.URISyntaxException;

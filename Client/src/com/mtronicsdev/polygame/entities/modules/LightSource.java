@@ -2,7 +2,7 @@ package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.graphics.RenderEngine;
-import com.mtronicsdev.polygame.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 /**
  * @author mtronics_dev

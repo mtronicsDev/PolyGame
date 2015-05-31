@@ -2,8 +2,8 @@ package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.entities.modules.*;
 import com.mtronicsdev.polygame.io.Preferences;
-import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.util.VectorMath;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.VectorMath;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;

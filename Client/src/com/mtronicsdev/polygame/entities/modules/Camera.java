@@ -3,9 +3,9 @@ package com.mtronicsdev.polygame.entities.modules;
 import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.graphics.RenderEngine;
-import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector3f;
-import com.mtronicsdev.polygame.util.VectorMath;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.VectorMath;
 
 /**
  * @author mtronics_dev

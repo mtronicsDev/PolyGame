@@ -4,7 +4,7 @@ import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.Camera;
 import com.mtronicsdev.polygame.entities.modules.LightSource;
 import com.mtronicsdev.polygame.entities.modules.Model;
-import com.mtronicsdev.polygame.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
 
 import java.net.URISyntaxException;
 import java.util.List;

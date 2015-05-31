@@ -1,7 +1,7 @@
 package com.mtronicsdev.polygame.graphics;
 
-import com.mtronicsdev.polygame.math.Matrix4f;
-import com.mtronicsdev.polygame.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;

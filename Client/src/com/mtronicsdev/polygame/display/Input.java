@@ -1,6 +1,6 @@
 package com.mtronicsdev.polygame.display;
 
-import com.mtronicsdev.polygame.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector2f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.DoubleBuffer;

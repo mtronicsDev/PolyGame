@@ -4,8 +4,8 @@ import com.mtronicsdev.polygame.graphics.Material;
 import com.mtronicsdev.polygame.graphics.RawModel;
 import com.mtronicsdev.polygame.graphics.SharedModel;
 import com.mtronicsdev.polygame.graphics.Texture;
-import com.mtronicsdev.polygame.math.Vector2f;
-import com.mtronicsdev.polygame.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -47,19 +47,19 @@ public final class Models {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    if (line.startsWith("mtllib")) loadMaterialLibrary(filePath, line.split(" ")[1]);
-                    else if (line.startsWith("usemtl")) material = loadedMaterials.get(line.split(" ")[1]);
+                    if (line.startsWith("mtllib")) loadMaterialLibrary(filePath, line.split("[ ]+")[1]);
+                    else if (line.startsWith("usemtl")) material = loadedMaterials.get(line.split("[ ]+")[1]);
                     else if (line.startsWith("v ")) vertices.add(new Vector3f(
-                            Float.parseFloat(line.split(" ")[1]),
-                            Float.parseFloat(line.split(" ")[2]),
-                            Float.parseFloat(line.split(" ")[3])));
+                            Float.parseFloat(line.split("[ ]+")[1]),
+                            Float.parseFloat(line.split("[ ]+")[2]),
+                            Float.parseFloat(line.split("[ ]+")[3])));
                     else if (line.startsWith("vn ")) normals.add(new Vector3f(
-                            Float.parseFloat(line.split(" ")[1]),
-                            Float.parseFloat(line.split(" ")[2]),
-                            Float.parseFloat(line.split(" ")[3])));
+                            Float.parseFloat(line.split("[ ]+")[1]),
+                            Float.parseFloat(line.split("[ ]+")[2]),
+                            Float.parseFloat(line.split("[ ]+")[3])));
                     else if (line.startsWith("vt ")) uvs.add(new Vector2f(
-                            Float.parseFloat(line.split(" ")[1]),
-                            Float.parseFloat(line.split(" ")[2])));
+                            Float.parseFloat(line.split("[ ]+")[1]),
+                            Float.parseFloat(line.split("[ ]+")[2])));
                     else if (line.startsWith("f ")) break;
                 }
 
@@ -69,8 +69,8 @@ public final class Models {
                 uvArray = new float[size * 2];
 
                 while (line != null) {
-                    if (line.startsWith("f")) {
-                        String[] vertexIndices = line.split(" ");
+                    if (line.startsWith("f ")) {
+                        String[] vertexIndices = line.split("[ ]+");
 
                         String[] vertex1 = vertexIndices[1].split("/");
                         String[] vertex2 = vertexIndices[2].split("/");
@@ -158,7 +158,7 @@ public final class Models {
                                     currentEmit,
                                     currentSpecularExponent)); //If new material is started, previous one gets saved
 
-                    currentMaterialName = line.split(" ")[1];
+                    currentMaterialName = line.split("[ ]+")[1];
 
                     currentTexture = null;
                     currentColor = new Vector3f(1, 1, 1);
@@ -170,22 +170,22 @@ public final class Models {
                     currentSpecularReflectivity = new Vector3f(1, 1, 1);
                     currentEmit = new Vector3f();
                 } else if (currentMaterialName != null) {
-                    if (line.startsWith("Ns")) currentSpecularExponent = Float.parseFloat(line.split(" ")[1]);
+                    if (line.startsWith("Ns")) currentSpecularExponent = Float.parseFloat(line.split("[ ]+")[1]);
                     else if (line.startsWith("Ka")) currentAmbientReflectivity = new Vector3f(
-                            Float.parseFloat(line.split(" ")[1]),
-                            Float.parseFloat(line.split(" ")[2]),
-                            Float.parseFloat(line.split(" ")[3]));
+                            Float.parseFloat(line.split("[ ]+")[1]),
+                            Float.parseFloat(line.split("[ ]+")[2]),
+                            Float.parseFloat(line.split("[ ]+")[3]));
                     else if (line.startsWith("Kd")) currentDiffuseReflectivity = new Vector3f(
-                            Float.parseFloat(line.split(" ")[1]),
-                            Float.parseFloat(line.split(" ")[2]),
-                            Float.parseFloat(line.split(" ")[3]));
+                            Float.parseFloat(line.split("[ ]+")[1]),
+                            Float.parseFloat(line.split("[ ]+")[2]),
+                            Float.parseFloat(line.split("[ ]+")[3]));
                     else if (line.startsWith("Ks")) currentSpecularReflectivity = new Vector3f(
-                            Float.parseFloat(line.split(" ")[1]),
-                            Float.parseFloat(line.split(" ")[2]),
-                            Float.parseFloat(line.split(" ")[3]));
+                            Float.parseFloat(line.split("[ ]+")[1]),
+                            Float.parseFloat(line.split("[ ]+")[2]),
+                            Float.parseFloat(line.split("[ ]+")[3]));
                         //else if (line.startsWith("d")); //Transparency [0.0; 1.0]
                     else if (line.startsWith("map_Kd"))
-                        currentTexture = Resources.getResource(filePath + line.split(" ")[1], Texture.class);
+                        currentTexture = Resources.getResource(filePath + line.split("[ ]+")[1], Texture.class);
                 }
             }
 

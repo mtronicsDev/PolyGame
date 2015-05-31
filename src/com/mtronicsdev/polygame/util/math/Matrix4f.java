@@ -1,6 +1,9 @@
-package com.mtronicsdev.polygame.math;
+package com.mtronicsdev.polygame.util.math;
 
 import java.nio.FloatBuffer;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 public class Matrix4f {
 
@@ -135,8 +138,8 @@ public class Matrix4f {
      * @return This matrix, after the rotation has been applied
      */
     public Matrix4f rotate(float angle, Vector3f axis) {
-        float c = (float) Math.cos(angle);
-        float s = (float) Math.sin(angle);
+        float c = (float) cos(angle);
+        float s = (float) sin(angle);
         float oneMinusC = 1.0f - c;
         float xy = axis.x * axis.y;
         float yz = axis.y * axis.z;
