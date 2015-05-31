@@ -23,7 +23,8 @@ public class Terrain extends Module {
     private SharedModel sharedModel;
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
-        this(blendMap, texture0, texture1, texture2, texture3, (float[]) null);
+        this(blendMap, texture0, texture1, texture2, texture3,
+                new float[(int) (WIDTH * HEIGHT * RESOLUTION * RESOLUTION)]);
     }
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,

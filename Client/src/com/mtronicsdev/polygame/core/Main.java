@@ -2,10 +2,7 @@ package com.mtronicsdev.polygame.core;
 
 import com.mtronicsdev.polygame.display.Window;
 import com.mtronicsdev.polygame.entities.Entity3D;
-import com.mtronicsdev.polygame.entities.modules.FirstPersonController;
-import com.mtronicsdev.polygame.entities.modules.Model;
-import com.mtronicsdev.polygame.entities.modules.Skybox;
-import com.mtronicsdev.polygame.entities.modules.Water;
+import com.mtronicsdev.polygame.entities.modules.*;
 import com.mtronicsdev.polygame.entities.modules.gui.GuiImage;
 import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
 import com.mtronicsdev.polygame.graphics.GuiObject;
@@ -13,6 +10,7 @@ import com.mtronicsdev.polygame.graphics.SharedModel;
 import com.mtronicsdev.polygame.graphics.Texture;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 import java.awt.image.BufferedImage;
 
@@ -36,7 +34,18 @@ public class Main {
                         Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
 
-        new Entity3D(new Model(Resources.getResource("res/stall.obj", SharedModel.class)), new Water());
+        new Entity3D(new Terrain(Resources.getResource("res/blendMap.png", Texture.class),
+                Resources.getResource("res/Grass 00 seamless.png", Texture.class),
+                Resources.getResource("res/Dirt 00 seamless.png", Texture.class),
+                Resources.getResource("res/Dirt cracked 00 seamless.png", Texture.class),
+                Resources.getResource("res/Seamless cobblestones at sunset texture.png", Texture.class),
+                Resources.getResource("res/heightmap.png", BufferedImage.class)));
+
+        new Entity3D(new Vector3f(64, 100, 64), new LightSource(new Vector3f(1, 1, 1)));
+
+        new Entity3D(new Vector3f(45, 15, -70), new Water());
+
+        new Entity3D(new Vector3f(45, 25, -90), new Model(Resources.getResource("res/stall.obj", SharedModel.class)));
 
         GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
                 Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.TOP_LEFT));
