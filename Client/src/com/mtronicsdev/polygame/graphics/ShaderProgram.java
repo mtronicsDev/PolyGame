@@ -2,6 +2,7 @@ package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.util.math.Matrix4f;
 import com.mtronicsdev.polygame.util.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -66,6 +67,14 @@ public class ShaderProgram extends GLObject {
 
     protected final void loadVector3f(int location, Vector3f value) {
         glUniform3f(location, value.x, value.y, value.z);
+    }
+
+    protected final void loadVector4f(int location, Vector4f value) {
+        glUniform4f(location, value.x, value.y, value.z, value.w);
+    }
+
+    protected final void loadVector4f(int location, Vector3f value, float w) {
+        glUniform4f(location, value.x, value.y, value.z, w);
     }
 
     protected final void loadMatrix4f(int location, Matrix4f value) {

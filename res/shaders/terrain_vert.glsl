@@ -15,9 +15,13 @@ uniform mat4 viewMatrix;
 
 uniform vec3[4] lightPosition;
 
+uniform vec4 clipPlane;
+
 void main(void) {
 
     vec4 absolutePosition = transformationMatrix * vec4(position, 1);
+
+    gl_ClipDistance[0] = dot(absolutePosition, clipPlane);
 
     gl_Position = projectionMatrix * viewMatrix * absolutePosition;
     pass_textureCoordinates = textureCoordinates;

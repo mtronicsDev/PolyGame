@@ -30,10 +30,10 @@ public class TerrainRenderAgent extends RenderAgent<TerrainShaderProgram> {
         unbindShaderProgram();
     }
 
-    void render(List<Terrain> terrains, List<Camera> cameras, List<LightSource> lightSources) {
+    void render(List<Terrain> terrains, Camera camera, List<LightSource> lightSources) {
         bindShaderProgram();
 
-        shaderProgram.loadViewMatrix(cameras.get(0).getViewMatrix());
+        shaderProgram.loadViewMatrix(camera.getViewMatrix());
 
         shaderProgram.loadLights(lightSources);
 

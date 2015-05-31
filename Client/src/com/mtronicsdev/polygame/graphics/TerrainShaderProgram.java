@@ -4,6 +4,7 @@ import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.LightSource;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -28,6 +29,8 @@ public class TerrainShaderProgram extends ShaderProgram {
     private int locationOfSpecularReflectivity;
 
     private int locationOfSpecularExponent;
+
+    private int locationOfClipPlane;
 
     private int locationOfBlendMap;
     private int locationOfTexture0;
@@ -58,6 +61,8 @@ public class TerrainShaderProgram extends ShaderProgram {
         locationOfSpecularReflectivity = getUniformLocation("specularReflectivity");
 
         locationOfSpecularExponent = getUniformLocation("specularExponent");
+
+        locationOfClipPlane = getUniformLocation("clipPlane");
 
         locationOfBlendMap = getUniformLocation("blendMap");
         locationOfTexture0 = getUniformLocation("texture0");
@@ -113,6 +118,10 @@ public class TerrainShaderProgram extends ShaderProgram {
         loadInteger(locationOfTexture1, 2);
         loadInteger(locationOfTexture2, 3);
         loadInteger(locationOfTexture3, 4);
+    }
+
+    public void loadClipPlane(Vector3f clipPlane, float height) {
+        loadVector4f(locationOfClipPlane, clipPlane, height);
     }
 
 }

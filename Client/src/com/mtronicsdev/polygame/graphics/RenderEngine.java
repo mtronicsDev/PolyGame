@@ -24,12 +24,14 @@ public final class RenderEngine {
     private static TerrainRenderAgent terrainRenderAgent;
     private static SkyboxRenderAgent skyboxRenderAgent;
     private static GuiRenderAgent guiRenderAgent;
+    private static WaterRenderAgent waterRenderAgent;
 
     private static Map<SharedModel, List<Model>> modelPool;
 
-    private static java.util.List<LightSource> lightSources;
-    private static java.util.List<Camera> cameras;
+    private static List<LightSource> lightSources;
+    private static Camera camera;
     private static List<Terrain> terrains;
+    private static List<Water> waters;
 
     private static Matrix4f projectionMatrix;
 
@@ -51,6 +53,7 @@ public final class RenderEngine {
             terrainRenderAgent = new TerrainRenderAgent(projectionMatrix, ambientLightStrength);
             skyboxRenderAgent = new SkyboxRenderAgent(projectionMatrix);
             guiRenderAgent = new GuiRenderAgent();
+            waterRenderAgent = new WaterRenderAgent(projectionMatrix);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -58,8 +61,9 @@ public final class RenderEngine {
         modelPool = new HashMap<>();
 
         lightSources = new ArrayList<>();
-        cameras = new ArrayList<>();
+        camera = new Camera();
         terrains = new ArrayList<>();
+        waters = new ArrayList<>();
 
         glEnable(GL_DEPTH_TEST);
         if (Preferences.getPreference("renderEngine.faceCulling", boolean.class)) {
@@ -72,12 +76,22 @@ public final class RenderEngine {
     }
 
     public static void render() {
-        if (!cameras.isEmpty()) {
-            skyboxRenderAgent.render(cameras);
-            defaultRenderAgent.render(modelPool, cameras, lightSources);
-            terrainRenderAgent.render(terrains, cameras, lightSources);
-        }
+        renderPre();
+        renderMain();
+        renderPost();
+    }
 
+    static void renderPre() {
+        skyboxRenderAgent.render(camera);
+    }
+
+    static void renderMain() {
+        defaultRenderAgent.render(modelPool, camera, lightSources);
+        terrainRenderAgent.render(terrains, camera, lightSources);
+    }
+
+    static void renderPost() {
+        waterRenderAgent.render(camera, waters);
         guiRenderAgent.render();
     }
 
@@ -93,12 +107,16 @@ public final class RenderEngine {
         lightSources.add(lightSource);
     }
 
-    public static void registerCamera(Camera camera) {
-        cameras.add(camera);
-    }
-
     public static void registerTerrain(Terrain terrain) {
         terrains.add(terrain);
+    }
+
+    public static void registerWater(Water water) {
+        waters.add(water);
+    }
+
+    public static void setCamera(Camera camera) {
+        RenderEngine.camera = camera == null ? new Camera() : camera;
     }
 
     public static void setSkybox(Skybox skybox) {
@@ -117,12 +135,12 @@ public final class RenderEngine {
         lightSources.remove(lightSource);
     }
 
-    public static void unRegisterCamera(Camera camera) {
-        cameras.remove(camera);
-    }
-
     public static void unRegisterTerrain(Terrain terrain) {
         terrains.remove(terrain);
+    }
+
+    public static void unRegisterWater(Water water) {
+        waters.remove(water);
     }
 
     public static Matrix4f getProjectionMatrix() {
@@ -145,10 +163,32 @@ public final class RenderEngine {
         return ambientLightStrength;
     }
 
+    public static DefaultRenderAgent getDefaultRenderAgent() {
+        return defaultRenderAgent;
+    }
+
+    public static TerrainRenderAgent getTerrainRenderAgent() {
+        return terrainRenderAgent;
+    }
+
+    public static SkyboxRenderAgent getSkyboxRenderAgent() {
+        return skyboxRenderAgent;
+    }
+
+    public static GuiRenderAgent getGuiRenderAgent() {
+        return guiRenderAgent;
+    }
+
+    public static WaterRenderAgent getWaterRenderAgent() {
+        return waterRenderAgent;
+    }
+
     public static void updateProjectionMatrix(int width, int height) {
         projectionMatrix = VectorMath.createProjectionMatrix(fov, zNear, zFar, width, height);
         defaultRenderAgent.setProjectionMatrix(projectionMatrix);
         terrainRenderAgent.setProjectionMatrix(projectionMatrix);
         skyboxRenderAgent.setProjectionMatrix(projectionMatrix);
+        waterRenderAgent.setProjectionMatrix(projectionMatrix);
     }
+
 }

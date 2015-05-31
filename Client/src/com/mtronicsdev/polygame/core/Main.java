@@ -5,6 +5,7 @@ import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.FirstPersonController;
 import com.mtronicsdev.polygame.entities.modules.Model;
 import com.mtronicsdev.polygame.entities.modules.Skybox;
+import com.mtronicsdev.polygame.entities.modules.Water;
 import com.mtronicsdev.polygame.entities.modules.gui.GuiImage;
 import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
 import com.mtronicsdev.polygame.graphics.GuiObject;
@@ -35,7 +36,7 @@ public class Main {
                         Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
 
-        new Entity3D(new Model(Resources.getResource("res/stall.obj", SharedModel.class)));
+        new Entity3D(new Model(Resources.getResource("res/stall.obj", SharedModel.class)), new Water());
 
         GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
                 Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.TOP_LEFT));

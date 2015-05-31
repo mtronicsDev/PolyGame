@@ -4,6 +4,7 @@ import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.LightSource;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -29,6 +30,8 @@ public class DefaultShaderProgram extends ShaderProgram {
 
     private int locationOfSpecularExponent;
 
+    private int locationOfClipPlane;
+
     public DefaultShaderProgram() throws URISyntaxException {
         super(Resources.getResource(new File("res/shaders/default_vert.glsl"), Shader.class),
                 Resources.getResource(new File("res/shaders/default_frag.glsl"), Shader.class));
@@ -52,6 +55,8 @@ public class DefaultShaderProgram extends ShaderProgram {
         locationOfSpecularReflectivity = getUniformLocation("specularReflectivity");
 
         locationOfSpecularExponent = getUniformLocation("specularExponent");
+
+        locationOfClipPlane = getUniformLocation("clipPlane");
 
     }
 
@@ -93,6 +98,10 @@ public class DefaultShaderProgram extends ShaderProgram {
         loadVector3f(locationOfSpecularReflectivity, material.getSpecularReflectivity());
 
         loadFloat(locationOfSpecularExponent, material.getSpecularExponent());
+    }
+
+    public void loadClipPlane(Vector3f clipPlane, float height) {
+        loadVector4f(locationOfClipPlane, clipPlane, height);
     }
 
 }

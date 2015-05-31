@@ -72,6 +72,7 @@ public final class Window {
         glfwSetWindowSizeCallback(id, windowSizeCallback = new GLFWWindowSizeCallback() {
             @Override
             public void invoke(long l, int i, int i1) {
+                glViewport(0, 0, i, i1);
                 RenderEngine.updateProjectionMatrix(i, i1);
                 GuiPanel.updateLayout();
             }
@@ -95,6 +96,11 @@ public final class Window {
         glfwSwapBuffers(id);
         glfwPollEvents();
         Input.update(this);
+    }
+
+    public void resetViewport() {
+        Point size = getSize();
+        glViewport(0, 0, size.x, size.y);
     }
 
     public Color getBackgroundColor() {

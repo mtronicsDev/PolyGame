@@ -31,11 +31,11 @@ public class DefaultRenderAgent extends RenderAgent<DefaultShaderProgram> {
         unbindShaderProgram();
     }
 
-    void render(Map<SharedModel, List<Model>> modelPool, List<Camera> cameras, List<LightSource> lightSources) {
+    void render(Map<SharedModel, List<Model>> modelPool, Camera camera, List<LightSource> lightSources) {
         bindShaderProgram();
         glActiveTexture(GL_TEXTURE0);
 
-        shaderProgram.loadViewMatrix(cameras.get(0).getViewMatrix());
+        shaderProgram.loadViewMatrix(camera.getViewMatrix());
 
         shaderProgram.loadLights(lightSources);
 

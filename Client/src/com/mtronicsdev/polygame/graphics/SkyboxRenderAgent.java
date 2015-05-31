@@ -5,7 +5,6 @@ import com.mtronicsdev.polygame.entities.modules.Skybox;
 import com.mtronicsdev.polygame.util.math.Matrix4f;
 
 import java.net.URISyntaxException;
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
@@ -29,11 +28,11 @@ public class SkyboxRenderAgent extends RenderAgent<SkyboxShaderProgram> {
         shaderProgram.unbind();
     }
 
-    void render(List<Camera> cameras) {
+    void render(Camera camera) {
         if (cubeMap != null) {
             shaderProgram.bind();
 
-            Matrix4f view = cameras.get(0).getViewMatrix();
+            Matrix4f view = camera.getViewMatrix();
             view.m30 = view.m31 = view.m32 = 0;
 
             shaderProgram.loadViewMatrix(view);

@@ -195,6 +195,15 @@ public class Matrix4f {
         return this;
     }
 
+    public Matrix4f translate(float x, float y, float z) {
+        m30 += m00 * x + m10 * y + m20 * z;
+        m31 += m01 * x + m11 * y + m21 * z;
+        m32 += m02 * x + m12 * y + m22 * z;
+        m33 += m03 * x + m13 * y + m23 * z;
+
+        return this;
+    }
+
     public Matrix4f translate(Vector2f vector) {
         m30 += m00 * vector.x + m10 * vector.y;
         m31 += m01 * vector.x + m11 * vector.y;

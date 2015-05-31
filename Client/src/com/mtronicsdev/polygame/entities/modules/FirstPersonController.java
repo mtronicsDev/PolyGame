@@ -2,10 +2,8 @@ package com.mtronicsdev.polygame.entities.modules;
 
 import com.mtronicsdev.polygame.display.Input;
 import com.mtronicsdev.polygame.entities.Entity3D;
-import com.mtronicsdev.polygame.util.math.Matrix4f;
-import com.mtronicsdev.polygame.util.math.Vector2f;
-import com.mtronicsdev.polygame.util.math.Vector3f;
-import com.mtronicsdev.polygame.util.math.VectorMath;
+import com.mtronicsdev.polygame.util.math.Math;
+import com.mtronicsdev.polygame.util.math.*;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -14,6 +12,7 @@ import org.lwjgl.glfw.GLFW;
  */
 public class FirstPersonController extends Camera {
 
+    private static final float HALF_PI = (float) (java.lang.Math.PI / 2);
     private final float speed;
     private final float sprintMultiplier;
     private final float sneakMultiplier;
@@ -83,6 +82,8 @@ public class FirstPersonController extends Camera {
         Vector2f delta = Input.getMouseDelta();
         rotation.x += delta.y * .01f;
         rotation.y += delta.x * .01f;
+
+        rotation.x = Math.clamp(rotation.x, -HALF_PI, HALF_PI); //Don't rotate your head through your neck
 
         //Movement
         parent.addPosition(direction);

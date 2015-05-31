@@ -14,7 +14,7 @@ import com.mtronicsdev.polygame.util.math.VectorMath;
 public class Camera extends Module {
 
     public Camera() {
-        RenderEngine.registerCamera(this);
+        RenderEngine.setCamera(this);
     }
 
     public Matrix4f getViewMatrix() {
@@ -28,6 +28,6 @@ public class Camera extends Module {
     @Override
     protected final void finalize() throws Throwable {
         super.finalize();
-        RenderEngine.unRegisterCamera(this);
+        //RenderEngine.setCamera(null);
     }
 }
