@@ -20,6 +20,7 @@ public class Terrain extends Module {
 
     protected Texture texture0, texture1, texture2, texture3;
     private SharedModel sharedModel;
+    private Texture blendMap;
 
     private float resolution = RESOLUTION;
     private int width = WIDTH;
@@ -65,6 +66,8 @@ public class Terrain extends Module {
         this.texture1 = texture1;
         this.texture2 = texture2;
         this.texture3 = texture3;
+
+        this.blendMap = blendMap;
 
         RenderEngine.registerTerrain(this);
     }
@@ -163,6 +166,68 @@ public class Terrain extends Module {
         }
 
         return new RawModel(indices, vertices, uvs, normals);
+    }
+
+    public void setHeight(int x, int y, float height) {
+        setHeight(x, y, height, heightmap, (int) (width * resolution), (int) (this.height * resolution));
+
+        try {
+            //noinspection FinalizeCalledExplicitly
+            sharedModel.finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+
+        sharedModel = new SharedModel(generateMesh(heightmap),
+                new Material(blendMap,
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(.05f, .05f, .05f),
+                        new Vector3f(), 97));
+    }
+
+    public void setHeights(int x, int y, int width, int height, float[][] heights) {
+        setHeights(x, y, width, height, heights, (int) (this.width * resolution), (int) (this.height * resolution));
+
+        try {
+            //noinspection FinalizeCalledExplicitly
+            sharedModel.finalize();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+
+        sharedModel = new SharedModel(generateMesh(heightmap),
+                new Material(blendMap,
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(1, 1, 1),
+                        new Vector3f(.05f, .05f, .05f),
+                        new Vector3f(), 97));
+    }
+
+    private void setHeights(int x, int y, int width, int height, float[][] heights, int xVertexCount, int yVertexCount) {
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x >= xVertexCount) x = xVertexCount - 1;
+        if (y >= yVertexCount) y = yVertexCount - 1;
+        if (x + width >= xVertexCount) width = xVertexCount - 1 - x;
+        if (y + height >= yVertexCount) height = yVertexCount - 1 - y;
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                heightmap[(j + y) * xVertexCount + (i + x)] = heights[i][j];
+            }
+        }
+    }
+
+    private void setHeight(int x, int y, float height, float[] heightmap, int xVertexCount, int yVertexCount) {
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x >= xVertexCount) x = xVertexCount - 1;
+        if (y >= yVertexCount) y = yVertexCount - 1;
+
+        heightmap[y * xVertexCount + x] = height;
     }
 
     public SharedModel getSharedModel() {
