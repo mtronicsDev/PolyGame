@@ -10,9 +10,16 @@ import com.mtronicsdev.polygame.util.math.Vector3f;
  */
 public class Water extends Module {
 
-    private static final Vector3f size = new Vector3f(40, 0, 40);
+    private static final Vector3f SIZE = new Vector3f(40, 0, 40);
+
+    private Vector3f size;
 
     public Water() {
+        this(SIZE);
+    }
+
+    public Water(Vector3f size) {
+        this.size = size;
         RenderEngine.registerWater(this);
     }
 

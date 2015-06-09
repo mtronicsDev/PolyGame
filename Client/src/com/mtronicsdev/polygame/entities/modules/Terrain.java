@@ -17,18 +17,42 @@ public class Terrain extends Module {
             HEIGHT = Preferences.getPreference("terrain.height", int.class);
     private static final float RESOLUTION = Preferences.getPreference("terrain.resolution", float.class);
     private static final int MAX_HEIGHT = Preferences.getPreference("terrain.maxHeight", int.class);
-    private static final int MAX_VALUE = Preferences.getPreference("terrain.maxValue", int.class);
 
     protected Texture texture0, texture1, texture2, texture3;
     private SharedModel sharedModel;
+
+    private float resolution = RESOLUTION;
+    private int width = WIDTH;
+    private int height = HEIGHT;
+    private int maxHeight = MAX_HEIGHT;
+    private float[] heightmap;
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
         this(blendMap, texture0, texture1, texture2, texture3,
                 new float[(int) (WIDTH * HEIGHT * RESOLUTION * RESOLUTION)]);
     }
 
+    public Terrain(int width, int height, float resolution, int maxHeight,
+                   Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
+        this(width, height, resolution, maxHeight, blendMap, texture0, texture1, texture2, texture3,
+                new float[(int) (WIDTH * HEIGHT * RESOLUTION * RESOLUTION)]);
+    }
+
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
                    float[] heightmap) {
+        this(WIDTH, HEIGHT, RESOLUTION, MAX_HEIGHT, blendMap, texture0, texture1, texture2, texture3, heightmap);
+    }
+
+    public Terrain(int width, int height, float resolution, int maxHeight,
+                   Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
+                   float[] heightmap) {
+
+        this.width = width;
+        this.height = height;
+        this.resolution = resolution;
+        this.maxHeight = maxHeight;
+        this.heightmap = heightmap;
+
         sharedModel = new SharedModel(generateMesh(heightmap),
                 new Material(blendMap,
                         new Vector3f(1, 1, 1),
@@ -47,7 +71,14 @@ public class Terrain extends Module {
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
                    BufferedImage heightmap) {
-        this(blendMap, texture0, texture1, texture2, texture3, readHeightmap(heightmap));
+        this(WIDTH, HEIGHT, RESOLUTION, MAX_HEIGHT, blendMap, texture0, texture1, texture2, texture3, heightmap);
+    }
+
+    public Terrain(int width, int height, float resolution, int maxHeight,
+                   Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
+                   BufferedImage heightmap) {
+        this(width, height, resolution, maxHeight, blendMap, texture0, texture1, texture2, texture3,
+                readHeightmap(heightmap));
     }
 
     private static float[] readHeightmap(BufferedImage heightmap) {
@@ -56,9 +87,8 @@ public class Terrain extends Module {
         for (int x = 0; x < heightmap.getWidth(); x++) {
             for (int y = 0; y < heightmap.getHeight(); y++) {
                 float value = heightmap.getRGB(x, heightmap.getHeight() - y - 1);
-                value += MAX_VALUE / 2;
-                value /= MAX_VALUE / 2;
-                value *= MAX_HEIGHT;
+                value /= 256 * 256 * 256 / 2; //Normalize to [0; 2]
+                value -= 1; //Shift to [-1; 1]
                 heights[y * heightmap.getWidth() + x] = value;
             }
         }
@@ -67,8 +97,8 @@ public class Terrain extends Module {
     }
 
     private RawModel generateMesh(float[] heightmap) {
-        int xVertexCount = (int) (WIDTH * RESOLUTION);
-        int yVertexCount = (int) (HEIGHT * RESOLUTION);
+        int xVertexCount = (int) (width * resolution);
+        int yVertexCount = (int) (height * resolution);
 
         int vertexCount = xVertexCount * yVertexCount;
 
@@ -89,9 +119,9 @@ public class Terrain extends Module {
         //Generating the vertices / normals / uvs
         for (int x = 0; x < xVertexCount; x++) {
             for (int y = 0; y < yVertexCount; y++) {
-                vertices[vertexPointer * 3] = (float) x / ((float) xVertexCount - 1) * WIDTH;
-                vertices[vertexPointer * 3 + 1] = heightmap == null ? 0 : heightmap[y * xVertexCount + x];
-                vertices[vertexPointer * 3 + 2] = -(float) y / ((float) yVertexCount - 1) * HEIGHT;
+                vertices[vertexPointer * 3] = (float) x / ((float) xVertexCount - 1) * width;
+                vertices[vertexPointer * 3 + 1] = heightmap == null ? 0 : heightmap[y * xVertexCount + x] * maxHeight;
+                vertices[vertexPointer * 3 + 2] = -(float) y / ((float) yVertexCount - 1) * height;
 
                 //Calculate normal
                 float heightLeft = getHeight(x - 1, y, heightmap, xVertexCount, yVertexCount);
@@ -155,6 +185,22 @@ public class Terrain extends Module {
         return texture3;
     }
 
+    public float getResolution() {
+        return resolution;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
     private float getHeight(int x, int y, float[] heightmap, int xVertexCount, int yVertexCount) {
         if (x < 0) x = 0;
         if (y < 0) y = 0;
@@ -162,6 +208,10 @@ public class Terrain extends Module {
         if (y >= yVertexCount) y = yVertexCount - 1;
 
         return heightmap[y * xVertexCount + x];
+    }
+
+    public float getHeight(int x, int y) {
+        return getHeight(x, y, heightmap, (int) (width * resolution), (int) (height * resolution));
     }
 
     @Override

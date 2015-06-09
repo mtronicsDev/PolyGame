@@ -115,6 +115,8 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
             PLANE_MODEL.unbind();
             shaderProgram.unbind();
         }
+
+        RenderEngine.setCamera(camera);
     }
 
     public int getReflectionTextureId() {
