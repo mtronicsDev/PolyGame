@@ -29,14 +29,13 @@ public class Terrain extends Module {
     private float[] heightmap;
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
-        this(blendMap, texture0, texture1, texture2, texture3,
-                new float[(int) (WIDTH * HEIGHT * RESOLUTION * RESOLUTION)]);
+        this(WIDTH, HEIGHT, RESOLUTION, MAX_HEIGHT, blendMap, texture0, texture1, texture2, texture3);
     }
 
     public Terrain(int width, int height, float resolution, int maxHeight,
                    Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3) {
         this(width, height, resolution, maxHeight, blendMap, texture0, texture1, texture2, texture3,
-                new float[(int) (WIDTH * HEIGHT * RESOLUTION * RESOLUTION)]);
+                new float[(int) (width * height * resolution * resolution)]);
     }
 
     public Terrain(Texture blendMap, Texture texture0, Texture texture1, Texture texture2, Texture texture3,
@@ -151,9 +150,9 @@ public class Terrain extends Module {
         //Generating the faces (indices)
         for (int x = 0; x < xVertexCount - 1; x++) {
             for (int y = 0; y < yVertexCount - 1; y++) {
-                int topLeft = (y * WIDTH) + x;
+                int topLeft = (y * width) + x;
                 int topRight = topLeft + 1;
-                int bottomLeft = ((y + 1) * WIDTH) + x;
+                int bottomLeft = ((y + 1) * width) + x;
                 int bottomRight = bottomLeft + 1;
 
                 indices[pointer++] = topLeft;
@@ -173,7 +172,8 @@ public class Terrain extends Module {
 
         try {
             //noinspection FinalizeCalledExplicitly
-            sharedModel.finalize();
+            RenderEngine.unRegisterSharedModel(sharedModel);
+            sharedModel.getRawModel().cleanUp();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -192,7 +192,8 @@ public class Terrain extends Module {
 
         try {
             //noinspection FinalizeCalledExplicitly
-            sharedModel.finalize();
+            RenderEngine.unRegisterSharedModel(sharedModel);
+            sharedModel.getRawModel().cleanUp();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -211,8 +212,8 @@ public class Terrain extends Module {
         if (y < 0) y = 0;
         if (x >= xVertexCount) x = xVertexCount - 1;
         if (y >= yVertexCount) y = yVertexCount - 1;
-        if (x + width >= xVertexCount) width = xVertexCount - 1 - x;
-        if (y + height >= yVertexCount) height = yVertexCount - 1 - y;
+        if (x + width > xVertexCount) width = xVertexCount - x;
+        if (y + height > yVertexCount) height = yVertexCount - y;
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {

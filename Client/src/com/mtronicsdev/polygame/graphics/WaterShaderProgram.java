@@ -17,6 +17,9 @@ public class WaterShaderProgram extends ShaderProgram {
 
     private int locationOfReflectionTexture;
     private int locationOfRefractionTexture;
+    private int locationOfDudvMap;
+
+    private int locationOfOffset;
 
     public WaterShaderProgram() {
         super(Resources.getResource(new File("res/shaders/water_vert.glsl"), Shader.class),
@@ -28,6 +31,8 @@ public class WaterShaderProgram extends ShaderProgram {
 
         locationOfReflectionTexture = getUniformLocation("reflectionTexture");
         locationOfRefractionTexture = getUniformLocation("refractionTexture");
+        locationOfDudvMap = getUniformLocation("dudvMap");
+        locationOfOffset = getUniformLocation("offset");
     }
 
     @Override
@@ -40,6 +45,7 @@ public class WaterShaderProgram extends ShaderProgram {
     public void loadTextureUnits() {
         loadInteger(locationOfReflectionTexture, 0);
         loadInteger(locationOfRefractionTexture, 1);
+        loadInteger(locationOfDudvMap, 2);
     }
 
     public void loadTransformationMatrix(Matrix4f matrix4f) {
@@ -52,5 +58,9 @@ public class WaterShaderProgram extends ShaderProgram {
 
     public void loadViewMatrix(Matrix4f matrix4f) {
         loadMatrix4f(locationOfViewMatrix, matrix4f);
+    }
+
+    public void loadOffset(float offset) {
+        loadFloat(locationOfOffset, offset);
     }
 }

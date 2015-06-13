@@ -25,7 +25,7 @@ public class SharedModel {
     }
 
     @Override
-    public final void finalize() throws Throwable {
+    protected final void finalize() throws Throwable {
         super.finalize();
         RenderEngine.unRegisterSharedModel(this);
     }

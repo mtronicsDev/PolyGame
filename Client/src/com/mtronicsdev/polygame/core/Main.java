@@ -34,7 +34,7 @@ public class Main {
                         Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
 
-        new Entity3D(new Terrain(Resources.getResource("res/blendMap.png", Texture.class),
+        new Entity3D(new Vector3f(0, 81, 0), new Terrain(Resources.getResource("res/blendMap.png", Texture.class),
                 Resources.getResource("res/Grass 00 seamless.png", Texture.class),
                 Resources.getResource("res/Dirt 00 seamless.png", Texture.class),
                 Resources.getResource("res/Dirt cracked 00 seamless.png", Texture.class),
@@ -43,9 +43,9 @@ public class Main {
 
         new Entity3D(new Vector3f(64, 100, 64), new LightSource(new Vector3f(1, 1, 1)));
 
-        new Entity3D(new Vector3f(45, 15, -70), new Water());
+        new Entity3D(new Vector3f(45, 0, -70), new Water());
 
-        new Entity3D(new Vector3f(45, 25, -90), new Model(Resources.getResource("res/stall.obj", SharedModel.class)));
+        new Entity3D(new Vector3f(45, 0, -90), new Model(Resources.getResource("res/stall.obj", SharedModel.class)));
 
         GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
                 Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.TOP_LEFT));

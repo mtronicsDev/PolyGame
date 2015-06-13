@@ -3,6 +3,7 @@ package com.mtronicsdev.polygame.graphics;
 import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.modules.Camera;
 import com.mtronicsdev.polygame.entities.modules.Water;
+import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Matrix4f;
 import com.mtronicsdev.polygame.util.math.Vector3f;
 import com.mtronicsdev.polygame.util.math.VectorMath;
@@ -32,7 +33,11 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
     private static final Vector3f REFLECTION_CLIP_PLANE = new Vector3f(0, 1, 0);
     private static final Vector3f REFRACTION_CLIP_PLANE = new Vector3f(0, -1, 0);
 
+    private static final Texture DUDV_MAP = Resources.getResource("res/DuDv.png", Texture.class);
+    private static final float WAVE_SPEED = 0.0001f;
+
     private FrameBufferObject reflectionFrameBuffer, refractionFrameBuffer;
+    private float offset = 0;
 
     protected WaterRenderAgent(Matrix4f projectionMatrix) {
         super(new WaterShaderProgram());
@@ -52,6 +57,9 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
     void render(Camera camera, List<Water> waters) {
         Vector3f cameraPosition = ((Entity3D) camera.getParent()).getPosition();
         AbstractCamera abstractCamera = new AbstractCamera(camera);
+
+        offset += WAVE_SPEED;
+        offset %= 1;
 
         for (Water water : waters) {
             Vector3f position = ((Entity3D) water.getParent()).getPosition();
@@ -79,6 +87,7 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
 
             RenderEngine.getDefaultRenderAgent().shaderProgram.loadClipPlane(REFRACTION_CLIP_PLANE, position.y);
             RenderEngine.getTerrainRenderAgent().shaderProgram.loadClipPlane(REFRACTION_CLIP_PLANE, position.y);
+
             refractionFrameBuffer.bind();
             RenderEngine.renderPre();
             RenderEngine.renderMain();
@@ -90,6 +99,7 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
 
             //Render water
             shaderProgram.bind();
+            shaderProgram.loadOffset(offset);
             shaderProgram.loadViewMatrix(camera.getViewMatrix());
             PLANE_MODEL.bind();
             glEnableVertexAttribArray(0);
@@ -100,12 +110,18 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, getRefractionTextureId());
 
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, DUDV_MAP.getId());
+
             shaderProgram.loadTransformationMatrix(
                     VectorMath.createTransformationMatrix(position,
                             Vector3f.ZERO, water.getSize()));
             glDrawElements(GL_TRIANGLES, PlaneModel.getSize(), GL_UNSIGNED_INT, 0);
 
-            //glActiveTexture(GL_TEXTURE1); //Performance loss and not necessary, see above
+            //glActiveTexture(GL_TEXTURE2); //Performance loss and not necessary, see above
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, 0);
 
             glActiveTexture(GL_TEXTURE0);
