@@ -15,10 +15,13 @@ import java.util.List;
 public class GuiPanel {
 
     private static final GuiPanel ROOT = new GuiPanel();
+
     protected boolean active;
     protected List<GuiPanel> children;
     protected Alignment alignment;
     protected float margin = 0.003f;
+
+    protected Vector2f offset = new Vector2f();
 
     public GuiPanel(boolean active, Alignment alignment, GuiPanel... children) {
         this.active = active;
@@ -71,6 +74,38 @@ public class GuiPanel {
 
             return renderList;
         }
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Alignment getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(Alignment alignment) {
+        this.alignment = alignment;
+    }
+
+    public float getMargin() {
+        return margin;
+    }
+
+    public void setMargin(float margin) {
+        this.margin = margin;
+    }
+
+    public Vector2f getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Vector2f offset) {
+        this.offset = offset;
     }
 
     public final void addChild(GuiPanel panel) {

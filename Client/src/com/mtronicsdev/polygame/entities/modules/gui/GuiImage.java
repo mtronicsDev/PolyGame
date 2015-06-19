@@ -30,7 +30,10 @@ public class GuiImage extends GuiPanel {
     protected void updateLayout(Vector2f parentPosition, Vector2f parentSize) {
         Vector2f imageSize = image.getSize();
 
-        image.setPosition(alignment.getPosition(parentPosition, parentSize, imageSize, margin));
+        Vector2f position = alignment.getPosition(parentPosition, parentSize, imageSize, margin);
+        position.add(offset);
+
+        image.setPosition(position);
         children.forEach(c -> c.updateLayout(image.getPosition(), imageSize));
     }
 
