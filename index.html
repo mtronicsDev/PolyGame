@@ -1,66 +1,106 @@
-<!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Polygame by mtronicsDev</title>
+  </head>
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
-
-  <title>Polygame</title>
-  <meta name="description" content="A Java™ 2D/3D hybrid game engine derived from mEngine.">
-
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-
-</head>
-
-<body>
-
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Polygame</h1>
-    </header>
+  <body>
     <div id="container">
-      <p class="tagline">A Java™ 2D/3D hybrid game engine derived from mEngine.</p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/mtronicsDev/PolyGame/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/mtronicsDev/PolyGame/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/mtronicsDev/PolyGame" class="code">View Polygame on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h1>
-<a id="the-polygame-engine" class="anchor" href="#the-polygame-engine" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Polygame Engine</h1>
+      <div class="inner">
+
+        <header>
+          <h1>Polygame</h1>
+          <h2>A Java™ 3D open source game engine.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mtronicsDev/PolyGame/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mtronicsDev/PolyGame/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mtronicsDev/PolyGame" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p><img src="http://mtronicsdev.github.io/PolyGame/images/polygame.png" alt="Polygame Logo" title="Polygame"></p>
 
 <h2>
-<a id="a-java-2d3d-hybrid-game-engine-derived-from-mengine" class="anchor" href="#a-java-2d3d-hybrid-game-engine-derived-from-mengine" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Java™ 2D/3D hybrid game engine derived from mEngine.</h2>
-        </article>
+<a id="a-java-3d-open-source-game-engine" class="anchor" href="#a-java-3d-open-source-game-engine" aria-hidden="true"><span class="octicon octicon-link"></span></a>A Java™ 3D open source game engine.</h2>
+
+<h3>
+<a id="the-goal" class="anchor" href="#the-goal" aria-hidden="true"><span class="octicon octicon-link"></span></a>The goal</h3>
+
+<p>The goal of me developing this game engine is to make a game engine that is packed full of features and technology while still being incredibly easy to develop games with.</p>
+
+<h3>
+<a id="under-the-hood" class="anchor" href="#under-the-hood" aria-hidden="true"><span class="octicon octicon-link"></span></a>Under the hood</h3>
+
+<p>This engine is using <a href="https://github.com/LWJGL/lwjgl3">LWJGL 3</a> to handle graphics and audio and is designed to be expandable, modular and future proof.</p>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<p>Polygame is still a work in progress but many key features are already fully working. Here is a quick list of the most important ones:</p>
+
+<ul>
+<li>
+<strong>Modular Entities</strong>
+
+<ul>
+<li>Every object in the world is represented by an <strong>entity</strong>.</li>
+<li>Entities can (and most likely <em>will</em>) contain <strong>modules</strong>.</li>
+<li>Modules are the building blocks that make up entities. They can be e.g. a camera, model, audio source, AI, controller, ...</li>
+<li>Of course you can write <em>your own</em> modules, but there is a number of them already included.</li>
+</ul>
+</li>
+<li>
+<strong>Multi-window support</strong>
+
+<ul>
+<li>Since Polygame is using LWJGL 3 whose window manager is GLFW, it's easy to create multiple windows!</li>
+<li>Windows share the same world but they of course <em>can show completely different things</em>.</li>
+</ul>
+</li>
+<li>
+<strong>Built-in terrain, water and skybox modules</strong>
+
+<ul>
+<li>This allows your game to <em>get pretty very fast</em>.</li>
+<li>Terrains can be loaded from heightmaps or can be generated at runtime.</li>
+<li>They also support multiple textures, so your beaches, rocks and paths can go right onto the terrain.</li>
+<li>Water uses <em>reflection, refraction and wave effects</em> to appear <em>realistic</em>.</li>
+<li>Skyboxes are loaded from six individual images and surround the whole field of view of the bound camera entity.</li>
+</ul>
+</li>
+<li>
+<strong>Easy resource loading</strong>
+
+<ul>
+<li>
+<strong>One central class</strong> handles all the resource loading.</li>
+<li>
+<strong>Resource handlers</strong> can be added to this class to load custom resource types.</li>
+</ul>
+</li>
+</ul>
+        </section>
+
+        <footer>
+          Polygame is maintained by <a href="https://github.com/mtronicsDev">mtronicsDev</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
       </div>
     </div>
-    <footer>
-      <div class="owner">
-      <p><a href="https://github.com/mtronicsDev" class="avatar"><img src="https://avatars0.githubusercontent.com/u/6088931?v=3&amp;s=60" width="48" height="48"></a> <a href="https://github.com/mtronicsDev">mtronicsDev</a> maintains <a href="https://github.com/mtronicsDev/PolyGame">Polygame</a></p>
-
-
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
-    </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/mtronicsDev/PolyGame/tarball/master" class="tar">tar</a><a href="https://github.com/mtronicsDev/PolyGame/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
-
-  
-</body>
+  </body>
 </html>
