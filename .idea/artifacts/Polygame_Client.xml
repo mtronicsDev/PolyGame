@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact name="Polygame_Client">
+  <artifact build-on-make="true" name="Polygame_Client">
     <output-path>$PROJECT_DIR$/out/artifacts/Polygame_Client</output-path>
     <root id="root">
       <element id="directory" name="data">

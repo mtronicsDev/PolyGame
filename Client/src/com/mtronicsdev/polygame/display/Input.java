@@ -3,6 +3,7 @@ package com.mtronicsdev.polygame.display;
 import com.mtronicsdev.polygame.util.math.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import java.awt.*;
 import java.nio.DoubleBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,12 +24,16 @@ public final class Input {
     private static DoubleBuffer mouseX, mouseY;
     private static float scrollDelta;
 
+    private static boolean catchMouse;
+
     static {
         keyHandlers = new HashMap<>();
         buttonHandlers = new HashMap<>(2);
 
         mouseXPrevious = mouseYPrevious = 0;
         scrollDelta = 0;
+
+        catchMouse = false;
 
         mouseX = BufferUtils.createDoubleBuffer(1);
         mouseY = BufferUtils.createDoubleBuffer(1);
@@ -40,10 +45,21 @@ public final class Input {
 
     static void update(Window window) {
         scrollDelta = 0;
-        mouseXPrevious = mouseX.get(0);
-        mouseYPrevious = mouseY.get(0);
 
-        glfwGetCursorPos(window.getId(), mouseX, mouseY);
+        if (catchMouse) {
+            glfwGetCursorPos(window.getId(), mouseX, mouseY);
+
+            Point windowSize = window.getSize();
+
+            glfwSetCursorPos(window.getId(), windowSize.getX() / 2, windowSize.getY() / 2);
+            mouseXPrevious = windowSize.x / 2;
+            mouseYPrevious = windowSize.y / 2;
+        } else {
+            mouseXPrevious = mouseX.get(0);
+            mouseYPrevious = mouseY.get(0);
+
+            glfwGetCursorPos(window.getId(), mouseX, mouseY);
+        }
 
         for (int key : keyHandlers.keySet()) {
             switch (glfwGetKey(window.getId(), key)) {
@@ -82,6 +98,19 @@ public final class Input {
 
     public static Vector2f getMouseDelta() {
         return new Vector2f((float) (mouseX.get(0) - mouseXPrevious), (float) (mouseY.get(0) - mouseYPrevious));
+    }
+
+    public static boolean isCatchMouse() {
+        return catchMouse;
+    }
+
+    public static void setCatchMouse(boolean catchMouse) {
+        Input.catchMouse = catchMouse;
+    }
+
+    public static void setCursorVisible(boolean visible) {
+        glfwSetInputMode(Display.getCurrentWindow().getId(),
+                GLFW_CURSOR, visible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_HIDDEN);
     }
 
     public static float getScrollDelta() {

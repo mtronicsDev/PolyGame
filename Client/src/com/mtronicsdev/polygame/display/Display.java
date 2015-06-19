@@ -29,6 +29,7 @@ public final class Display {
     }
 
     static void addWindow(Window window) {
+        if (windows.size() == 0) currentWindow = window;
         windows.add(window);
     }
 

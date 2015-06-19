@@ -14,6 +14,9 @@ import com.mtronicsdev.polygame.util.math.Vector3f;
 
 import java.awt.image.BufferedImage;
 
+import static com.mtronicsdev.polygame.display.Input.setCatchMouse;
+import static com.mtronicsdev.polygame.display.Input.setCursorVisible;
+
 /**
  * Class description.
  *
@@ -25,6 +28,9 @@ public class Main {
         ClientEngineManager.init();
 
         new Window("Polygame", 1280, 720);
+
+        setCursorVisible(false);
+        setCatchMouse(true);
 
         new Entity3D(new FirstPersonController(),
                 new Skybox(Resources.getResource("res/lostvalley_front.jpg", BufferedImage.class),

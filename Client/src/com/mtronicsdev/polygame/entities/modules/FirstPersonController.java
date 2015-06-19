@@ -6,6 +6,9 @@ import com.mtronicsdev.polygame.util.math.Math;
 import com.mtronicsdev.polygame.util.math.*;
 import org.lwjgl.glfw.GLFW;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 /**
  * @author mtronics_dev
  * @version 1.0
@@ -18,7 +21,7 @@ public class FirstPersonController extends Camera {
     private final float sneakMultiplier;
 
     public FirstPersonController() {
-        this(1, 1.7f, .4f);
+        this(.07f, 1.7f, .4f);
     }
 
     public FirstPersonController(float speed, float sprintMultiplier, float sneakMultiplier) {
@@ -84,6 +87,13 @@ public class FirstPersonController extends Camera {
         rotation.y += delta.x * .01f;
 
         rotation.x = Math.clamp(rotation.x, -HALF_PI, HALF_PI); //Don't rotate your head through your neck
+
+        //Movement vector
+        float zRot = (float) (-direction.z * cos(rotation.y) - direction.x * sin(rotation.y));
+        float xRot = (float) (-direction.z * sin(rotation.y) + direction.x * cos(rotation.y));
+
+        direction.z = -zRot;
+        direction.x = xRot;
 
         //Movement
         parent.addPosition(direction);
