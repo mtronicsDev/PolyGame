@@ -58,7 +58,6 @@ public class EntityTest {
 
         e2.setParent(e);
         assertEquals(e2.getParent(), e);
-        assertTrue(e.children.contains(e2));
 
         e2.setParent(e3);
         assertTrue(!e.children.contains(e2));

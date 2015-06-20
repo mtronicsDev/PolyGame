@@ -66,12 +66,8 @@ public class Entity extends BareEntity {
     }
 
     public final void setParent(BareEntity parent) {
-        if (parent.equals(this.parent)) return; //No need to change anything
-
-        if (this.parent != null) this.parent.removeChild(this); //Remove this child from the old parent's children
-
+        if (parent == null || parent.equals(this.parent)) return; //No need to change anything
         this.parent = parent;
-        parent.addChild(this);
     }
 
     @Override

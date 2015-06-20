@@ -26,6 +26,7 @@ public final class Textures {
 
         Resources.registerResourceHandler(file -> {
             BufferedImage image = Resources.getResource(file, BufferedImage.class);
+            if (image == null) return null;
             ByteBuffer textureData = readData(image, true);
 
             return new Texture(image.getWidth(), image.getHeight(), textureData);

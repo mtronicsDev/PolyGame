@@ -17,6 +17,7 @@ public class BareEntity {
     }
 
     final void addChild(Entity child) {
+        if (child.getParent() != null) child.getParent().removeChild(child);
         children.add(child);
         child.setParent(this);
     }
