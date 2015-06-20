@@ -1,7 +1,9 @@
 package com.mtronicsdev.polygame.core;
 
+import com.mtronicsdev.polygame.display.Input;
 import com.mtronicsdev.polygame.display.Window;
 import com.mtronicsdev.polygame.entities.Entity3D;
+import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.entities.modules.*;
 import com.mtronicsdev.polygame.entities.modules.gui.GuiImage;
 import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
@@ -11,6 +13,7 @@ import com.mtronicsdev.polygame.graphics.Texture;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Vector2f;
 import com.mtronicsdev.polygame.util.math.Vector3f;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.image.BufferedImage;
 
@@ -38,7 +41,17 @@ public class Main {
                         Resources.getResource("res/lostvalley_left.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_right.jpg", BufferedImage.class),
                         Resources.getResource("res/lostvalley_bottom.jpg", BufferedImage.class),
-                        Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)));
+                        Resources.getResource("res/lostvalley_top.jpg", BufferedImage.class)),
+                new Module() {
+                    {
+                        Input.registerKeyHandler(GLFW.GLFW_KEY_ESCAPE);
+                    }
+
+                    @Override
+                    public void update() {
+                        if (Input.keyUp(GLFW.GLFW_KEY_ESCAPE)) System.exit(0);
+                    }
+                });
 
         new Entity3D(new Vector3f(0, 81, 0), new Terrain(Resources.getResource("res/blendMap.png", Texture.class),
                 Resources.getResource("res/Grass 00 seamless.png", Texture.class),

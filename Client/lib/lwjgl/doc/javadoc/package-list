@@ -3,6 +3,7 @@ org.lwjgl.glfw
 org.lwjgl.openal
 org.lwjgl.opencl
 org.lwjgl.opengl
+org.lwjgl.stb
 org.lwjgl.system
 org.lwjgl.system.libffi
 org.lwjgl.system.linux
