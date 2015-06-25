@@ -4,9 +4,10 @@ in vec2 position;
 
 out vec2 pass_textureCoordinates;
 
-uniform mat4 transformationMatrix;
+uniform vec2 offsetVector;
+uniform vec2 size;
 
 void main(void) {
-    gl_Position = transformationMatrix * vec4(position, 0, 1);
+    gl_Position = vec4(offsetVector, 0, 0) + vec4(position, 0, 1) * vec4(size, 0, 1);
     pass_textureCoordinates = vec2((position.x + 1) / 2, (position.y + 1) / 2);
 }

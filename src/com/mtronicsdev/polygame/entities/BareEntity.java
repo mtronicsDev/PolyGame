@@ -16,15 +16,12 @@ public class BareEntity {
         children = new HashSet<>();
     }
 
-    final void addChild(Entity child) {
-        if (child.getParent() != null) child.getParent().removeChild(child);
+    protected final void addChild(Entity child) {
         children.add(child);
-        child.setParent(this);
     }
 
-    final void removeChild(Entity child) {
+    protected final void removeChild(Entity child) {
         children.remove(child);
-        child.setParent(null);
     }
 
     public void update() {

@@ -5,20 +5,19 @@ import com.mtronicsdev.polygame.display.Window;
 import com.mtronicsdev.polygame.entities.Entity3D;
 import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.entities.modules.*;
-import com.mtronicsdev.polygame.entities.modules.gui.GuiImage;
-import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
-import com.mtronicsdev.polygame.graphics.GuiObject;
 import com.mtronicsdev.polygame.graphics.SharedModel;
 import com.mtronicsdev.polygame.graphics.Texture;
+import com.mtronicsdev.polygame.gui.Dimension2f;
+import com.mtronicsdev.polygame.gui.Dimension4f;
+import com.mtronicsdev.polygame.gui.GuiEngine;
+import com.mtronicsdev.polygame.gui.GuiPanel;
+import com.mtronicsdev.polygame.io.Preferences;
 import com.mtronicsdev.polygame.io.Resources;
-import com.mtronicsdev.polygame.util.math.Vector2f;
 import com.mtronicsdev.polygame.util.math.Vector3f;
+import com.mtronicsdev.polygame.util.math.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.image.BufferedImage;
-
-import static com.mtronicsdev.polygame.display.Input.setCatchMouse;
-import static com.mtronicsdev.polygame.display.Input.setCursorVisible;
 
 /**
  * Class description.
@@ -32,8 +31,8 @@ public class Main {
 
         new Window("Polygame", 1280, 720);
 
-        setCursorVisible(false);
-        setCatchMouse(true);
+        //setCursorVisible(false);
+        //setCatchMouse(true);
 
         new Entity3D(new FirstPersonController(),
                 new Skybox(Resources.getResource("res/lostvalley_front.jpg", BufferedImage.class),
@@ -66,32 +65,20 @@ public class Main {
 
         new Entity3D(new Vector3f(45, 0, -90), new Model(Resources.getResource("res/stall.obj", SharedModel.class)));
 
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.TOP_LEFT));
+        Dimension4f p = Preferences.getPreference("guiEngine.defaultPadding", Dimension4f.class);
+        Dimension2f s = new Dimension2f(32, 32, false, false);
+        Dimension2f o = new Dimension2f(0, 0, true, true);
+        Vector4f c = new Vector4f(1, 1, 1, 1);
 
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.TOP));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.TOP_RIGHT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.LEFT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.CENTER));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.RIGHT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM_LEFT));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM));
-
-        GuiPanel.getRoot().addChild(new GuiImage(new GuiObject(new Vector2f(.03f, .03f),
-                Resources.getResource("res/rgba.png", Texture.class)), true, GuiPanel.Alignment.BOTTOM_RIGHT));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.TOP_LEFT, Resources.getResource("res/guiTest/TL.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.TOP, Resources.getResource("res/guiTest/T.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.TOP_RIGHT, Resources.getResource("res/guiTest/TR.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.LEFT, Resources.getResource("res/guiTest/L.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.CENTER, Resources.getResource("res/guiTest/C.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.RIGHT, Resources.getResource("res/guiTest/R.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM_LEFT, Resources.getResource("res/guiTest/BL.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM, Resources.getResource("res/guiTest/B.png", Texture.class));
+        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM_RIGHT, Resources.getResource("res/guiTest/BR.png", Texture.class));
 
         ClientEngineManager.run();
     }

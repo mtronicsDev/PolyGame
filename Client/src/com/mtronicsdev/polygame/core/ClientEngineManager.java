@@ -2,7 +2,7 @@ package com.mtronicsdev.polygame.core;
 
 import com.mtronicsdev.polygame.display.Display;
 import com.mtronicsdev.polygame.entities.Entity;
-import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
+import com.mtronicsdev.polygame.gui.GuiEngine;
 
 import static org.lwjgl.glfw.GLFW.glfwInit;
 
@@ -18,6 +18,7 @@ public class ClientEngineManager {
             Class.forName("com.mtronicsdev.polygame.io.Colors");
             Class.forName("com.mtronicsdev.polygame.io.Models");
             Class.forName("com.mtronicsdev.polygame.io.Textures");
+            Class.forName("com.mtronicsdev.polygame.gui.GuiEngine");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -27,7 +28,7 @@ public class ClientEngineManager {
     }
 
     public static void run() {
-        GuiPanel.updateLayout();
+        GuiEngine.updateLayout();
 
         while (Display.getWindows().size() > 0) {
             Entity.getRoot().update();

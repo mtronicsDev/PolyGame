@@ -129,7 +129,7 @@ public class Matrix4f {
 
     /**
      * Adapted version of the LWJGL 2 {@code Matrix4f.rotate(float, Vector3f, Matrix4f, Matrix4f)} method.
-     * <p>
+     *
      * <p>It can be found at:
      * http://github.com/LWJGL/lwjgl/blob/master/src/java/org/lwjgl/util/vector/Matrix4f.java</p>
      *

@@ -1,7 +1,7 @@
 package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.io.Resources;
-import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector2f;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -12,13 +12,15 @@ import java.net.URISyntaxException;
  */
 public class GuiShaderProgram extends ShaderProgram {
 
-    private int locationOfTransformationMatrix;
+    private int locationOfOffsetVector;
+    private int locationOfSize;
 
     public GuiShaderProgram() throws URISyntaxException {
         super(Resources.getResource(new File("res/shaders/gui_vert.glsl"), Shader.class),
                 Resources.getResource(new File("res/shaders/gui_frag.glsl"), Shader.class));
 
-        locationOfTransformationMatrix = getUniformLocation("transformationMatrix");
+        locationOfOffsetVector = getUniformLocation("offsetVector");
+        locationOfSize = getUniformLocation("size");
     }
 
     @Override
@@ -28,7 +30,11 @@ public class GuiShaderProgram extends ShaderProgram {
         bindAttribute(0, "position");
     }
 
-    public void loadTransformationMatrix(Matrix4f matrix4f) {
-        loadMatrix4f(locationOfTransformationMatrix, matrix4f);
+    public void loadOffsetVector(Vector2f offset) {
+        loadVector2f(locationOfOffsetVector, offset);
+    }
+
+    public void loadSize(Vector2f size) {
+        loadVector2f(locationOfSize, size);
     }
 }

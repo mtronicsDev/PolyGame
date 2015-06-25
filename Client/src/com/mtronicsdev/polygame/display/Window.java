@@ -1,7 +1,7 @@
 package com.mtronicsdev.polygame.display;
 
-import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
 import com.mtronicsdev.polygame.graphics.RenderEngine;
+import com.mtronicsdev.polygame.gui.GuiEngine;
 import com.mtronicsdev.polygame.io.Preferences;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWScrollCallback;
@@ -74,7 +74,7 @@ public final class Window {
             public void invoke(long l, int i, int i1) {
                 glViewport(0, 0, i, i1);
                 RenderEngine.updateProjectionMatrix(i, i1);
-                GuiPanel.updateLayout();
+                GuiEngine.updateLayout();
             }
         });
 

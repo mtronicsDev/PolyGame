@@ -1,6 +1,7 @@
 package com.mtronicsdev.polygame.graphics;
 
-import com.mtronicsdev.polygame.entities.modules.gui.GuiPanel;
+import com.mtronicsdev.polygame.gui.GuiEngine;
+import com.mtronicsdev.polygame.gui.GuiPanel;
 
 import java.net.URISyntaxException;
 
@@ -32,13 +33,15 @@ public class GuiRenderAgent extends RenderAgent<GuiShaderProgram> {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        for (GuiObject guiObject : GuiPanel.getRoot().getRenderList()) {
-            guiObject.getTexture().bind();
+        for (GuiPanel panel : GuiEngine.getRenderList()) {
+            panel.getTexture().bind();
 
-            shaderProgram.loadTransformationMatrix(guiObject.getTransformationMatrix());
+            shaderProgram.loadOffsetVector(panel.getPosition());
+            shaderProgram.loadSize(panel.getCurrentSize());
+
             glDrawArrays(GL_TRIANGLE_STRIP, 0, QUAD_MODEL.getSize());
 
-            guiObject.getTexture().unbind();
+            panel.getTexture().unbind();
         }
 
         glDisable(GL_BLEND);

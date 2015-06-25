@@ -28,7 +28,7 @@ public class Entity extends BareEntity {
         this.modules = new ArrayList<>(Arrays.asList(modules));
         for (Module module : modules) module.setParent(this);
 
-        root.addChild(this);
+        setParent(root);
     }
 
     public static BareEntity getRoot() {
@@ -68,6 +68,8 @@ public class Entity extends BareEntity {
     public final void setParent(BareEntity parent) {
         if (parent == null || parent.equals(this.parent)) return; //No need to change anything
         this.parent = parent;
+        this.parent.removeChild(this);
+        parent.addChild(this);
     }
 
     @Override
