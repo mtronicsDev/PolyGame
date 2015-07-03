@@ -24,6 +24,11 @@ public class Texture extends GLObject {
         unbind();
     }
 
+    public Texture(int id) {
+        if (glIsTexture(id)) this.id = id;
+        else throw new IllegalArgumentException("ID " + id + "is not associated with a texture. Create one first!");
+    }
+
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, id);
     }

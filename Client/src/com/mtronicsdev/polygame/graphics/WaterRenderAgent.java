@@ -79,7 +79,7 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
             reflectionFrameBuffer.bind();
             RenderEngine.renderPre();
             RenderEngine.renderMain();
-            //Could do that but it would just decrease performance as nex FBO gets bound immediately after
+            //Could do that but it would just decrease performance as next FBO gets bound immediately after
             //reflectionFrameBuffer.unbind();
 
             abstractCamera.getRotation().x *= -1;
@@ -101,6 +101,7 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
             shaderProgram.bind();
             shaderProgram.loadOffset(offset);
             shaderProgram.loadViewMatrix(camera.getViewMatrix());
+            shaderProgram.loadCameraPosition(((Entity3D) camera.getParent()).getPosition());
             PLANE_MODEL.bind();
             glEnableVertexAttribArray(0);
 

@@ -2,6 +2,7 @@ package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Matrix4f;
+import com.mtronicsdev.polygame.util.math.Vector3f;
 
 import java.io.File;
 
@@ -21,6 +22,8 @@ public class WaterShaderProgram extends ShaderProgram {
 
     private int locationOfOffset;
 
+    private int locationOfCameraPosition;
+
     public WaterShaderProgram() {
         super(Resources.getResource(new File("res/shaders/water_vert.glsl"), Shader.class),
                 Resources.getResource(new File("res/shaders/water_frag.glsl"), Shader.class));
@@ -32,7 +35,9 @@ public class WaterShaderProgram extends ShaderProgram {
         locationOfReflectionTexture = getUniformLocation("reflectionTexture");
         locationOfRefractionTexture = getUniformLocation("refractionTexture");
         locationOfDudvMap = getUniformLocation("dudvMap");
+
         locationOfOffset = getUniformLocation("offset");
+        locationOfCameraPosition = getUniformLocation("cameraPosition");
     }
 
     @Override
@@ -62,5 +67,9 @@ public class WaterShaderProgram extends ShaderProgram {
 
     public void loadOffset(float offset) {
         loadFloat(locationOfOffset, offset);
+    }
+
+    public void loadCameraPosition(Vector3f position) {
+        loadVector3f(locationOfCameraPosition, position);
     }
 }

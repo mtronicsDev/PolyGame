@@ -7,10 +7,7 @@ import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.entities.modules.*;
 import com.mtronicsdev.polygame.graphics.SharedModel;
 import com.mtronicsdev.polygame.graphics.Texture;
-import com.mtronicsdev.polygame.gui.Dimension2f;
-import com.mtronicsdev.polygame.gui.Dimension4f;
-import com.mtronicsdev.polygame.gui.GuiEngine;
-import com.mtronicsdev.polygame.gui.GuiPanel;
+import com.mtronicsdev.polygame.gui.*;
 import com.mtronicsdev.polygame.io.Preferences;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Vector3f;
@@ -74,11 +71,12 @@ public class Main {
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.TOP, Resources.getResource("res/guiTest/T.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.TOP_RIGHT, Resources.getResource("res/guiTest/TR.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.LEFT, Resources.getResource("res/guiTest/L.png", Texture.class));
-        new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.CENTER, Resources.getResource("res/guiTest/C.png", Texture.class));
+        //new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.CENTER, Resources.getResource("res/guiTest/C.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.RIGHT, Resources.getResource("res/guiTest/R.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM_LEFT, Resources.getResource("res/guiTest/BL.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM, Resources.getResource("res/guiTest/B.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM_RIGHT, Resources.getResource("res/guiTest/BR.png", Texture.class));
+        new GuiText(p, p, s, o, c, GuiEngine.Alignment.CENTER, "Hello World!", 24, "C:\\\\Windows\\Fonts\\Corbel.ttf");
 
         ClientEngineManager.run();
     }
