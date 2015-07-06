@@ -7,6 +7,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.system.libffi.Closure;
 
 import java.awt.*;
 import java.nio.IntBuffer;
@@ -26,6 +27,7 @@ public final class Window {
     private float[] backgroundColor;
     private GLFWScrollCallback scrollCallback;
     private GLFWWindowSizeCallback windowSizeCallback;
+    private Closure debug;
 
     public Window(String title, int width, int height) {
         this(title, width, height, 0);
@@ -57,7 +59,9 @@ public final class Window {
 
         glfwMakeContextCurrent(id);
         glfwSwapInterval(1);
-        GLContext.createFromCurrent();
+        GLContext context = GLContext.createFromCurrent();
+
+        debug = context.setupDebugMessageCallback(System.err);
 
         glfwSetInputMode(id, GLFW_STICKY_KEYS, 1);
         glfwSetInputMode(id, GLFW_STICKY_MOUSE_BUTTONS, 1);

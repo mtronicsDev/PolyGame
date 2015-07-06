@@ -30,28 +30,32 @@ public class Vector3f {
         z = clone.z;
     }
 
-    public void multiply(float scalar) {
+    public Vector3f multiply(float scalar) {
         x *= scalar;
         y *= scalar;
         z *= scalar;
+        return this;
     }
 
-    public void add(Vector3f add) {
+    public Vector3f add(Vector3f add) {
         x += add.x;
         y += add.y;
         z += add.z;
+        return this;
     }
 
-    public void subtract(Vector3f sub) {
+    public Vector3f subtract(Vector3f sub) {
         x -= sub.x;
         y -= sub.y;
         z -= sub.z;
+        return this;
     }
 
-    public void cross(Vector3f vec1, Vector3f vec2) {
+    public Vector3f cross(Vector3f vec1, Vector3f vec2) {
         x = vec2.z * vec1.y - vec2.y * vec1.z;
         y = vec2.x * vec1.z - vec2.z * vec1.x;
         z = vec2.y * vec1.x - vec2.x * vec1.y;
+        return this;
     }
 
     public float dot(Vector3f dot) {
@@ -62,9 +66,12 @@ public class Vector3f {
         return (float) sqrt(dot(this));
     }
 
-    public void normalize() {
-        float scalar = 1f / length();
-        multiply(scalar);
+    public Vector3f normalize() {
+        return multiply(1f / length());
+    }
+
+    public Vector3f invert() {
+        return multiply(-1);
     }
 
     @Override
@@ -79,9 +86,5 @@ public class Vector3f {
     @Override
     public String toString() {
         return "Vector3f[" + x + ", " + y + ", " + z + "]";
-    }
-
-    public void invert() {
-        multiply(-1);
     }
 }

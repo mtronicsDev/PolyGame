@@ -1,21 +1,26 @@
 package com.mtronicsdev.polygame.gui;
 
+import com.mtronicsdev.polygame.display.Display;
+import com.mtronicsdev.polygame.graphics.TextQuadModel;
 import com.mtronicsdev.polygame.graphics.Texture;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Vector4f;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.stb.STBTTFontinfo;
+import org.lwjgl.stb.STBTTAlignedQuad;
+import org.lwjgl.stb.STBTTBakedChar;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
+import java.nio.FloatBuffer;
 import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.stb.STBTruetype.*;
+import static org.lwjgl.stb.STBTruetype.stbtt_BakeFontBitmap;
+import static org.lwjgl.stb.STBTruetype.stbtt_GetBakedQuad;
 
 /**
  * @author mtronicsDev
@@ -23,7 +28,7 @@ import static org.lwjgl.stb.STBTruetype.*;
  */
 public class GuiText extends GuiPanel {
 
-    private static Map<String, Font> fontMap;
+    private static final Map<String, Font> FONT_MAP = new HashMap<>();
 
     static {
         Resources.registerResourceHandler(file -> {
@@ -46,116 +51,97 @@ public class GuiText extends GuiPanel {
             buffer.flip();
             return buffer;
         }, ByteBuffer.class);
-
-        fontMap = new HashMap<>();
     }
 
     private String text;
-    private int fontSize;
-    private String font;
+    private Font font;
+    private int lineHeight;
+    private TextQuadModel[] quads;
 
     public GuiText(Dimension4f padding, Dimension4f margin, Dimension2f size, Dimension2f offset,
                    Vector4f color, GuiEngine.Alignment alignment, String text, int fontSize, String fontFile) {
-        super(padding, margin, size, offset, color, alignment, loadText(text, fontSize, fontFile));
+        super(padding, margin, size, offset, color, alignment, loadText(fontSize, fontFile));
 
         this.text = text;
-        this.fontSize = fontSize;
-        this.font = fontFile;
+        this.font = FONT_MAP.get(fontFile);
+        lineHeight = fontSize;
+
+        loadCharTable();
     }
 
-    private static Texture loadText(String text, int fontSize, String fontFile) {
+    private static Texture loadText(int fontSize, String fontFile) {
+        Font font = FONT_MAP.get(fontFile);
+        if (font != null) return font.bitmap;
 
-        /* ------------------------------------------------------ *
-         *                    Glyph generation                    *
-         * ------------------------------------------------------ */
+        int bitmapWidth = 512, bitmapHeight = 512;
 
-        Font font = fontMap.get(fontFile);
-        ByteBuffer fontInfo;
-        IntBuffer ascent;
-        if (fontMap.get(fontFile) == null) {
-            //Create font //TODO: Store all fonts so that not every text object has to load them again
-            ByteBuffer fontData = Resources.getResource(fontFile, ByteBuffer.class);
+        int textureId = glGenTextures();
 
-            fontInfo = BufferUtils.createByteBuffer(STBTTFontinfo.SIZEOF);
-            stbtt_InitFont(fontInfo, fontData);
+        ByteBuffer characterData = BufferUtils.createByteBuffer(224 * STBTTBakedChar.SIZEOF);
+        ByteBuffer fontData = Resources.getResource(fontFile, ByteBuffer.class);
+        ByteBuffer bitmap = BufferUtils.createByteBuffer(bitmapWidth * bitmapHeight);
 
-            //Font metrics
-            ascent = BufferUtils.createIntBuffer(1);
-            IntBuffer descent = BufferUtils.createIntBuffer(1),
-                    lineGap = BufferUtils.createIntBuffer(1);
+        stbtt_BakeFontBitmap(fontData, fontSize, bitmap, bitmapWidth, bitmapHeight, 32, characterData);
 
-            stbtt_GetFontVMetrics(fontInfo, ascent, descent, lineGap);
+        glBindTexture(GL_TEXTURE_2D, textureId);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, bitmapWidth, bitmapHeight, 0, GL_RED, GL_UNSIGNED_BYTE, bitmap);
 
-            fontMap.put(fontFile, new Font(fontInfo, ascent));
-
-            //ascent.flip();
-        } else {
-            fontInfo = font.info;
-            ascent = font.ascent;
-        }
-
-        float scale = stbtt_ScaleForPixelHeight(fontInfo, fontSize);
-        float asc = ascent.get(0) * scale;
-
-        int width = 512, height = 256;
-
-        char[] chars = text.toCharArray();
-
-        int x = 0;
-
-        ByteBuffer bitmap = BufferUtils.createByteBuffer(width * height);
-
-        //Render characters into bitmap
-        for (int c = 0; c < chars.length; c++) {
-            IntBuffer sX = BufferUtils.createIntBuffer(1),
-                    sY = BufferUtils.createIntBuffer(1),
-                    oX = BufferUtils.createIntBuffer(1),
-                    oY = BufferUtils.createIntBuffer(1);
-
-            stbtt_GetCodepointBitmapBox(fontInfo, chars[c], scale, scale, oX, oY, sX, sY);
-
-            //oX.flip();
-            //oY.flip();
-            //sX.flip();
-            //sY.flip();
-
-            int y = (int) (asc + oY.get(0));
-
-            int byteOffset = x + y * width;
-
-            stbtt_MakeCodepointBitmap(fontInfo, (ByteBuffer) bitmap.position(byteOffset),
-                    sX.get() - oX.get(), sY.get() - oY.get(),
-                    width, scale, scale, chars[c]);
-
-            IntBuffer charWidth = BufferUtils.createIntBuffer(1);
-            stbtt_GetCodepointHMetrics(fontInfo, chars[c], charWidth, BufferUtils.createIntBuffer(1));
-
-            //charWidth.flip();
-
-            x += charWidth.get(0) * scale;
-
-            if (c < chars.length - 1) {
-                int kern;
-                kern = stbtt_GetCodepointKernAdvance(fontInfo, chars[c], chars[c + 1]);
-                x += kern * scale;
-            }
-        }
-
-        /* ------------------------------------------------------ *
-         *                   Texture generation                   *
-         * ------------------------------------------------------ */
-
-        int id = glGenTextures();
-
-        glBindTexture(GL_TEXTURE_2D, id);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, width, height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, bitmap);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        return new Texture(id);
+        Texture texture = new Texture(textureId);
+
+        FONT_MAP.put(fontFile, new Font(characterData, texture, bitmapWidth, bitmapHeight));
+
+        /*new GuiPanel(new Dimension4f(0, 0, 0, 0, true, true, true, true),
+                new Dimension4f(0, 0, 0, 0, true, true, true, true),
+                new Dimension2f(512, 512, false, false),
+                new Dimension2f(0, 0, true, true),
+                new Vector4f(1, 1, 1, 1),
+                GuiEngine.Alignment.TOP, FONT_MAP.get(fontFile).bitmap);*/
+
+        return texture;
+    }
+
+    private void loadCharTable() {
+        quads = new TextQuadModel[text.length()];
+        STBTTAlignedQuad q = new STBTTAlignedQuad();
+
+        FloatBuffer x = BufferUtils.createFloatBuffer(1), y = BufferUtils.createFloatBuffer(1);
+
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            if (c == '\n') {
+                y.put(0, y.get(0) + getLineHeight());
+                x.put(0, 0);
+                continue;
+            } else if (c < 32 || c >= 256) continue;
+
+            stbtt_GetBakedQuad(font.characterData, font.width, font.height,
+                    c - 32, x, y, q.buffer(), 1);
+
+            Point viewport = Display.getCurrentWindow().getSize();
+
+            float s0 = q.getS0(), t0 = q.getT0(),
+                    s1 = q.getS1(), t1 = q.getT1();
+
+            float x0 = q.getX0() / viewport.x, y0 = -q.getY0() / viewport.y,
+                    x1 = q.getX1() / viewport.x, y1 = -q.getY1() / viewport.y;
+
+            float[] vertices = {x0, y0, x0, y1, x1, y0, x1, y1};
+            float[] uvs = {s0, t0, s0, t1, s1, t0, s1, t1};
+
+            TextQuadModel quad = new TextQuadModel(vertices, uvs);
+
+            quads[i] = quad;
+        }
+    }
+
+    public TextQuadModel getQuadAt(int index) {
+        return quads[index];
     }
 
     public String getText() {
@@ -164,16 +150,42 @@ public class GuiText extends GuiPanel {
 
     public void setText(String text) {
         this.text = text;
-        setTexture(loadText(text, fontSize, font));
     }
 
-    private static class Font {
-        private ByteBuffer info;
-        private IntBuffer ascent;
+    public Font getFont() {
+        return font;
+    }
 
-        public Font(ByteBuffer info, IntBuffer ascent) {
-            this.info = info;
-            this.ascent = ascent;
+    public int getLineHeight() {
+        return lineHeight;
+    }
+
+    public static class Font {
+        private ByteBuffer characterData;
+        private Texture bitmap;
+        private int width, height;
+
+        public Font(ByteBuffer characterData, Texture bitmap, int width, int height) {
+            this.characterData = characterData;
+            this.bitmap = bitmap;
+            this.width = width;
+            this.height = height;
+        }
+
+        public ByteBuffer getCharacterData() {
+            return characterData;
+        }
+
+        public Texture getBitmap() {
+            return bitmap;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
         }
     }
 }

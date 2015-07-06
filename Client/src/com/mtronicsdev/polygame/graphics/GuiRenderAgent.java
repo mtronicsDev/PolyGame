@@ -2,6 +2,8 @@ package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.gui.GuiEngine;
 import com.mtronicsdev.polygame.gui.GuiPanel;
+import com.mtronicsdev.polygame.gui.GuiText;
+import com.mtronicsdev.polygame.util.math.Vector2f;
 
 import java.net.URISyntaxException;
 
@@ -19,9 +21,10 @@ public class GuiRenderAgent extends RenderAgent<GuiShaderProgram> {
 
     private static final QuadModel QUAD_MODEL = new QuadModel();
 
+    private TextShaderProgram textShaderProgram = new TextShaderProgram();
+
     protected GuiRenderAgent() throws URISyntaxException {
         super(new GuiShaderProgram());
-
     }
 
     void render() {
@@ -34,14 +37,45 @@ public class GuiRenderAgent extends RenderAgent<GuiShaderProgram> {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         for (GuiPanel panel : GuiEngine.getRenderList()) {
-            panel.getTexture().bind();
+            if (panel instanceof GuiText) {
+                GuiText text = (GuiText) panel;
 
-            shaderProgram.loadOffsetVector(panel.getPosition());
-            shaderProgram.loadSize(panel.getCurrentSize());
+                String chars = text.getText();
+                GuiText.Font font = text.getFont();
 
-            glDrawArrays(GL_TRIANGLE_STRIP, 0, QUAD_MODEL.getSize());
+                textShaderProgram.bind();
+                font.getBitmap().bind();
 
-            panel.getTexture().unbind();
+                for (int i = 0; i < chars.length(); i++) {
+                    TextQuadModel quad = text.getQuadAt(i);
+
+                    if (quad == null) continue;
+
+                    glEnableVertexAttribArray(0);
+                    glEnableVertexAttribArray(1);
+
+                    quad.bind();
+
+                    textShaderProgram.loadOffsetVector(new Vector2f(0, 0));
+                    textShaderProgram.loadSize(new Vector2f(1, 1));
+
+                    glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.getSize());
+                }
+
+                glDisableVertexAttribArray(0);
+                glDisableVertexAttribArray(1);
+                font.getBitmap().unbind();
+                shaderProgram.bind();
+            } else {
+                panel.getTexture().bind();
+
+                shaderProgram.loadOffsetVector(panel.getPosition());
+                shaderProgram.loadSize(panel.getCurrentSize());
+
+                glDrawArrays(GL_TRIANGLE_STRIP, 0, QUAD_MODEL.getSize());
+
+                panel.getTexture().unbind();
+            }
         }
 
         glDisable(GL_BLEND);

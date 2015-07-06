@@ -25,19 +25,22 @@ public class Vector2f {
         y = clone.y;
     }
 
-    public void add(Vector2f vector) {
+    public Vector2f add(Vector2f vector) {
         x += vector.x;
         y += vector.y;
+        return this;
     }
 
-    public void subtract(Vector2f vector) {
+    public Vector2f subtract(Vector2f vector) {
         x -= vector.x;
         y -= vector.y;
+        return this;
     }
 
-    public void multiply(float scalar) {
+    public Vector2f multiply(float scalar) {
         x *= scalar;
         y *= scalar;
+        return this;
     }
 
     public float dot(Vector2f vector) {
@@ -48,8 +51,12 @@ public class Vector2f {
         return (float) sqrt(dot(this));
     }
 
-    public void normalize() {
-        multiply(1 / length());
+    public Vector2f normalize() {
+        return multiply(1 / length());
+    }
+
+    public Vector2f invert() {
+        return multiply(-1);
     }
 
     public boolean equals(Object object) {

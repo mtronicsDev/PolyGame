@@ -31,25 +31,28 @@ public class Vector4f {
         w = clone.w;
     }
 
-    public void multiply(float scalar) {
+    public Vector4f multiply(float scalar) {
         x *= scalar;
         y *= scalar;
         z *= scalar;
         w *= scalar;
+        return this;
     }
 
-    public void add(Vector4f add) {
+    public Vector4f add(Vector4f add) {
         x += add.x;
         y += add.y;
         z += add.z;
         w += add.w;
+        return this;
     }
 
-    public void subtract(Vector4f sub) {
+    public Vector4f subtract(Vector4f sub) {
         x -= sub.x;
         y -= sub.y;
         z -= sub.z;
         w -= sub.w;
+        return this;
     }
 
     public float dot(Vector4f dot) {
@@ -60,9 +63,12 @@ public class Vector4f {
         return (float) sqrt(dot(this));
     }
 
-    public void normalize() {
-        float scalar = 1f / length();
-        multiply(scalar);
+    public Vector4f normalize() {
+        return multiply(1f / length());
+    }
+
+    public Vector4f invert() {
+        return multiply(-1);
     }
 
     @Override
@@ -77,9 +83,5 @@ public class Vector4f {
     @Override
     public String toString() {
         return "Vector3f[" + x + ", " + y + ", " + z + ", " + w + "]";
-    }
-
-    public void invert() {
-        multiply(-1);
     }
 }
