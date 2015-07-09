@@ -63,11 +63,12 @@ public class GuiPanel extends AbstractGuiPanel {
         Vector4f parentPadding = parent.getPadding();
         Vector2f parentSize = parent.getSize();
         Vector4f margin = getMargin();
-        Vector2f size = getSize();
-        Vector2f offset = getOffset();
+        Vector2f size = calculateSize();
+        Vector2f offset = calculateOffset();
 
         currentPosition = alignment.getPosition(parentPadding, parentSize, margin, size);
         currentPosition.add(parent.getPosition());
+        currentPosition.add(offset);
 
         currentSize = new Vector2f(size.x + margin.z + parentPadding.z > parentSize.x - offset.x ?
                 parentSize.x - offset.x - parentPadding.z - margin.z : size.x,
@@ -80,7 +81,8 @@ public class GuiPanel extends AbstractGuiPanel {
         return currentPosition;
     }
 
-    public Vector2f getCurrentSize() {
+    @Override
+    public Vector2f getSize() {
         return currentSize;
     }
 
@@ -94,15 +96,34 @@ public class GuiPanel extends AbstractGuiPanel {
         return margin.toVector2f(size.x, size.y, firstHalf);
     }
 
-    @Override
-    public Vector2f getSize() {
+    public void setMargin(Dimension4f margin) {
+        this.margin = margin;
+        updateLayout();
+    }
+
+    public Vector2f getMargin(boolean firstHalf) {
+        Point size = Display.getCurrentWindow().getSize();
+        return margin.toVector2f(size.x, size.y, firstHalf);
+    }
+
+    public Vector2f calculateSize() {
         Point size = Display.getCurrentWindow().getSize();
         return this.size.toVector2f(size.x, size.y);
     }
 
-    public Vector2f getOffset() {
+    public void setSize(Dimension2f size) {
+        this.size = size;
+        updateLayout();
+    }
+
+    public Vector2f calculateOffset() {
         Point size = Display.getCurrentWindow().getSize();
         return offset.toVector2f(size.x, size.y);
+    }
+
+    public void setOffset(Dimension2f offset) {
+        this.offset = offset;
+        updateLayout();
     }
 
     public Texture getTexture() {

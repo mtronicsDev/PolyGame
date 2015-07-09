@@ -7,10 +7,7 @@ import com.mtronicsdev.polygame.entities.Module;
 import com.mtronicsdev.polygame.entities.modules.*;
 import com.mtronicsdev.polygame.graphics.SharedModel;
 import com.mtronicsdev.polygame.graphics.Texture;
-import com.mtronicsdev.polygame.gui.Dimension2f;
-import com.mtronicsdev.polygame.gui.Dimension4f;
-import com.mtronicsdev.polygame.gui.GuiEngine;
-import com.mtronicsdev.polygame.gui.GuiText;
+import com.mtronicsdev.polygame.gui.*;
 import com.mtronicsdev.polygame.io.Preferences;
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Vector3f;
@@ -66,7 +63,7 @@ public class Main {
         new Entity3D(new Vector3f(45, 0, -90), new Model(Resources.getResource("res/stall.obj", SharedModel.class)));
 
         Dimension4f p = Preferences.getPreference("guiEngine.defaultPadding", Dimension4f.class);
-        Dimension2f s = new Dimension2f(32, 32, false, false);
+        Dimension2f s = new Dimension2f(256, 256, false, false);
         Dimension2f o = new Dimension2f(0, 0, true, true);
         Vector4f c = new Vector4f(1, 1, 1, 1);
 
@@ -79,7 +76,10 @@ public class Main {
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM_LEFT, Resources.getResource("res/guiTest/BL.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM, Resources.getResource("res/guiTest/B.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.BOTTOM_RIGHT, Resources.getResource("res/guiTest/BR.png", Texture.class));*/
-        new GuiText(p, p, s, o, c, GuiEngine.Alignment.CENTER, "Hello WORLD!\nLineBreak Hi!÷", 50, "C:\\Windows\\Fonts\\Corbel.ttf");
+        new GuiText(p, p, s, o, c, GuiEngine.Alignment.CENTER, "Hello WORLD!\nLineBreak Hi!÷", 25, "C:\\Windows\\Fonts\\Corbel.ttf");
+
+        new GuiPanel(p, p, new Dimension2f(2, 1, false, true), o, c, GuiEngine.Alignment.CENTER, new Texture(11));
+        new GuiPanel(p, p, new Dimension2f(1, 2, true, false), o, c, GuiEngine.Alignment.CENTER, new Texture(11));
 
         ClientEngineManager.run();
     }

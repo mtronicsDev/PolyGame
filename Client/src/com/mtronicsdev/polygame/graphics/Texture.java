@@ -1,5 +1,7 @@
 package com.mtronicsdev.polygame.graphics;
 
+import org.lwjgl.BufferUtils;
+
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -26,7 +28,7 @@ public class Texture extends GLObject {
 
     public Texture(int id) {
         if (glIsTexture(id)) this.id = id;
-        else throw new IllegalArgumentException("ID " + id + "is not associated with a texture. Create one first!");
+        else throw new IllegalArgumentException("ID " + id + " is not associated with a texture. Create one first!");
     }
 
     public void bind() {
@@ -39,6 +41,21 @@ public class Texture extends GLObject {
 
     public int getId() {
         return id;
+    }
+
+    public ByteBuffer dump() {
+        bind();
+
+        int w = glGetTexLevelParameteri(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH);
+        int h = glGetTexLevelParameteri(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT);
+
+        ByteBuffer textureData = BufferUtils.createByteBuffer(w * h * 4);
+
+        glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+
+        unbind();
+
+        return textureData;
     }
 
     @Override
