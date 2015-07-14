@@ -33,7 +33,7 @@ public class WaterRenderAgent extends RenderAgent<WaterShaderProgram> {
     private static final Vector3f REFLECTION_CLIP_PLANE = new Vector3f(0, 1, 0);
     private static final Vector3f REFRACTION_CLIP_PLANE = new Vector3f(0, -1, 0);
 
-    private static final Texture DUDV_MAP = Resources.getResource("res/DuDv.png", Texture.class);
+    private static final Texture DUDV_MAP = Resources.getResource("res/water_DuDv.png", Texture.class);
     private static final float WAVE_SPEED = 0.0001f;
 
     private FrameBufferObject reflectionFrameBuffer, refractionFrameBuffer;

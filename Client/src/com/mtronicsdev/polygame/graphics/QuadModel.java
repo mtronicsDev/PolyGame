@@ -9,10 +9,10 @@ import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 public class QuadModel extends VertexArrayObject {
 
     private static final float[] VERTICES = {
-            -1, 1,
-            -1, -1,
-            1, 1,
-            1, -1
+            0, 0,
+            0, 1,
+            1, 0,
+            1, 1
     };
 
     private static final int size = VERTICES.length;

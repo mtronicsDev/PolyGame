@@ -128,14 +128,11 @@ public class GuiText extends GuiPanel {
 
             stbtt_GetPackedQuad(font.characterData, font.width, font.height, c - 32, x, y, q.buffer(), 0);
 
-            //stbtt_GetBakedQuad(font.characterData, font.width, font.height,
-            //        c - 32, x, y, q.buffer(), 1);
-
             float s0 = q.getS0(), t0 = q.getT0(),
                     s1 = q.getS1(), t1 = q.getT1();
 
-            float x0 = q.getX0() * font.scaleFactor * 9 / 16, y0 = -q.getY0() * font.scaleFactor,
-                    x1 = q.getX1() * font.scaleFactor * 9 / 16, y1 = -q.getY1() * font.scaleFactor;
+            float x0 = q.getX0() * font.scaleFactor * 9 / 16, y0 = q.getY0() * font.scaleFactor,
+                    x1 = q.getX1() * font.scaleFactor * 9 / 16, y1 = q.getY1() * font.scaleFactor;
 
             if (i == 0) {
                 xMin = x0;
@@ -159,7 +156,6 @@ public class GuiText extends GuiPanel {
         }
 
         setSize(new Dimension2f(xMax - xMin, yMax - yMin, true, true));
-        setOffset(new Dimension2f((xMin - xMax) / 2, -yMin / 2, true, true));
     }
 
     public TextQuadModel getQuadAt(int index) {

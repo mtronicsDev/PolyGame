@@ -86,14 +86,14 @@ public class GuiPanel extends AbstractGuiPanel {
         return currentSize;
     }
 
+    public void setSize(Dimension2f size) {
+        this.size = size;
+        updateLayout();
+    }
+
     public Vector4f getMargin() {
         Point size = Display.getCurrentWindow().getSize();
         return margin.toVector4f(size.x, size.y);
-    }
-
-    public Vector2f getMargin(boolean firstHalf) {
-        Point size = Display.getCurrentWindow().getSize();
-        return margin.toVector2f(size.x, size.y, firstHalf);
     }
 
     public void setMargin(Dimension4f margin) {
@@ -109,11 +109,6 @@ public class GuiPanel extends AbstractGuiPanel {
     public Vector2f calculateSize() {
         Point size = Display.getCurrentWindow().getSize();
         return this.size.toVector2f(size.x, size.y);
-    }
-
-    public void setSize(Dimension2f size) {
-        this.size = size;
-        updateLayout();
     }
 
     public Vector2f calculateOffset() {

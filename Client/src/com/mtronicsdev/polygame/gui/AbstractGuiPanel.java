@@ -38,11 +38,11 @@ public class AbstractGuiPanel {
     }
 
     public Vector2f getPosition() {
-        return new Vector2f(-1, -1);
+        return new Vector2f(0, 0);
     }
 
     public Vector2f getSize() {
-        return new Vector2f(2, 2);
+        return new Vector2f(1, 1);
     }
 
     public Vector4f getPadding() {
