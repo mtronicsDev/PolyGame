@@ -60,6 +60,7 @@ public class GuiRenderAgent extends RenderAgent<GuiShaderProgram> {
 
                     textShaderProgram.loadOffsetVector(pos);
                     textShaderProgram.loadSize(new Vector2f(1, 1));
+                    textShaderProgram.loadColor(text.getColor());
 
                     glDrawArrays(GL_TRIANGLE_STRIP, 0, quad.getSize());
                 }
@@ -75,6 +76,7 @@ public class GuiRenderAgent extends RenderAgent<GuiShaderProgram> {
 
                 shaderProgram.loadOffsetVector(panel.getPosition());
                 shaderProgram.loadSize(panel.getSize());
+                shaderProgram.loadColor(panel.getColor());
 
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, QUAD_MODEL.getSize());
 

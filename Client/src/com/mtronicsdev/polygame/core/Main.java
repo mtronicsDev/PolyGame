@@ -65,7 +65,7 @@ public class Main {
         Dimension4f p = Preferences.getPreference("guiEngine.defaultPadding", Dimension4f.class);
         Dimension2f s = new Dimension2f(32, 32, false, false);
         Dimension2f o = new Dimension2f(0, 0, true, true);
-        Vector4f c = new Vector4f(1, 1, 1, 1);
+        Vector4f c = new Vector4f(0, 1, 1, .1f);
 
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.TOP_LEFT, Resources.getResource("res/guiTest/TL.png", Texture.class));
         new GuiPanel(p, p, s, o, c, GuiEngine.Alignment.TOP, Resources.getResource("res/guiTest/T.png", Texture.class));
@@ -79,8 +79,8 @@ public class Main {
 
         new GuiText(p, p, s, o, c, GuiEngine.Alignment.CENTER, "Hello WORLD!\nLineBreak Hi!÷", 25, "C:\\Windows\\Fonts\\Corbel.ttf");
 
-        new GuiPanel(p, p, new Dimension2f(2, 1, false, true), o, c, GuiEngine.Alignment.CENTER, new Texture(11));
-        new GuiPanel(p, p, new Dimension2f(1, 2, true, false), o, c, GuiEngine.Alignment.CENTER, new Texture(11));
+        new GuiPanel(p, p, new Dimension2f(1, 1, false, true), o, c, GuiEngine.Alignment.CENTER, new Texture(11));
+        new GuiPanel(p, p, new Dimension2f(1, 1, true, false), o, c, GuiEngine.Alignment.CENTER, new Texture(11));
 
         ClientEngineManager.run();
     }

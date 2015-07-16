@@ -2,6 +2,7 @@ package com.mtronicsdev.polygame.graphics;
 
 import com.mtronicsdev.polygame.io.Resources;
 import com.mtronicsdev.polygame.util.math.Vector2f;
+import com.mtronicsdev.polygame.util.math.Vector4f;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -14,6 +15,7 @@ public class GuiShaderProgram extends ShaderProgram {
 
     private int locationOfOffsetVector;
     private int locationOfSize;
+    private int locationOfColor;
 
     public GuiShaderProgram() throws URISyntaxException {
         super(Resources.getResource(new File("res/shaders/gui_vert.glsl"), Shader.class),
@@ -21,6 +23,7 @@ public class GuiShaderProgram extends ShaderProgram {
 
         locationOfOffsetVector = getUniformLocation("offsetVector");
         locationOfSize = getUniformLocation("size");
+        locationOfColor = getUniformLocation("color");
     }
 
     @Override
@@ -36,5 +39,9 @@ public class GuiShaderProgram extends ShaderProgram {
 
     public void loadSize(Vector2f size) {
         loadVector2f(locationOfSize, size);
+    }
+
+    public void loadColor(Vector4f color) {
+        loadVector4f(locationOfColor, color);
     }
 }

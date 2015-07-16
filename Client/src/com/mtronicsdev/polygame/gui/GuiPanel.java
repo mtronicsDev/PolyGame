@@ -121,6 +121,14 @@ public class GuiPanel extends AbstractGuiPanel {
         updateLayout();
     }
 
+    public Vector4f getColor() {
+        return color;
+    }
+
+    public void setColor(Vector4f color) {
+        this.color = color;
+    }
+
     public Texture getTexture() {
         return texture;
     }
