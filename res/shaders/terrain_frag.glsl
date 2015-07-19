@@ -26,7 +26,7 @@ uniform float specularExponent;
 void main(void) {
     vec4 blendColor = texture(blendMap, pass_textureCoordinates);
 
-    vec2 tiledTextureCoordinates = pass_textureCoordinates * 40;
+    vec2 tiledTextureCoordinates = pass_textureCoordinates * 80;
 
     float texture0Amount = 1 - (blendColor.r + blendColor.g + blendColor.b);
     vec4 texture0Color = texture(texture0, tiledTextureCoordinates) * texture0Amount;

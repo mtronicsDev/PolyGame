@@ -4,8 +4,10 @@ import com.mtronicsdev.polygame.display.Display;
 import com.mtronicsdev.polygame.graphics.Texture;
 import com.mtronicsdev.polygame.util.math.Vector2f;
 import com.mtronicsdev.polygame.util.math.Vector4f;
+import org.lwjgl.BufferUtils;
 
 import java.awt.*;
+import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,15 +17,23 @@ import java.util.List;
  */
 public class GuiPanel extends AbstractGuiPanel {
 
-    private AbstractGuiPanel parent;
+    private static final Texture BLANK;
+    private static final Vector4f WHITE;
 
+    static {
+        ByteBuffer buffer = BufferUtils.createByteBuffer(4); //RGBA
+        for (int i = 0; i < buffer.capacity(); i++) buffer.put(i, (byte) -1); //Max unsigned byte value (2's complement)
+
+        BLANK = new Texture(1, 1, buffer);
+        WHITE = new Vector4f(1, 1, 1, 1);
+    }
+
+    private AbstractGuiPanel parent;
     private Dimension4f margin;
     private Dimension2f size;
     private Dimension2f offset;
     private Vector4f color;
-
     private GuiEngine.Alignment alignment;
-
     private Vector2f currentPosition, currentSize;
     private Texture texture;
 
@@ -39,6 +49,16 @@ public class GuiPanel extends AbstractGuiPanel {
         this.texture = texture;
 
         setParent(GuiEngine.getRoot());
+    }
+
+    public GuiPanel(Dimension4f padding, Dimension4f margin, Dimension2f size, Dimension2f offset,
+                    Vector4f color, GuiEngine.Alignment alignment) {
+        this(padding, margin, size, offset, color, alignment, BLANK);
+    }
+
+    public GuiPanel(Dimension4f padding, Dimension4f margin, Dimension2f size, Dimension2f offset,
+                    GuiEngine.Alignment alignment, Texture texture) {
+        this(padding, margin, size, offset, WHITE, alignment, texture);
     }
 
     @Override

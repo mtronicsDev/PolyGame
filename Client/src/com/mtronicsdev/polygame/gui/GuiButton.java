@@ -8,9 +8,11 @@ import com.mtronicsdev.polygame.util.math.Vector4f;
  * @version 1.0
  */
 public class GuiButton extends GuiPanel {
-    public GuiButton(Dimension4f padding, Dimension4f margin, Dimension2f size, Dimension2f offset, Vector4f color, GuiEngine.Alignment alignment, Texture texture, GuiText text) {
+    public GuiButton(Dimension4f padding, Dimension4f margin, Dimension2f size, Dimension2f offset, Vector4f color,
+                     GuiEngine.Alignment alignment, Texture texture, GuiText text) {
         super(padding, margin, size, offset, color, alignment, texture);
 
+        updateLayout();
         text.setParent(this);
     }
 }

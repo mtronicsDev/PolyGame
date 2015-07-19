@@ -12,7 +12,7 @@ uniform sampler2D dudvMap;
 
 uniform float offset;
 
-const float waveStrength = 0.02;
+const float waveStrength = 0.05;
 
 void main(void) {
 

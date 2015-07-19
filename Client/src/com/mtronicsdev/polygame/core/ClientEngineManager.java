@@ -10,9 +10,14 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
  * @author mtronics_dev
  * @version 1.0
  */
-public class ClientEngineManager {
+public final class ClientEngineManager {
+
+    private ClientEngineManager() {
+
+    }
 
     public static void init() {
+        //Initialize Classes for resource loader
         try {
             Class.forName("com.mtronicsdev.polygame.graphics.Shader");
             Class.forName("com.mtronicsdev.polygame.io.Colors");

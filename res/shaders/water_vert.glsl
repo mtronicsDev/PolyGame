@@ -11,7 +11,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 cameraPosition;
 
-const float tileSize = 3;
+const float tileSize = 16;
 
 void main(void) {
 

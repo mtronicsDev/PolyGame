@@ -74,7 +74,7 @@ public final class GuiEngine {
             return new Dimension4f(x, y, z, w, rX, rY, rZ, rW);
         }, Dimension4f.class);
 
-        ROOT = new AbstractGuiPanel(Preferences.getPreference("guiEngine.defaultPadding", Dimension4f.class));
+        ROOT = new AbstractGuiPanel(new Dimension4f(0, 0, 0, 0, true, true, true, true));
     }
 
     private GuiEngine() {
