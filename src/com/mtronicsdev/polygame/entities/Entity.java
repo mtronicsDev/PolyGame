@@ -12,14 +12,14 @@ import java.util.UUID;
  */
 public class Entity extends BareEntity {
 
-    private static final BareEntity root;
+    private static final transient BareEntity root;
 
     static {
         root = new BareEntity();
     }
 
-    private BareEntity parent = null;
-    private List<Module> modules;
+    private transient BareEntity parent = null;
+    private transient List<Module> modules;
     private int id = UUID.randomUUID().hashCode();
 
     public Entity(Module... modules) {

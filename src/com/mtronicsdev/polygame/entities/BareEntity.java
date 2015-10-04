@@ -1,5 +1,7 @@
 package com.mtronicsdev.polygame.entities;
 
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,9 +10,9 @@ import java.util.Set;
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
-public class BareEntity {
+public class BareEntity implements Serializable {
 
-    protected Set<Entity> children;
+    protected transient Set<Entity> children;
 
     BareEntity() {
         children = new HashSet<>();
@@ -26,5 +28,9 @@ public class BareEntity {
 
     public void update() {
         children.forEach(Entity::update);
+    }
+
+    public Set<Entity> getChildren() {
+        return Collections.unmodifiableSet(children);
     }
 }

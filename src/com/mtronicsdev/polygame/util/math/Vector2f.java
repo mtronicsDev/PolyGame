@@ -1,5 +1,7 @@
 package com.mtronicsdev.polygame.util.math;
 
+import java.io.Serializable;
+
 import static java.lang.Math.sqrt;
 
 /**
@@ -7,7 +9,7 @@ import static java.lang.Math.sqrt;
  *
  * @author Maxi Schmeller (mtronics_dev)
  */
-public class Vector2f {
+public class Vector2f implements Serializable {
 
     public float x, y;
 
